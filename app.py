@@ -87,26 +87,7 @@ if form.form_submit_button("Choose Industry"):
         st.session_state.showing_history = False
         st.session_state.showing_conversation = True
     
-with st.sidebar:
-    sidebar_title = st.markdown("Conversation History")
-    if "messages" in st.session_state:
-        for i, message in enumerate(st.session_state.messages):
-            if st.button(f"Message {i + 1}"):
-                display_old_conversation(i)
-    if "showing_conversation" in st.session_state:
-        if st.button("Back to Conversation History"):
-            st.session_state.showing_conversation = False
-            st.session_state.showing_history = True
-    if "showing_history" in st.session_state:
-        if st.button("Back to Industry Selection"):
-            st.session_state.showing_history = False
-            st.session_state.showing_conversation = False
-            st.session_state.messages = []
-            
-            
-# Display the conversation history
-if st.session_state.showing_conversation:
-    display_old_conversation(st.session_state.current_conversation)
+
 
 
     
