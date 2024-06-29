@@ -80,8 +80,21 @@ if form.form_submit_button("Choose Industry"):
         st.write(f"Generating a cold call script for the {form_choice} industry...")
         st.session_state.messages.append({"role": "user", "content": form_choice})
         response = ai_chatbot(form_choice)
-        st.session_state.messages.append({"role": "assistant", "content": response})
-        #Get Script Button  
-        st.write(response)
-        if st.button("Clear Chat"):
-            st.session_state.messages = []
+    # Display the assistant's response if button is clicked
+    if st.button("Generate Script"):
+        st.session_state.messages.append({"role": "assistant", "content": response.text})
+        st.session_state.showing_history = False
+        st.session_state.showing_conversation = True
+    
+# Display the current conversation
+if st.session_state.showing_conversation:
+    st.markdown("### Current Conversation")
+    for message in st.session_state.messages[st.session_state.current_conversation:]:
+        if message["role"] == "user":
+            st.markdown(f"**User:** {message['content']}")
+        else:
+            st.markdown(f"**Assistant:** {message['content']}")
+    if st.button("Back to History"):
+        st.session_state.showing_history = True
+        st.session_state.showing_conversation = False
+        st.session_state.current_con
