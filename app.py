@@ -13,7 +13,7 @@ load_dotenv()
 # Initialize Gemini
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 model = genai.GenerativeModel(model_name="gemini-pro")
-
+chat = model.start_chat(history=[])
 # Function to generate the cold call script
 def cold_script(industry):
     return f"""
@@ -28,9 +28,10 @@ def to_markdown(text):
 # Function for AI chatbot interaction
 def ai_chatbot(txt):
     prompt = cold_script(txt)
-    response = model.generate_content(cold_script(txt))
-    st.write(response.text)
-    
+    #response = model.generate_content(cold_script(txt))
+    response = chat.send_message(prompt)
+    rep = to_markdown(response)
+    st.write(rep)
     
 # Initialize chat history
 if "messages" not in st.session_state:
