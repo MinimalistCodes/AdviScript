@@ -42,25 +42,18 @@ st.markdown("An AI-powered chatbot designed to provide expert advice in the sale
 st.sidebar.title("Conversation History")
 
 # Function to handle clicking on old conversations
-def show_old_conversation(index):
-    st.session_state.current_conversation = index
-    st.session_state.showing_history = False
-    st.session_state.showing_conversation = True
-
-# Display old conversations in sidebar with links
-if "showing_history" not in st.session_state:
-    st.session_state.showing_history = True
-    st.session_state.showing_conversation = False
-# Display old conversations in sidebar with links
-if st.session_state.showing_history:
-    st.sidebar.markdown("### Old Conversations")
-    for i, message in enumerate(st.session_state.messages):
+# Display the current conversation
+if st.session_state.showing_conversation:
+    st.markdown("### Current Conversation")
+    for message in st.session_state.messages[st.session_state.current_conversation:]:
         if message["role"] == "user":
-            st.sidebar.markdown(f"**User:** {message['content']}")
+            st.markdown(f"**User:** {message['content']}")
         else:
-            st.sidebar.markdown(f"**Assistant:** {message['content']}")
-        if st.sidebar.button(f"Show Conversation {i}"):
-            show_old_conversation(i)
+            st.markdown(f"**Assistant:** {message['content']}")
+    if st.button("Back to History"):
+        st.session_state.showing_history = True
+        st.session_state.showing_conversation = False
+        st.session_state.current_con
 
 # Form for selecting industry and sending user message to chatbot
 form = st.form("input_form")
@@ -86,15 +79,3 @@ if form.form_submit_button("Choose Industry"):
         st.session_state.showing_history = False
         st.session_state.showing_conversation = True
     
-# Display the current conversation
-if st.session_state.showing_conversation:
-    st.markdown("### Current Conversation")
-    for message in st.session_state.messages[st.session_state.current_conversation:]:
-        if message["role"] == "user":
-            st.markdown(f"**User:** {message['content']}")
-        else:
-            st.markdown(f"**Assistant:** {message['content']}")
-    if st.button("Back to History"):
-        st.session_state.showing_history = True
-        st.session_state.showing_conversation = False
-        st.session_state.current_con
