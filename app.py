@@ -1,44 +1,23 @@
 import streamlit as st
-from google.generativeai import GenerativeModel
-from google.api_core import retry
+from google.generativeai import TextService
 
-# 1. Load API key from Streamlit secrets
+# Load API key from Streamlit secrets
 api_key = st.secrets["GEMINI_API_KEY"]
-
-# 2. Authenticate with Gemini Pro
-GEMINI_MODEL = "models/gemini-pro"
-client = GenerativeModel.from_pretrained(GEMINI_MODEL, api_key=api_key)
+client = TextService(api_key=api_key)
 
 
-# Initialize chat history and industry variable
+# Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
-if "industry" not in st.session_state:
-    st.session_state.industry = ""
 
-# Styling the chat window (same as before)
-...
+# --- Styling the chat window ---
+# ... (same as before)
 
 # --- Display chat messages from history on initial load ---
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+# ... (same as before)
 
 # --- Input prompt & industry selection ---
-col1, col2 = st.columns(2)
-with col1:
-    if prompt := st.chat_input("Your message"):
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        with st.chat_message("user"):
-            st.markdown(prompt)
-
-with col2:
-    industry = st.selectbox(
-        "Select Industry:",
-        ["Technology", "Finance", "Healthcare", "Education", "Other"]
-    )
-    if st.session_state.industry != industry:
-        st.session_state.industry = industry
+# ... (same as before)
 
 # --- Generate bot's response ---
 @retry.Retry()
@@ -50,11 +29,12 @@ def generate_response():
                  engage prospects effectively, highlight key benefits of our product/service, 
                  and encourage further conversation or action. """
     response = client.generate_text(
+        model=GEMINI_MODEL,  # Replace with the actual model name if different
         prompt=prompt,
         temperature=0.7,
         max_output_tokens=1024
     )
-    return response.result
+    return response.text
 
 if prompt:
     bot_response = generate_response()
@@ -64,6 +44,4 @@ if prompt:
         st.markdown(bot_response)
 
 # --- Instructions or tips for using the chatbot ---
-with st.expander("Tips"):
-    st.write("Select the industry you're targeting before asking for a script.")
-    st.write("Be as descriptive as possible to get the best results.")
+# ... (same as before)
