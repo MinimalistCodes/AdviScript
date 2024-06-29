@@ -48,14 +48,19 @@ def show_old_conversation(index):
     st.session_state.showing_conversation = True
 
 # Display old conversations in sidebar with links
-for index, message in enumerate(st.session_state.messages):
-    if message["role"] == "assistant" and f'Advi Script {index}' not in st.session_state:
-        st.session_state[f'Advi Script {index}'] = st.sidebar.button(f'Advi Script {index}')
-    elif message["role"] == "user" and f'You {index}' not in st.session_state:
-        st.session_state[f'You {index}'] = st.sidebar.button(f'You {index}')
-
-    if st.session_state.get(f'Advi Script {index}') or st.session_state.get(f'You {index}'):
-        show_old_conversation(index)
+if "showing_history" not in st.session_state:
+    st.session_state.showing_history = True
+    st.session_state.showing_conversation = False
+# Display old conversations in sidebar with links
+if st.session_state.showing_history:
+    st.sidebar.markdown("### Old Conversations")
+    for i, message in enumerate(st.session_state.messages):
+        if message["role"] == "user":
+            st.sidebar.markdown(f"**User:** {message['content']}")
+        else:
+            st.sidebar.markdown(f"**Assistant:** {message['content']}")
+        if st.sidebar.button(f"Show Conversation {i}"):
+            show_old_conversation(i)
 
 # Form for selecting industry and sending user message to chatbot
 form = st.form("input_form")
