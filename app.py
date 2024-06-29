@@ -81,30 +81,24 @@ if form.form_submit_button("Send"):
     
     st.session_state.messages.append({"role": "assistant", "content": response})
 
-#Export script
-if st.button("Export Script"):
-    if st.session_state.messages:
-        script_content = "\n".join([msg["content"] for msg in st.session_state.messages if msg["role"] == "assistant"])
-        with open("generated_script.txt", "w") as f:
-            f.write(script_content)
-        st.download_button(
-            label="Download Script",
-            data=script_content,
-            file_name="generated_script.txt",
-            mime="text/plain",
-        )
-    else:
-        st.warning("No script to export.")
-        
-# New Convo button to clear chat history and save to Pandas DataFrame
-if st.button("New Convo"):
-    # Save current conversation to Pandas DataFrame
-    df = pd.DataFrame(st.session_state.messages)
-    df.to_csv("conversation_history.csv", index=False)
-    
-    # Clear chat history
-    st.session_state.messages = []
+# Buttons for exporting and clearing chat
+col1, col2 = st.columns(2)
 
-# Clear chat history button
-if st.button("Clear Chat"):
-    st.session_state.messages = []
+with col1:
+    if st.button("Export Script"):
+        if st.session_state.messages:
+            script_content = "\n".join([msg["content"] for msg in st.session_state.messages if msg["role"] == "assistant"])
+            with open("generated_script.txt", "w") as f:
+                f.write(script_content)
+            st.download_button(
+                label="Download Script",
+                data=script_content,
+                file_name="generated_script.txt",
+                mime="text/plain",
+            )
+        else:
+            st.warning("No script to export.")
+
+with col2:
+    if st.button("Clear Chat"):
+        st.session_state.messages = []
