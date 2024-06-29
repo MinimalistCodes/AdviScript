@@ -4,7 +4,6 @@ import os
 from dotenv import load_dotenv
 from IPython.display import Markdown
 import textwrap
-import pathlib
 
 # Load environment variables from .env file (if you are using a .env file to store your API key)
 load_dotenv()
@@ -44,24 +43,12 @@ st.markdown("An AI-powered chatbot designed to provide expert advice in the sale
 st.markdown('<div class="chat-container">', unsafe_allow_html=True)
 
 for message in st.session_state.messages:
-    if message["role"] == "user":
-        st.markdown(f'<div class="message user">{message["content"]}</div>', unsafe_allow_html=True)
-    elif message["role"] == "assistant":
+    if message["role"] == "assistant":
         st.markdown(f'<div class="message assistant">{message["content"]}</div>', unsafe_allow_html=True)
+    elif message["role"] == "user":
+        st.markdown(f'<div class="message user">{message["content"]}</div>', unsafe_allow_html=True)
 
 st.markdown("</div>", unsafe_allow_html=True)
-
-# User input and submit button for generating script
-with st.form("input_form"):
-    industry = st.selectbox(
-        "Select Industry:",
-        ["Technology", "Finance", "Healthcare", "Education", "Other"]
-    )
-    submitted = st.form_submit_button("Generate Script")
-
-if submitted:
-    response = ai_chatbot(industry)
-    st.session_state.messages.append({"role": "assistant", "content": response})
 
 # User input for sending direct messages to the chatbot
 user_input = st.text_input("You:", key="user_input")
