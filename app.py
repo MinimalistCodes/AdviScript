@@ -36,8 +36,60 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # UI and Chat Logic
-st.title("AdviScript: AI-Powered Sales Script Generator")
-st.write("Select industry and start chatting to generate a cold call script.")
+st.set_page_config(page_title='Advi Script', layout='wide')
+st.title('Advi Script')
+st.markdown("An AI-powered chatbot designed to provide expert advice in the sales industry.")
+    
+    # Custom CSS for styling
+st.markdown(
+        """
+        <style>
+        .chat-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 80%;
+        }
+        .user-message {
+            background-color: #0077cc;
+            color: white;
+            align-self: flex-start;
+        }
+        .ai-message {
+            background-color: #00cc77;
+            color: white;
+            align-self: flex-end;
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .input-box {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .send-button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: #0077cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        </style>
+""", unsafe_allow_html=True)
 
 with st.form("input_form"):
     industry = st.selectbox(
