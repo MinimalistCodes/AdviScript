@@ -14,6 +14,13 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 model = genai.GenerativeModel(model_name="gemini-pro")
 # Function to generate the cold call script
+
+def ai_chatbot(txt):
+    prompt = cold_script(txt)
+    response = model.generate_content(cold_script(txt))
+    st.write(response.text)
+    return response.text
+
 def cold_script(industry):
     return f"""
 Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
@@ -41,12 +48,7 @@ with st.sidebar:
 def to_markdown(text):
   return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
-# Function for AI chatbot interaction
-def ai_chatbot(txt):
-    prompt = cold_script(txt)
-    response = model.generate_content(cold_script(txt))
-    st.write(response.text)
-    return response.text
+
 
 # Initialize chat history
 if "messages" not in st.session_state:
