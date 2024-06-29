@@ -22,7 +22,6 @@ Please generate a cold call script tailored for a sales representative calling p
 
 # Function to format text as Markdown with indentation
 def to_markdown(text):
-  text = text.replace('•', '  *')
   return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
 # Function for AI chatbot interaction
