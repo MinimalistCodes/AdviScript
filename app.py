@@ -78,6 +78,13 @@ if form.form_submit_button("Send"):
     
     st.session_state.messages.append({"role": "assistant", "content": response})
 
+## Display chat messages
+for message in st.session_state.messages:
+    if message["role"] == "assistant":
+        st.markdown(f'**Advi Script**: {message["content"]}')
+    elif message["role"] == "user":
+        st.markdown(f'**You**: {message["content"]}')
+
 # Buttons for exporting and clearing chat
 col1, col2 = st.columns(2)
 
