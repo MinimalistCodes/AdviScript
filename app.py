@@ -90,16 +90,16 @@ col1, col2 = st.columns(2)
 
 with col1:
     if st.button("Export Script"):
-        if st.session_state.messages:
-            script_content = "\n".join([msg["content"] for msg in st.session_state.messages if msg["role"] == "assistant" and msg["content"] is not None])
-            st.download_button(
-                label="Download Script",
-                data=script_content,
-                file_name="generated_script.txt",
-                mime="text/plain",
-            )
+        #export the script to a text file
+        with open("cold_call_script.txt", "w") as file:
+            file.write(response.text)
+        #clear the chat
+        st.session_state.messages = []
+        st.write("The cold call script has been exported to cold_call_script.txt")
+        if os.path.exists("cold_call_script.txt"):
+            st.download_button(label="Download Script", data="cold_call_script.txt", file_name="cold_call_script.txt", mime="text/plain")
         else:
-            st.warning("No script to export.")
+            st.write("Error: File not found")
 
 with col2:
     if st.button("Clear Chat"):
