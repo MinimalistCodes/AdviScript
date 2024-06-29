@@ -37,7 +37,8 @@ with st.form("input_form"):
     )
     submitted = st.form_submit_button("Generate Script")
 if submitted:
-    response = ai_chatbot(industry)  
+    script_type = cold_script(industry)
+    response = ai_chatbot(script_type)
     st.session_state.messages.append({"role": "assistant", "content": response})
 
 # Display chat messages
