@@ -10,6 +10,18 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 model = genai.GenerativeModel(model_name="gemini-pro")
 
+def ai_chatbot(message):
+    prompt = cold_script(message)
+    response = model.generate_text(prompt, max_length=100, temperature=0.5)
+    return response
+
+# Function to generate cold call script based on industry input
+def cold_script(industry):
+    return f"""
+Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
+"""
+
+
 # Initialize Streamlit app title
 st.title("Advi Script: AI-powered Sales Script Generator")
 
@@ -36,13 +48,5 @@ if prompt := st.text_input("You:", key="user_input"):
         st.markdown(response)
 
 # Function to simulate AI response (using Google Gemini API)
-def ai_chatbot(message):
-    prompt = cold_script(message)
-    response = model.generate_text(prompt, max_length=100, temperature=0.5)
-    return response
 
-# Function to generate cold call script based on industry input
-def cold_script(industry):
-    return f"""
-Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
-"""
+
