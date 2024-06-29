@@ -1,18 +1,16 @@
 import streamlit as st
-import google.generativeai as genai
+from google.generativeai import TextService, types  
+from google.api_core import retry
 import os
 from dotenv import load_dotenv
-import textwrap
-import pandas as pd
-from IPython.display import display
-from IPython.display import Markdown
 
-# Load environment variables from .env file (if you are using a .env file to store your API key)
+# Load environment variables from .env file
 load_dotenv()
 
 # Initialize Gemini
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-model = genai.GenerativeModel(model_name="gemini-pro")
+api_key = os.getenv("GOOGLE_API_KEY")
+client = TextService(api_key=api_key)
+model = types.Model("models/chat-bison-001")  
 
 # Function to generate the cold call script
 def cold_script(industry):
@@ -20,71 +18,39 @@ def cold_script(industry):
 Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
 """
 
-# Function to format text as Markdown with indentation
-def to_markdown(text):
-  text = text.replace('•', '  *')
-  return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
-
 # Function for AI chatbot interaction
 def ai_chatbot(message):
-    chat = model.start_chat(history=[])
-    prompt = cold_script(message)  # Assuming message here is the industry
-    response = chat.send_message(prompt, stream=True)
-    for chunk in response:
-        st.write(to_markdown(chunk.text))
-        
-        
-    
-    
-    
-    
+    prompt = cold_script(message)
+    response = client.generate_text(
+        model=model,
+        prompt=types.Prompt(
+            text=prompt
+        ),
+        temperature=0.5,  
+        max_output_tokens=1024 
+    )
+    return response.text
+
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # UI and Chat Logic
-st.set_page_config(page_title='Advi Script', layout='wide')
-st.title('Advi Script')
-st.markdown("An AI-powered chatbot designed to provide expert advice in the sales industry.")
+st.title("AdviScript: AI-Powered Sales Script Generator")
+st.write("Select industry and start chatting to generate a cold call script.")
 
-# Sidebar to display conversation history
-st.sidebar.title("Conversation History")
+with st.form("input_form"):
+    industry = st.selectbox(
+        "Select Industry:",
+        ["Technology", "Finance", "Healthcare", "Education", "Other"]
+    )
+    submitted = st.form_submit_button("Generate Script")
 
-# Function to handle clicking on old conversations
-def show_old_conversation(index):
-    st.session_state.current_conversation = index
-    st.session_state.showing_history = False
-    st.session_state.showing_conversation = True
+if submitted:
+    response = ai_chatbot(industry)  
+    st.session_state.messages.append({"role": "assistant", "content": response})
 
-# Display old conversations in sidebar with links
-for index, message in enumerate(st.session_state.messages):
-    if message["role"] == "assistant" and f'Advi Script {index}' not in st.session_state:
-        st.session_state[f'Advi Script {index}'] = st.sidebar.button(f'Advi Script {index}')
-    elif message["role"] == "user" and f'You {index}' not in st.session_state:
-        st.session_state[f'You {index}'] = st.sidebar.button(f'You {index}')
-
-    if st.session_state.get(f'Advi Script {index}') or st.session_state.get(f'You {index}'):
-        show_old_conversation(index)
-
-# User input for sending direct messages to the chatbot
-user_input = st.text_input("You:", key="user_input")
-
-# Form for selecting industry and sending user message to chatbot
-form = st.form("input_form")
-form_choice = form.selectbox(
-    "Select Industry:",
-    ["Technology", "Finance", "Healthcare", "Education", "Sales", "Other"]
-)
-
-# New Convo button to clear chat history and save to Pandas DataFrame
-if st.button("New Convo"):
-    # Save current conversation to Pandas DataFrame
-    df = pd.DataFrame(st.session_state.messages)
-    df.to_csv("conversation_history.csv", index=False)
-    
-    # Clear chat history
-    st.session_state.messages = []
-
-# Clear chat history button
-if st.button("Clear Chat"):
-    st.session_state.messages = []
+# Display chat messages
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
