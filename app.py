@@ -28,7 +28,7 @@ def ai_chatbot(message):
     prompt = cold_script(message)  # Assuming message here is the industry
     response = model.generate_content(prompt)
     #return to_markdown(response)
-    st.write(to_markdown(response.text))
+    to_markdown(response.text)
 
 
 
