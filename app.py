@@ -70,11 +70,13 @@ if form.form_submit_button("Send"):
         other_industry = form.text_input("Please specify the industry:")
         st.write(f"Generating a cold call script for the {other_industry} industry...")
         st.session_state.messages.append({"role": "user", "content": other_industry})
-        response = ai_chatbot(other_industry)
+        response = ai_chatbot(form_choice)
+        #if other show text input
     else:
         st.write(f"Generating a cold call script for the {form_choice} industry...")
         st.session_state.messages.append({"role": "user", "content": form_choice})
         response = ai_chatbot(form_choice)
+        st.session_state.messages.append({"role": "assistant", "content": response})
     
     st.session_state.messages.append({"role": "assistant", "content": response})
 
