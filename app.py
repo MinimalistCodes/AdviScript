@@ -27,8 +27,7 @@ def to_markdown(text):
 def ai_chatbot(txt):
     prompt = cold_script(txt)
     response = model.generate_content(cold_script(txt))
-    rep = to_markdown(response.text)
-    st.write(rep)
+    st.write(response.text)
     
 # Initialize chat history
 if "messages" not in st.session_state:
