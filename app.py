@@ -26,29 +26,9 @@ def cold_script(industry):
 Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
 """
 
-
-with st.sidebar:
-    st.image("https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_960_720.jpg", use_column_width=True)
-    st.title("Advi Script")
-    st.markdown("An AI-powered chatbot designed to provide expert advice in the sales industry.")
-    st.markdown("Please select an industry to generate a cold call script for a sales representative.")
-    industry = st.selectbox("Select Industry:", ["Technology", "Finance", "Healthcare", "Education", "Sales", "Other"])
-    if industry == "Other":
-        other_industry = st.text_input("Please specify the industry:")
-        st.write(f"Generating a cold call script for the {other_industry} industry...")
-    else:
-        st.write(f"Generating a cold call script for the {industry} industry...")
-        response = ai_chatbot(industry)
-    st.write(response)
-
-
-
-
 # Function to format text as Markdown with indentation
 def to_markdown(text):
   return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
-
-
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -64,18 +44,6 @@ def local_css(file_name):
 local_css("style.css")
 # Sidebar to display conversation history
          
-def display_old_conversation(i):
-    conversation = st.session_state.messages[i:]
-    for message in conversation:
-        if message["role"] == "user":
-            display_markdown(f"**User:** {message['content']}")
-        else:
-            display_markdown(f"**Assistant:** {message['content']}")
-    st.session_state.current_conversation = i
-    st.session_state.showing_conversation = True
-    st.session_state.showing_history = False
-
-# Form for selecting industry and sending user message to chatbot
 form = st.form("input_form")
 form_choice = form.selectbox(
     "Select Industry:",
