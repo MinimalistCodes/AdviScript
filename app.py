@@ -28,7 +28,7 @@ def to_markdown(text):
 # Function for AI chatbot interaction
 def ai_chatbot(message):
     prompt = cold_script(message)  # Assuming message here is the industry
-    response = model.generate_content(prompt, max_length=300)
+    response = model.generate_content(prompt)
     return to_markdown(response)
 
 # Initialize chat history
