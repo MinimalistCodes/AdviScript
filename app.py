@@ -20,16 +20,15 @@ Please generate a cold call script tailored for a sales representative calling p
 
 # Function to format text as Markdown with indentation
 def to_markdown(text):
-    return textwrap.indent(text, '> ', predicate=lambda _: True)
+  text = text.replace('•', '  *')
+  return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
 # Function for AI chatbot interaction
 def ai_chatbot(message):
     prompt = cold_script(message)  # Assuming message here is the industry
-    response.send_message(prompt, model=model, stream=True)
-    for message in response:
-        st.write(f"Advi Script: {message.text}")
-    return response 
-    
+    response = model.send_message(prompt)
+    to_markdown(response)
+       
     
     
     
