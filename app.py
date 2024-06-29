@@ -2,11 +2,8 @@ import streamlit as st
 import google.generativeai as genai
 import os
 from dotenv import load_dotenv
-from IPython.display import display
 from IPython.display import Markdown
 import textwrap
-import pathlib
-
 
 # Load environment variables from .env file (if you are using a .env file to store your API key)
 load_dotenv()
@@ -20,16 +17,18 @@ def cold_script(industry):
     return f"""
 Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
 """
+
+# Function to format text as Markdown with indentation
 def to_markdown(text):
-  text = text.replace('•', '  *')
-  text = text.replace('\n', '<br>')
-  return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
+    text = text.replace('•', '  *')
+    text = text.replace('\n', '<br>')
+    return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
 # Function for AI chatbot interaction
 def ai_chatbot(message):
-    prompt = cold_script(message) # Assuming message here is the industry
-    response = model.generate_content(prompt)  # Increased max_length
-    to_markdown(response.text)
+    prompt = cold_script(message)  # Assuming message here is the industry
+    response = model.generate_text(prompt, max_length=100, temperature=0.5)
+    return to_markdown(response)
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -39,76 +38,31 @@ if "messages" not in st.session_state:
 st.set_page_config(page_title='Advi Script', layout='wide')
 st.title('Advi Script')
 st.markdown("An AI-powered chatbot designed to provide expert advice in the sales industry.")
-    
-    # Custom CSS for styling
-st.markdown(
-        """
-        <style>
-        .chat-container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            background-color: #f0f0f0;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .message {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-            max-width: 80%;
-        }
-        .user-message {
-            background-color: #0077cc;
-            color: white;
-            align-self: flex-start;
-        }
-        .ai-message {
-            background-color: #00cc77;
-            color: white;
-            align-self: flex-end;
-        }
-        .input-container {
-            display: flex;
-            align-items: center;
-            margin-top: 20px;
-        }
-        .input-box {
-            flex: 1;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        .send-button {
-            margin-left: 10px;
-            padding: 10px 20px;
-            border-radius: 5px;
-            background-color: #0077cc;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        </style>
-""", unsafe_allow_html=True)
-# Display chat messages
+
+# Display chat messages in a full-width container
+st.markdown('<div class="chat-container">', unsafe_allow_html=True)
+
 for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+    if message["role"] == "user":
+        st.markdown(f'<div class="message user">{message["content"]}</div>', unsafe_allow_html=True)
+    elif message["role"] == "assistant":
+        st.markdown(f'<div class="message assistant">{message["content"]}</div>', unsafe_allow_html=True)
 
+st.markdown("</div>", unsafe_allow_html=True)
 
+# User input and submit button for generating script
 with st.form("input_form"):
     industry = st.selectbox(
         "Select Industry:",
         ["Technology", "Finance", "Healthcare", "Education", "Other"]
     )
     submitted = st.form_submit_button("Generate Script")
+
 if submitted:
-    script_type = cold_script(industry)
-    response = ai_chatbot(script_type)
+    response = ai_chatbot(industry)
     st.session_state.messages.append({"role": "assistant", "content": response})
 
-
-# User input
+# User input for sending direct messages to the chatbot
 user_input = st.text_input("You:", key="user_input")
 
 # Send user message to chatbot
@@ -117,7 +71,6 @@ if st.button("Send"):
     response = ai_chatbot(user_input)
     st.session_state.messages.append({"role": "assistant", "content": response})
 
-# Clear chat history
+# Clear chat history button
 if st.button("Clear Chat"):
     st.session_state.messages = []
-
