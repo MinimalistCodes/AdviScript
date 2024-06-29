@@ -60,9 +60,6 @@ for index, message in enumerate(st.session_state.messages):
     if st.session_state.get(f'Advi Script {index}') or st.session_state.get(f'You {index}'):
         show_old_conversation(index)
 
-# User input for sending direct messages to the chatbot
-user_input = st.text_input("You:", key="user_input")
-
 # Form for selecting industry and sending user message to chatbot
 form = st.form("input_form")
 form_choice = form.selectbox(
