@@ -84,9 +84,7 @@ col1, col2 = st.columns(2)
 with col1:
     if st.button("Export Script"):
         if st.session_state.messages:
-            script_content = "\n".join([msg["content"] for msg in st.session_state.messages if msg["role"] == "assistant"])
-            with open("generated_script.txt", "w") as f:
-                f.write(script_content)
+            script_content = "\n".join([msg["content"] for msg in st.session_state.messages if msg["role"] == "assistant" and msg["content"] is not None])
             st.download_button(
                 label="Download Script",
                 data=script_content,
