@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 from IPython.display import Markdown
 import textwrap
+import pandas as pd
 
 # Load environment variables from .env file (if you are using a .env file to store your API key)
 load_dotenv()
@@ -27,7 +28,7 @@ def to_markdown(text):
 # Function for AI chatbot interaction
 def ai_chatbot(message):
     prompt = cold_script(message)  # Assuming message here is the industry
-    response = model.generate_content(prompt)
+    response = model.generate_text(prompt, max_length=100, temperature=0.5)
     return to_markdown(response)
 
 # Initialize chat history
@@ -39,43 +40,48 @@ st.set_page_config(page_title='Advi Script', layout='wide')
 st.title('Advi Script')
 st.markdown("An AI-powered chatbot designed to provide expert advice in the sales industry.")
 
-# Display chat messages in a full-width container
-st.markdown('<div class="chat-container">', unsafe_allow_html=True)
+# Sidebar to display conversation history
+st.sidebar.title("Conversation History")
 
 for message in st.session_state.messages:
     if message["role"] == "assistant":
-        st.markdown(f'<div class="message assistant">{message["content"]}</div>', unsafe_allow_html=True)
+        st.sidebar.markdown(f'* **Advi Script**: {message["content"]}')
     elif message["role"] == "user":
-        st.markdown(f'<div class="message user">{message["content"]}</div>', unsafe_allow_html=True)
-
-st.markdown("</div>", unsafe_allow_html=True)
+        st.sidebar.markdown(f'* **You**: {message["content"]}')
 
 # User input for sending direct messages to the chatbot
 user_input = st.text_input("You:", key="user_input")
 
-def form_choice():
-    st.write("Please select an industry to generate a cold call script for:")
-    industry = st.selectbox(
-        "Select Industry:",
-        ["Technology", "Finance", "Healthcare", "Education", "Sales", "Other"]
-    )
-    return industry
+# Form for selecting industry and sending user message to chatbot
+form = st.form("input_form")
+form_choice = form.selectbox(
+    "Select Industry:",
+    ["Technology", "Finance", "Healthcare", "Education", "Sales", "Other"]
+)
 
-# User input for selecting industry
-   
-# Send user message to chatbot
-if st.button("Send"):
-    industry = form_choice()
-    if industry == "Other":
-        industry = st.text_input("Please specify the industry:")
-        st.write(f"Generating a cold call script for the {industry} industry...")
-    else:
-        st.write(f"Generating a cold call script for the {industry} industry...")
-    st.session_state.messages.append({"role": "user", "content": user_input})
-    response = ai_chatbot(user_input)
-    st.session_state.messages.append({"role": "assistant", "content": response})
-    st.session_state.user_input = ""
+# Handling selection of "Other" industry
+if form_choice == "Other":
+    other_industry = form.text_input("Please specify the industry:")
+    st.write(f"Generating a cold call script for the {other_industry} industry...")
+    if form.form_submit_button("Send"):
+        st.session_state.messages.append({"role": "user", "content": other_industry})
+        response = ai_chatbot(other_industry)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+else:
+    st.write(f"Generating a cold call script for the {form_choice} industry...")
+    if form.form_submit_button("Send"):
+        st.session_state.messages.append({"role": "user", "content": form_choice})
+        response = ai_chatbot(form_choice)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+
+# New Convo button to clear chat history and save to Pandas DataFrame
+if st.button("New Convo"):
+    # Save current conversation to Pandas DataFrame
+    df = pd.DataFrame(st.session_state.messages)
+    df.to_csv("conversation_history.csv", index=False)
     
+    # Clear chat history
+    st.session_state.messages = []
 
 # Clear chat history button
 if st.button("Clear Chat"):
