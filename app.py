@@ -77,37 +77,8 @@ if form.form_submit_button("Choose Industry"):
         response = ai_chatbot(form_choice)
         st.session_state.messages.append({"role": "assistant", "content": response})
         #Get Script Button  
-        if st.button("Get Script"):
-            #export the script to a text file
-            with open("cold_call_script.txt", "w") as file:
-                file.write(response.text)
-            #clear the chat
-            st.session_state.messages = []
-            st.write("The cold call script has been exported to cold_call_script.txt")
-            if os.path.exists("cold_call_script.txt"):
-                st.download_button(label="Download Script", data="cold_call_script.txt", file_name="cold_call_script.txt", mime="text/plain")
-            else:
-                st.write("Error: File not found")
-
-    st.session_state.messages.append({"role": "assistant", "content": response})
-
-
-# Buttons for exporting and clearing chat
-col1, col2 = st.columns(2)
-
-with col1:
-    if st.button("Export Script"):
-        #export the script to a text file
-        with open("cold_call_script.txt", "w") as file:
-            file.write(response.text)
-        #clear the chat
-        st.session_state.messages = []
-        st.write("The cold call script has been exported to cold_call_script.txt")
-        if os.path.exists("cold_call_script.txt"):
-            st.download_button(label="Download Script", data="cold_call_script.txt", file_name="cold_call_script.txt", mime="text/plain")
-        else:
-            st.write("Error: File not found")
-
-with col2:
-    if st.button("Clear Chat"):
+        if st.button("Get Script")
+            st.session_state.messages.append({"role": "assistant", "content": response})
+            st.write(response)
+        if st.button("Clear Chat"):
         st.session_state.messages = []
