@@ -53,11 +53,19 @@ st.markdown("</div>", unsafe_allow_html=True)
 # User input for sending direct messages to the chatbot
 user_input = st.text_input("You:", key="user_input")
 
+with st.form("input_form"):
+    industry = st.selectbox(
+        "Select Industry:",
+        ["Technology", "Finance", "Healthcare", "Education", "Other"]
+    )
+    
+    
 # Send user message to chatbot
 if st.button("Send"):
     st.session_state.messages.append({"role": "user", "content": user_input})
     response = ai_chatbot(user_input)
     st.session_state.messages.append({"role": "assistant", "content": response})
+
 
 # Clear chat history button
 if st.button("Clear Chat"):
