@@ -1,52 +1,47 @@
 import streamlit as st
-import google.generativeai as genai
-from dotenv import load_dotenv
+import genai
 import os
+from dotenv import load_dotenv
 
-# Load environment variables
+# Load environment variables from .env file (if you are using a .env file to store your API key)
 load_dotenv()
 
-# Configure Google Gemini API
+# Initialize Gemini
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
 model = genai.GenerativeModel(model_name="gemini-pro")
 
-def ai_chatbot(message):
-    prompt = cold_script(message)
-    response = model.generate_text(prompt, max_length=100, temperature=0.5)
-    return response
-
-# Function to generate cold call script based on industry input
+# Function to generate the cold call script
 def cold_script(industry):
     return f"""
 Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
 """
 
+# Function for AI chatbot interaction
+def ai_chatbot(message):
+    prompt = cold_script(message) # Assuming message here is the industry
+    response = model.generate_text(prompt, max_length=1000, temperature=0.5)  # Increased max_length
+    return response
 
-# Initialize Streamlit app title
-st.title("Advi Script: AI-powered Sales Script Generator")
-
-# Initialize session state for messages
+# Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Display chat history
-for message in st.session_state.messages:
-    with st.expander(message["role"], expanded=True):
-        st.markdown(message["content"])
+# UI and Chat Logic
+st.title("AdviScript: AI-Powered Sales Script Generator")
+st.write("Select industry and start chatting to generate a cold call script.")
 
-# Input box for user messages
-if prompt := st.text_input("You:", key="user_input"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.expander("user", expanded=True):
-        st.markdown(prompt)
+with st.form("input_form"):
+    industry = st.selectbox(
+        "Select Industry:",
+        ["Technology", "Finance", "Healthcare", "Education", "Other"]
+    )
+    submitted = st.form_submit_button("Generate Script")
 
-    # Generate AI response using Google Gemini API
-    response = ai_chatbot(prompt)
-    
+if submitted:
+    response = ai_chatbot(industry)  
     st.session_state.messages.append({"role": "assistant", "content": response})
-    with st.expander("assistant", expanded=True):
-        st.markdown(response)
 
-# Function to simulate AI response (using Google Gemini API)
-
-
+# Display chat messages
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
