@@ -25,7 +25,7 @@ def to_markdown(text):
 # Function for AI chatbot interaction
 def ai_chatbot(message):
     prompt = cold_script(message)  # Assuming message here is the industry
-    response = prompt.send_message(prompt, model=model, stream=True)
+    response = response.send_message(prompt, model=model, stream=True)
     for message in response:
         st.write(f"Advi Script: {message.text}")
     return response 
