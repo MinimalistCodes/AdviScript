@@ -33,6 +33,7 @@ def ai_chatbot(message):
     response = model.generate_content(prompt)
     return to_markdown(response)
 
+
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -73,14 +74,14 @@ form_choice = form.selectbox(
 # Handling selection of "Other" industry
 if form_choice == "Other":
     other_industry = form.text_input("Please specify the industry:")
-    st.write(f"Generating a cold call script for the {other_industry} industry...")
     if form.form_submit_button("Send"):
+        st.write(f"Generating a cold call script for the {other_industry} industry...")
         st.session_state.messages.append({"role": "user", "content": other_industry})
         response = ai_chatbot(other_industry)
         st.session_state.messages.append({"role": "assistant", "content": response})
 else:
-    st.write(f"Generating a cold call script for the {form_choice} industry...")
     if form.form_submit_button("Send"):
+        st.write(f"Generating a cold call script for the {form_choice} industry...")
         st.session_state.messages.append({"role": "user", "content": form_choice})
         response = ai_chatbot(form_choice)
         st.session_state.messages.append({"role": "assistant", "content": response})
