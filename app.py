@@ -62,15 +62,15 @@ def form_choice():
     return industry
 
 # User input for selecting industry
-industry = form_choice()
-if industry == "Other":
-    industry = st.text_input("Please specify the industry:")
-    st.write(f"Generating a cold call script for the {industry} industry...")
-else:
-    st.write(f"Generating a cold call script for the {industry} industry...")
-    
+   
 # Send user message to chatbot
 if st.button("Send"):
+    industry = form_choice()
+    if industry == "Other":
+        industry = st.text_input("Please specify the industry:")
+        st.write(f"Generating a cold call script for the {industry} industry...")
+    else:
+        st.write(f"Generating a cold call script for the {industry} industry...")
     st.session_state.messages.append({"role": "user", "content": user_input})
     response = ai_chatbot(user_input)
     st.session_state.messages.append({"role": "assistant", "content": response})
