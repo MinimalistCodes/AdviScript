@@ -31,7 +31,7 @@ def ai_chatbot(message):
     prompt = prompt.replace('•', '  *')
     prompt = prompt.replace("*", "<b>").replace("*", "</b>")
     response = model.generate_content(prompt)
-    return to_markdown(response)
+    return response
 
 
 # Initialize chat history
