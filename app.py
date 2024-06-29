@@ -21,7 +21,6 @@ Please generate a cold call script tailored for a sales representative calling p
 
 # Function to format text as Markdown with indentation
 def to_markdown(text):
-    text = text.replace('•', '  *')
     return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
 # Function for AI chatbot interaction
@@ -29,6 +28,7 @@ def ai_chatbot(message):
     prompt = cold_script(message)  # Assuming message here is the industry
     #replace #\n with <br>
     prompt = prompt.replace('\n', '<br>')
+    prompt = prompt.replace('•', '  *')
     response = model.generate_content(prompt)
     return to_markdown(response)
 
