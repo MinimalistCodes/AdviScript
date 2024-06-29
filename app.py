@@ -4,6 +4,8 @@ import os
 from dotenv import load_dotenv
 from IPython.display import display
 from IPython.display import Markdown
+import textwrap
+import pathlib
 
 
 # Load environment variables from .env file (if you are using a .env file to store your API key)
