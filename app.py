@@ -19,7 +19,7 @@ Please generate a cold call script tailored for a sales representative calling p
 # Function for AI chatbot interaction
 def ai_chatbot(message):
     prompt = cold_script(message) # Assuming message here is the industry
-    response = model.generate_text(prompt, max_length=1000, temperature=0.5)  # Increased max_length
+    response = model.generate_text(prompt)  # Increased max_length
     return response
 
 # Initialize chat history
@@ -36,7 +36,6 @@ with st.form("input_form"):
         ["Technology", "Finance", "Healthcare", "Education", "Other"]
     )
     submitted = st.form_submit_button("Generate Script")
-
 if submitted:
     response = ai_chatbot(industry)  
     st.session_state.messages.append({"role": "assistant", "content": response})
@@ -45,3 +44,17 @@ if submitted:
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
+
+# User input
+user_input = st.text_input("You:", key="user_input")
+
+# Send user message to chatbot
+if st.button("Send"):
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    response = ai_chatbot(user_input)
+    st.session_state.messages.append({"role": "assistant", "content": response})
+
+# Clear chat history
+if st.button("Clear Chat"):
+    st.session_state.messages = []
+
