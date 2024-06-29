@@ -28,8 +28,8 @@ def ai_chatbot(message):
     prompt = cold_script(message)  # Assuming message here is the industry
     response = model.generate_content(prompt)
     #return to_markdown(response)
-    to_markdown(response.text)
-
+    reply = to_markdown(response.text)
+    st.write(reply)
 
 
 # Initialize chat history
