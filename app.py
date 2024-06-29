@@ -25,10 +25,13 @@ def to_markdown(text):
 
 # Function for AI chatbot interaction
 def ai_chatbot(message):
+    chat = model.start_chat(history=[])
     prompt = cold_script(message)  # Assuming message here is the industry
-    response = model.send_message(prompt)
-    to_markdown(response)
-       
+    response = chat.send_message(prompt, stream=True)
+    for chunk in response:
+        st.write(to_markdown(chunk.text))
+        
+        
     
     
     
