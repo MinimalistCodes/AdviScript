@@ -19,10 +19,7 @@ def cold_script(industry):
 Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
 """
 #use css to style.css
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-local_css("style.css")
+
 
 
 
@@ -49,7 +46,10 @@ if "messages" not in st.session_state:
 st.set_page_config(page_title='Advi Script', layout='wide')
 st.title('Advi Script')
 st.markdown("An AI-powered chatbot designed to provide expert advice in the sales industry.")
-
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+local_css("style.css")
 # Sidebar to display conversation history
          
 def display_old_conversation(i):
