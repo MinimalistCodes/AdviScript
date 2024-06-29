@@ -48,12 +48,13 @@ def show_old_conversation(index):
 
 # Display old conversations in sidebar with links
 for index, message in enumerate(st.session_state.messages):
-    if message["role"] == "assistant":
-        if st.sidebar.button(f'Advi Script {index}'):
-            show_old_conversation(index)
-    elif message["role"] == "user":
-        if st.sidebar.button(f'You {index}'):
-            show_old_conversation(index)
+    if message["role"] == "assistant" and f'Advi Script {index}' not in st.session_state:
+        st.session_state[f'Advi Script {index}'] = st.sidebar.button(f'Advi Script {index}')
+    elif message["role"] == "user" and f'You {index}' not in st.session_state:
+        st.session_state[f'You {index}'] = st.sidebar.button(f'You {index}')
+
+    if st.session_state.get(f'Advi Script {index}') or st.session_state.get(f'You {index}'):
+        show_old_conversation(index)
 
 # User input for sending direct messages to the chatbot
 user_input = st.text_input("You:", key="user_input")
@@ -91,34 +92,3 @@ if st.button("New Convo"):
 # Clear chat history button
 if st.button("Clear Chat"):
     st.session_state.messages = []
-
-# Viewing previous conversation
-if "showing_conversation" in st.session_state and st.session_state.showing_conversation:
-    st.subheader("Previous Conversation")
-    st.write("Click 'Back' to return to conversation history.")
-    
-    # Display previous conversation
-    with st.expander("View Conversation", expanded=True):
-        index = st.session_state.current_conversation
-        for message in st.session_state.messages[index:]:
-            st.markdown(f"**{message['role'].capitalize()}**: {message['content']}")
-
-    # Back button to return to conversation history
-    if st.button("Back"):
-        st.session_state.showing_conversation = False
-
-# View all history
-if st.button("View All History"):
-    st.subheader("All Conversation History")
-    history_dropdown = st.selectbox("Select Conversation:", options=range(len(st.session_state.messages)))
-    if st.button("View"):
-        st.session_state.current_conversation = history_dropdown
-        st.session_state.showing_history = True
-
-# Displaying the current conversation if showing_conversation is true
-if "current_conversation" in st.session_state:
-    st.subheader("Current Conversation:")
-    index = st.session_state.current_conversation
-    for message in st.session_state.messages[index:]:
-        st.markdown(f"**{message['role'].capitalize()}**: {message['content']}")
-
