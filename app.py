@@ -53,19 +53,36 @@ st.markdown("</div>", unsafe_allow_html=True)
 # User input for sending direct messages to the chatbot
 user_input = st.text_input("You:", key="user_input")
 
+def form_choice():
+    st.write("Please select an industry to generate a cold call script for:")
+    industry = st.selectbox(
+        "Select Industry:",
+        ["Technology", "Finance", "Healthcare", "Education", "Sales", "Other"]
+    )
+    return industry
+
+# User input for selecting industry
+industry = form_choice()
+if industry == "Other":
+    industry = st.text_input("Please specify the industry:")
+    st.write(f"Generating a cold call script for the {industry} industry...")
+else:
+    st.write(f"Generating a cold call script for the {industry} industry...")
+    
+
 with st.form("input_form"):
     industry = st.selectbox(
         "Select Industry:",
         ["Technology", "Finance", "Healthcare", "Education", "Other"]
     )
     
-    
 # Send user message to chatbot
 if st.button("Send"):
     st.session_state.messages.append({"role": "user", "content": user_input})
     response = ai_chatbot(user_input)
     st.session_state.messages.append({"role": "assistant", "content": response})
-
+    st.session_state.user_input = ""
+    
 
 # Clear chat history button
 if st.button("Clear Chat"):
