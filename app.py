@@ -2,12 +2,13 @@ import streamlit as st
 from google.generativeai import GenerativeModel
 from google.api_core import retry
 
-# Load API key from Streamlit secrets
-api_key = st.secrets["GOOGLE_API_KEY"]
+# 1. Load API key from Streamlit secrets
+api_key = st.secrets["GEMINI_API_KEY"]
 
-# Authenticate with your Gemini Pro API key
+# 2. Authenticate with Gemini Pro
 GEMINI_MODEL = "models/gemini-pro"
 client = GenerativeModel.from_pretrained(GEMINI_MODEL, api_key=api_key)
+
 
 # Initialize chat history and industry variable
 if "messages" not in st.session_state:
