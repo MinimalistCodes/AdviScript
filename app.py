@@ -65,19 +65,30 @@ form_choice = form.selectbox(
 )
 
 # Handling selection of "Other" industry
-if form.form_submit_button("Send"):
+if form.form_submit_button("Choose Industry"):
     if form_choice == "Other":
         other_industry = form.text_input("Please specify the industry:")
         st.write(f"Generating a cold call script for the {other_industry} industry...")
         st.session_state.messages.append({"role": "user", "content": other_industry})
-        response = ai_chatbot(form_choice)
         #if other show text input
     else:
         st.write(f"Generating a cold call script for the {form_choice} industry...")
         st.session_state.messages.append({"role": "user", "content": form_choice})
         response = ai_chatbot(form_choice)
         st.session_state.messages.append({"role": "assistant", "content": response})
-    
+        #Get Script Button  
+        if st.button("Get Script"):
+            #export the script to a text file
+            with open("cold_call_script.txt", "w") as file:
+                file.write(response.text)
+            #clear the chat
+            st.session_state.messages = []
+            st.write("The cold call script has been exported to cold_call_script.txt")
+            if os.path.exists("cold_call_script.txt"):
+                st.download_button(label="Download Script", data="cold_call_script.txt", file_name="cold_call_script.txt", mime="text/plain")
+            else:
+                st.write("Error: File not found")
+
     st.session_state.messages.append({"role": "assistant", "content": response})
 
 
