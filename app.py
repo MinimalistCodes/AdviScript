@@ -100,30 +100,5 @@ if st.button("Clear Chat"):
     st.session_state.messages = []
 
 # Viewing previous conversation
-if "showing_conversation" in st.session_state and st.session_state.showing_conversation:
-    st.subheader("Previous Conversation")
-    st.write("Click 'Back' to return to conversation history.")
-    
-    # Display previous conversation
-    with st.expander("View Conversation", expanded=True):
-        st.write(f"**Role**: {st.session_state.current_conversation['role']}")
-        st.markdown(f"**Content**: {st.session_state.current_conversation['content']}")
 
-    # Back button to return to conversation history
-    if st.button("Back"):
-        st.session_state.showing_conversation = False
-
-# View all history
-if st.button("View All History"):
-    st.subheader("All Conversation History")
-    history_dropdown = st.selectbox("Select Conversation:", options=range(len(st.session_state.messages)))
-    if st.button("View"):
-        st.session_state.current_conversation = st.session_state.messages[history_dropdown]
-        st.session_state.showing_history = True
-
-# Displaying the current conversation if showing_conversation is true
-if "current_conversation" in st.session_state:
-    st.subheader("Current Conversation:")
-    st.markdown(f"**Role**: {st.session_state.current_conversation['role']}")
-    st.markdown(f"**Content**: {st.session_state.current_conversation['content']}")
 
