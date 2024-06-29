@@ -25,10 +25,15 @@ def to_markdown(text):
 # Function for AI chatbot interaction
 def ai_chatbot(message):
     prompt = cold_script(message)  # Assuming message here is the industry
-    response = model.generate_content(prompt, stream=True)
-    response = response.resolve()
-    return to_markdown(response.text)
-
+    response = prompt.send_message(prompt, model=model, stream=True)
+    for message in response:
+        st.write(f"Advi Script: {message}")
+    return response 
+    
+    
+    
+    
+    
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
