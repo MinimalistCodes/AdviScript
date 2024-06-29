@@ -31,7 +31,8 @@ def ai_chatbot(message):
     prompt = prompt.replace('•', '  *')
     prompt = prompt.replace("*", "<b>").replace("*", "</b>")
     response = model.generate_content(prompt)
-    return response
+    st.write(response)
+
 
 
 # Initialize chat history
@@ -45,6 +46,7 @@ st.markdown("An AI-powered chatbot designed to provide expert advice in the sale
 
 # Sidebar to display conversation history
 st.sidebar.title("Conversation History")
+
 
 # Function to handle clicking on old conversations
 def show_old_conversation(message):
@@ -100,5 +102,4 @@ if st.button("Clear Chat"):
     st.session_state.messages = []
 
 # Viewing previous conversation
-
 
