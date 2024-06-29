@@ -29,7 +29,7 @@ def ai_chatbot(txt):
     prompt = cold_script(txt)
     #response = model.generate_content(cold_script(txt))
     response = chat.send_message(prompt)
-    rep = to_markdown(response)
+    rep = to_markdown(response.text)
     st.write(rep)
     
 # Initialize chat history
