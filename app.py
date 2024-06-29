@@ -26,12 +26,9 @@ def to_markdown(text):
 # Function for AI chatbot interaction
 def ai_chatbot(message):
     prompt = cold_script(message)  # Assuming message here is the industry
-    prompt = prompt.replace("\n", "<br>").replace(" ", "&nbsp;")
-    prompt = f"<p>{prompt}</p>"
-    prompt = prompt.replace('•', '  *')
-    prompt = prompt.replace("*", "<b>").replace("*", "</b>")
     response = model.generate_content(prompt)
-    st.write(response)
+    #return to_markdown(response)
+    st.write(to_markdown(response.text))
 
 
 
