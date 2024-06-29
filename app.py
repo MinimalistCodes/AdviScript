@@ -69,13 +69,6 @@ if industry == "Other":
 else:
     st.write(f"Generating a cold call script for the {industry} industry...")
     
-
-with st.form("input_form"):
-    industry = st.selectbox(
-        "Select Industry:",
-        ["Technology", "Finance", "Healthcare", "Education", "Other"]
-    )
-    
 # Send user message to chatbot
 if st.button("Send"):
     st.session_state.messages.append({"role": "user", "content": user_input})
