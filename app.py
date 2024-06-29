@@ -19,7 +19,7 @@ Please generate a cold call script tailored for a sales representative calling p
 # Function for AI chatbot interaction
 def ai_chatbot(message):
     prompt = cold_script(message) # Assuming message here is the industry
-    response = model.generate_text(prompt)  # Increased max_length
+    response = model.generate_content(prompt)  # Increased max_length
     return response
 
 # Initialize chat history
