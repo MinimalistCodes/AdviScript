@@ -90,6 +90,11 @@ st.markdown(
         }
         </style>
 """, unsafe_allow_html=True)
+# Display chat messages
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
 
 with st.form("input_form"):
     industry = st.selectbox(
@@ -102,10 +107,6 @@ if submitted:
     response = ai_chatbot(script_type)
     st.session_state.messages.append({"role": "assistant", "content": response})
 
-# Display chat messages
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
 
 # User input
 user_input = st.text_input("You:", key="user_input")
