@@ -4,6 +4,7 @@ import numpy as np
 import os
 import google.generativeai as genai
 from dotenv import load_dotenv
+from IPython.display import display
 from IPython.display import Markdown
 import textwrap
 
@@ -54,9 +55,16 @@ def main():
 
     # Chat history list to store conversation
     chat_history = st.empty()
-
+    
     # Input box for user messages
     user_input = st.text_input('You:', key='user_input')
+    
+    # Function to append messages to chat history
+    def append_message(message, sender):
+        if sender == 'user':
+            chat_history.markdown(f'<div class="user-message">{message}</div>', unsafe_allow_html=True)
+        elif sender == 'ai':
+            chat_history.markdown(f'<div class="ai-message">{message}</div>', unsafe_allow_html=True)
 
     # Button to send user message
     if st.button('Send', key='send_button'):
