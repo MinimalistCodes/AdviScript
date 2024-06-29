@@ -18,7 +18,21 @@ def cold_script(industry):
     return f"""
 Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
 """
-#use css to style.css
+
+
+with st.sidebar:
+    st.image("https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_960_720.jpg", use_column_width=True)
+    st.title("Advi Script")
+    st.markdown("An AI-powered chatbot designed to provide expert advice in the sales industry.")
+    st.markdown("Please select an industry to generate a cold call script for a sales representative.")
+    industry = st.selectbox("Select Industry:", ["Technology", "Finance", "Healthcare", "Education", "Sales", "Other"])
+    if industry == "Other":
+        other_industry = st.text_input("Please specify the industry:")
+        st.write(f"Generating a cold call script for the {other_industry} industry...")
+    else:
+        st.write(f"Generating a cold call script for the {industry} industry...")
+        response = ai_chatbot(industry)
+    st.write(response)
 
 
 
@@ -26,10 +40,6 @@ Please generate a cold call script tailored for a sales representative calling p
 # Function to format text as Markdown with indentation
 def to_markdown(text):
   return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
-
-def display_markdown(text):
-    display(to_markdown(text))
-    
 
 # Function for AI chatbot interaction
 def ai_chatbot(txt):
@@ -82,11 +92,7 @@ if form.form_submit_button("Choose Industry"):
         st.session_state.messages.append({"role": "user", "content": form_choice})
         response = ai_chatbot(form_choice)
     # Display the assistant's response if button is clicked
-    if st.button("Generate Script"):
-        st.session_state.messages.append({"role": "assistant", "content": response.text})
-        st.session_state.showing_history = False
-        st.session_state.showing_conversation = True
-    
+
 
 
 
