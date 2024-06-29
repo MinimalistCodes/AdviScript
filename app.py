@@ -77,8 +77,8 @@ if form.form_submit_button("Choose Industry"):
         response = ai_chatbot(form_choice)
         st.session_state.messages.append({"role": "assistant", "content": response})
         #Get Script Button  
-        if st.button("Get Script")
+        if st.button("Get Script"):
             st.session_state.messages.append({"role": "assistant", "content": response})
             st.write(response)
         if st.button("Clear Chat"):
-        st.session_state.messages = []
+            st.session_state.messages = []
