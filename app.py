@@ -2,7 +2,6 @@ import streamlit as st
 import google.generativeai as genai
 import os
 from dotenv import load_dotenv
-from IPython.display import Markdown
 import textwrap
 import pandas as pd
 
@@ -21,16 +20,13 @@ Please generate a cold call script tailored for a sales representative calling p
 
 # Function to format text as Markdown with indentation
 def to_markdown(text):
-    return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
+    return textwrap.indent(text, '> ', predicate=lambda _: True)
 
 # Function for AI chatbot interaction
 def ai_chatbot(message):
     prompt = cold_script(message)  # Assuming message here is the industry
-    response = model.generate_content(prompt)
-    #return to_markdown(response)
-    reply = to_markdown(response.text)
-    st.write(reply)
-
+    response = model.generate_text(prompt, max_length=100, temperature=0.5)
+    return to_markdown(response.result)
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -44,10 +40,9 @@ st.markdown("An AI-powered chatbot designed to provide expert advice in the sale
 # Sidebar to display conversation history
 st.sidebar.title("Conversation History")
 
-
 # Function to handle clicking on old conversations
-def show_old_conversation(message):
-    st.session_state.current_conversation = message
+def show_old_conversation(index):
+    st.session_state.current_conversation = index
     st.session_state.showing_history = False
     st.session_state.showing_conversation = True
 
@@ -55,10 +50,10 @@ def show_old_conversation(message):
 for index, message in enumerate(st.session_state.messages):
     if message["role"] == "assistant":
         if st.sidebar.button(f'Advi Script {index}'):
-            show_old_conversation(message)
+            show_old_conversation(index)
     elif message["role"] == "user":
         if st.sidebar.button(f'You {index}'):
-            show_old_conversation(message)
+            show_old_conversation(index)
 
 # User input for sending direct messages to the chatbot
 user_input = st.text_input("You:", key="user_input")
@@ -71,19 +66,18 @@ form_choice = form.selectbox(
 )
 
 # Handling selection of "Other" industry
-if form_choice == "Other":
-    other_industry = form.text_input("Please specify the industry:")
-    if form.form_submit_button("Send"):
+if form.form_submit_button("Send"):
+    if form_choice == "Other":
+        other_industry = form.text_input("Please specify the industry:")
         st.write(f"Generating a cold call script for the {other_industry} industry...")
         st.session_state.messages.append({"role": "user", "content": other_industry})
         response = ai_chatbot(other_industry)
-        st.session_state.messages.append({"role": "assistant", "content": response})
-else:
-    if form.form_submit_button("Send"):
+    else:
         st.write(f"Generating a cold call script for the {form_choice} industry...")
         st.session_state.messages.append({"role": "user", "content": form_choice})
         response = ai_chatbot(form_choice)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+    
+    st.session_state.messages.append({"role": "assistant", "content": response})
 
 # New Convo button to clear chat history and save to Pandas DataFrame
 if st.button("New Convo"):
@@ -99,4 +93,32 @@ if st.button("Clear Chat"):
     st.session_state.messages = []
 
 # Viewing previous conversation
+if "showing_conversation" in st.session_state and st.session_state.showing_conversation:
+    st.subheader("Previous Conversation")
+    st.write("Click 'Back' to return to conversation history.")
+    
+    # Display previous conversation
+    with st.expander("View Conversation", expanded=True):
+        index = st.session_state.current_conversation
+        for message in st.session_state.messages[index:]:
+            st.markdown(f"**{message['role'].capitalize()}**: {message['content']}")
+
+    # Back button to return to conversation history
+    if st.button("Back"):
+        st.session_state.showing_conversation = False
+
+# View all history
+if st.button("View All History"):
+    st.subheader("All Conversation History")
+    history_dropdown = st.selectbox("Select Conversation:", options=range(len(st.session_state.messages)))
+    if st.button("View"):
+        st.session_state.current_conversation = history_dropdown
+        st.session_state.showing_history = True
+
+# Displaying the current conversation if showing_conversation is true
+if "current_conversation" in st.session_state:
+    st.subheader("Current Conversation:")
+    index = st.session_state.current_conversation
+    for message in st.session_state.messages[index:]:
+        st.markdown(f"**{message['role'].capitalize()}**: {message['content']}")
 
