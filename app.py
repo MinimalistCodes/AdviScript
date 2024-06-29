@@ -76,20 +76,6 @@ form_choice = form.selectbox(
     ["Technology", "Finance", "Healthcare", "Education", "Sales", "Other"]
 )
 
-# Handling selection of "Other" industry
-if form.form_submit_button("Send"):
-    if form_choice == "Other":
-        other_industry = form.text_input("Please specify the industry:")
-        st.write(f"Generating a cold call script for the {other_industry} industry...")
-        st.session_state.messages.append({"role": "user", "content": other_industry})
-        response = ai_chatbot(other_industry)
-    else:
-        st.write(f"Generating a cold call script for the {form_choice} industry...")
-        st.session_state.messages.append({"role": "user", "content": form_choice})
-        response = ai_chatbot(form_choice)
-    
-    st.session_state.messages.append({"role": "assistant", "content": response})
-
 # New Convo button to clear chat history and save to Pandas DataFrame
 if st.button("New Convo"):
     # Save current conversation to Pandas DataFrame
