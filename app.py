@@ -19,18 +19,15 @@ def cold_script(industry):
 Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
 """
 
-# Function to format text as Markdown with indentation
-def to_markdown(text):
-    return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
-
 # Function for AI chatbot interaction
 def ai_chatbot(message):
     prompt = cold_script(message)  # Assuming message here is the industry
-    #replace #\n with <br>
-    prompt = prompt.replace('\n', '<br>')
+    prompt = prompt.replace("\n", "<br>").replace(" ", "&nbsp;")
+    prompt = f"<p>{prompt}</p>"
     prompt = prompt.replace('•', '  *')
-    response = model.generate_content(prompt)
-    return to_markdown(response)
+    prompt = prompt.replace("*", "<b>").replace("*", "</b>")
+    response = model.generate_text(prompt)
+    return response.text
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -44,11 +41,20 @@ st.markdown("An AI-powered chatbot designed to provide expert advice in the sale
 # Sidebar to display conversation history
 st.sidebar.title("Conversation History")
 
-for message in st.session_state.messages:
+# Function to handle clicking on old conversations
+def show_old_conversation(message):
+    st.session_state.messages.append({"role": "user", "content": message["content"]})
+    response = ai_chatbot(message["content"])
+    st.session_state.messages.append({"role": "assistant", "content": response})
+
+# Display old conversations in sidebar with links
+for index, message in enumerate(st.session_state.messages):
     if message["role"] == "assistant":
-        st.sidebar.markdown(f'* **Advi Script**: {message["content"]}')
+        if st.sidebar.button(f'Advi Script {index}'):
+            show_old_conversation(message)
     elif message["role"] == "user":
-        st.sidebar.markdown(f'* **You**: {message["content"]}')
+        if st.sidebar.button(f'You {index}'):
+            show_old_conversation(message)
 
 # User input for sending direct messages to the chatbot
 user_input = st.text_input("You:", key="user_input")
