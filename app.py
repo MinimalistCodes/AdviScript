@@ -27,7 +27,7 @@ def to_markdown(text):
 
 # Function for AI chatbot interaction
 def ai_chatbot(txt):
-    prompt = cold_script(message)
+    prompt = cold_script(txt)
     response = model.generate_content(cold_script(txt))
     st.write(to_markdown(response))
     
