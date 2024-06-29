@@ -23,12 +23,40 @@ Please generate a cold call script tailored for a sales representative calling p
 def to_markdown(text):
   return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
+def display_markdown(text):
+    display(to_markdown(text))
+
+def display_old_conversation(i):
+    conversation = st.session_state.messages[i:]
+    for message in conversation:
+        if message["role"] == "user":
+            display_markdown(f"**User:** {message['content']}")
+        else:
+            display_markdown(f"**Assistant:** {message['content']}")
+    st.session_state.current_conversation = i
+    st.session_state.showing_conversation = True
+    st.session_state.showing_history = False
+    
+
 # Function for AI chatbot interaction
 def ai_chatbot(txt):
     prompt = cold_script(txt)
     response = model.generate_content(cold_script(txt))
     st.write(response.text)
-    
+# Display the current conversation
+if st.session_state.showing_conversation:
+    st.markdown("### Current Conversation")
+    for message in st.session_state.messages[st.session_state.current_conversation:]:
+        if message["role"] == "user":
+            st.markdown(f"**User:** {message['content']}")
+        else:
+            st.markdown(f"**Assistant:** {message['content']}")
+    if st.button("Back to History"):
+        st.session_state.showing_history = True
+        st.session_state.showing_conversation = False
+        st.session_state.current_con
+
+
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -47,25 +75,18 @@ with st.sidebar:
         else:
             st.markdown(f"**Assistant:** {message['content']}")
     st.markdown("---")
-    # Display the current conversation
-    if st.session_state.showing_conversation:
-        st.markdown("### Current Conversation")
-        for message in st.session_state.messages[st.session_state.current_conversation:]:
-            if message["role"] == "user":
-                st.markdown(f"**User:** {message['content']}")
-            else:
-                st.markdown(f"**Assistant:** {message['content']}")
-        if st.button("Back to History"):
-            st.session_state.showing_history = True
-            st.session_state.showing_conversation = False
-            st.session_state.current_con
+    #Drop down of old conversations to view
+    st.markdown("### Old Conversations")
+    for i, message in enumerate(st.session_state.messages):
+        if message["role"] == "user":
+            st.markdown(f"**User:** {message['content']}")
+        else:
+            st.markdown(f"**Assistant:** {message['content']}")
+        if st.button(f"Show Conversation {i}"):
+            show_old_conversation(i)
+            
 
 
-# Function to handle clicking on old conversations
-def show_old_conversation(index):
-    st.session_state.current_conversation = index
-    st.session_state.showing_history = False
-    st.session_state.showing_conversation = True
 
 # Display old conversations in sidebar with links
 if "showing_history" not in st.session_state:
