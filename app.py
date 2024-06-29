@@ -4,6 +4,8 @@ import os
 from dotenv import load_dotenv
 import textwrap
 import pandas as pd
+from IPython.display import display
+from IPython.display import Markdown
 
 # Load environment variables from .env file (if you are using a .env file to store your API key)
 load_dotenv()
