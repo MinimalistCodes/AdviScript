@@ -1,4 +1,9 @@
 # Advi Script
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
+![Google Gemini](https://img.shields.io/badge/Google%20Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Dotenv](https://img.shields.io/badge/dotenv-4F7942?style=for-the-badge&logo=dotenv&logoColor=white)
 
 Advi Script is an advanced AI-powered chatbot tailored for the sales industry. It leverages cutting-edge technologies like Google Gemini Advanced and Generative Language Client to generate expertly crafted scripts for various sales calls, including openings, closings, and follow-ups. The chatbot facilitates seamless conversations, providing users with tailored scripts based on three descriptive keywords.
 
@@ -10,6 +15,7 @@ Advi Script is an advanced AI-powered chatbot tailored for the sales industry. I
 - **Customizable Scripts**: Tailors scripts based on three descriptive keywords provided by the user.
 - **Python and Streamlit Integration**: Built using Python and Streamlit for a responsive and interactive user experience.
 
+---
 ## Getting Started
 
 To run Advi Script locally, follow these steps:
