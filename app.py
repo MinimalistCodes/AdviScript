@@ -36,7 +36,7 @@ Incorporate these keywords to make the script more relevant: {keywords}
 def ai_chatbot(industry, keywords="", length="medium", tone="conversational"):
     prompt = cold_script(industry, keywords, length, tone)
     llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
-    llm.invoke(prompt)
+    st.write(llm.invoke(prompt))
 
 # Initialize chat history
 if "messages" not in st.session_state:
