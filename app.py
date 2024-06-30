@@ -33,12 +33,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # UI and Chat Logic
-#load css file
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-local_css("style.css")
+st.markdown('<link rel="stylesheet" href="styles.css">', unsafe_allow_html=True)
 st.title('Advi Script')
 st.markdown("An AI-powered tool to generate tailored cold call scripts.")
 st.markdown("Provide details about your target industry, preferred tone, script length, and keywords to get a customized script.")
@@ -70,19 +65,19 @@ with st.sidebar:
             response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), form_keywords)
             st.session_state.messages.append({"role": "assistant", "content": response})
 
+    # Button to copy generated script to clipboard
+    if st.button("Copy Script to Clipboard"):
+        if st.session_state.messages:
+            script_content = "\n".join([msg["content"] for msg in st.session_state.messages if msg["role"] == "assistant"])
+            st.text_area("Generated Script", value=script_content, height=200)
+
+    # Button to clear chat history
+    if st.button("Clear Chat"):
+        st.session_state.messages = []
+
 # Display Generated Script in the Main Area
 if st.session_state.messages:
     st.markdown("### Generated Script")
     for message in st.session_state.messages:
         if message["role"] == "assistant":
             st.markdown(message["content"])
-
-# Button to copy generated script to clipboard
-if st.button("Copy Script to Clipboard"):
-    if st.session_state.messages:
-        script_content = "\n".join([msg["content"] for msg in st.session_state.messages if msg["role"] == "assistant"])
-        st.text_area("Generated Script", value=script_content, height=200)
-
-# Button to clear chat history
-if st.button("Clear Chat"):
-    st.session_state.messages = []
