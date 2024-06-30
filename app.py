@@ -12,7 +12,7 @@ load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 
 # Function to generate the cold call script
-def cold_script(industry, keywords, length):
+def cold_script(industry, keywords, length, tone):
     return f"""
 You are a skilled sales scriptwriter. Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. 
 
@@ -28,13 +28,13 @@ Incorporate these keywords to make the script more relevant: {keywords}
     * **Call to Action:** Clearly propose a next step (e.g., schedule a demo, send more information).
 
 * **Pain Points:** Research and mention specific pain points relevant to businesses in the {industry} industry, using the keywords to highlight the relevance of your solution.
-* **Tone:** Use a professional tone that is appropriate for the {industry} industry.
+* **Tone:** Use a {tone} tone that is appropriate for the {industry} industry.
 * **Length:** Aim for a script that is approximately {length} in length.
 """
 
 # Function for AI chatbot interaction using langchain
-def ai_chatbot(industry, keywords, length):
-    prompt = cold_script(industry, keywords, length)
+def ai_chatbot(industry, keywords, length, tone):
+    prompt = cold_script(industry, keywords, length, tone)
     llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
     for words in llm.stream(prompt):
         sys.stdout.write(words)
