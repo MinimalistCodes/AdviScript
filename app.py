@@ -1,5 +1,6 @@
 import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
+from langchain.prompts import PromptTemplate
 
 
 from dotenv import load_dotenv
@@ -33,17 +34,23 @@ Incorporate these keywords to make the script more relevant: {keywords}
 """
 
 # Function for AI chatbot interaction using langchain
-def ai_chatbot(industry, keywords, length, tone):
+def ai_chatbot1(industry, keywords, length, tone):
     prompt = cold_script(industry, keywords, length, tone)
     llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
     for words in llm.stream(prompt):
         sys.stdout.write(words)
         sys.stdout.flush()
-    
 
-# Initialize chat history
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+def ai_chatbot(industry, tone="conversational", length="medium", keywords=""):
+    prompt = PromptTemplate.format(industry=industry, tone=tone, length=length, keywords=keywords)
+    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+    try:
+        response = llm.invoke(prompt)
+        st.write(response)
+    except Exception as e:
+        st.error(f"Error generating script: {e}")
+        st.write("Error generating script. Please try again.")
+    return response
 
 # UI and Chat Logic
 st.set_page_config(page_title='Advi Script', layout='wide')
@@ -51,10 +58,6 @@ st.title('Advi Script')
 st.markdown("An AI-powered tool to generate tailored cold call scripts.")
 st.markdown("Provide details about your target industry, preferred tone, script length, and keywords to get a customized script.")
 st.markdown("**Example Keywords (comma-separated):** efficiency, cost savings, scalability")
-
-# Display Chat Messages
-for message in st.session_state.messages:
-    st.markdown(f'**{message["role"]}**: {message["content"]}')
 
 # Form for Input
 with st.form("input_form"):
@@ -79,6 +82,7 @@ with st.form("input_form"):
         response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), keywords_list)
         st.session_state.messages.append({"role": "assistant", "content": response})
 
+
 # Copy and Clear Buttons
 if st.session_state.messages and st.button("Copy Script to Clipboard"):
     script_content = "\n".join([msg["content"] for msg in st.session_state.messages if msg["role"] == "assistant"])
@@ -86,3 +90,4 @@ if st.session_state.messages and st.button("Copy Script to Clipboard"):
 
 if st.button("Clear Chat"):
     st.session_state.messages = []
+    
