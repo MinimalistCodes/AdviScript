@@ -45,13 +45,9 @@ def local_css(file_name):
 
 local_css("style.css")
 
-# Display Chat Messages
-for message in st.session_state.messages:
-    role_class = "chatbox-user" if message["role"] == "user" else "chatbox-assistant"
-    st.markdown(f'<div class="chatbox {role_class}"><p>{message["content"]}</p></div>', unsafe_allow_html=True)
-
-# Form for Input
-with st.form("input_form"):
+# Sidebar
+with st.sidebar:
+    st.header("Script Configuration")
     form_choice = st.selectbox(
         "Select Industry:",
         ["Technology", "Healthcare", "Finance", "Manufacturing", "Retail", "Professional Services", "Real Estate", "Marketing", "Legal", "Automotive", "Construction", "Entertainment", "Education", "Hospitality", "Other"]
@@ -64,18 +60,23 @@ with st.form("input_form"):
         industry = form_choice
 
     # Form script type
-    form_script_type = st.selectbox("Select Script Type:", ["Discovery Calls", "Cold Calls", "Elevator Pitches","Remote Selling Scripts","Product Demo Scripts","Objection Handling Scripts", "Negotiation Scripts", "Referral Scripts", "Customer Storytelling Scripts"])
+    form_script_type = st.selectbox("Select Script Type:", ["Discovery Calls", "Cold Calls", "Elevator Pitches", "Remote Selling Scripts", "Product Demo Scripts", "Objection Handling Scripts", "Negotiation Scripts", "Referral Scripts", "Customer Storytelling Scripts"])
 
     form_tone = st.selectbox("Select Tone:", ["Professional and Trustworthy", "Casual and conversational", "Persuasive and Assertive", "Empathetic and Supportive", "Energetic and Enthusiastic", "Urgent and persuasive", "Friendly and approachable"])
     form_length = st.selectbox("Select Length:", ["Short", "Medium", "Long"])
     form_keywords = st.text_input("Enter 3 descriptive keywords (comma-separated):")
     
-    submitted = st.form_submit_button("Send")
+    submitted = st.button("Generate Script")
     if submitted:
         st.write(f"Generating a {form_length} {form_script_type} script for a {industry} company with a {form_tone} tone.")
         st.session_state.messages.append({"role": "user", "content": industry})
         response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), form_keywords)
         st.session_state.messages.append({"role": "assistant", "content": response})
+
+# Display Chat Messages
+for message in st.session_state.messages:
+    role_class = "chatbox-user" if message["role"] == "user" else "chatbox-assistant"
+    st.markdown(f'<div class="chatbox {role_class}"><p>{message["content"]}</p></div>', unsafe_allow_html=True)
 
 # Button to copy generated script to clipboard
 if st.button("Copy Script to Clipboard"):
@@ -86,4 +87,3 @@ if st.button("Copy Script to Clipboard"):
 # Button to clear chat history
 if st.button("Clear Chat"):
     st.session_state.messages = []
-

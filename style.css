@@ -1,98 +1,59 @@
-/* style.css */
+/* ChatGPT-like CSS styles */
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #f7f7f8;
-    color: #333;
-    margin: 0;
-    padding: 0;
-}
-
-.stApp {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-}
-
-.stButton button {
-    background-color: #10a37f;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 16px;
-    transition: background-color 0.3s;
-}
-
-.stButton button:hover {
-    background-color: #0e8f6a;
+    background-color: #f5f5f5;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .chatbox {
-    background-color: white;
-    border: 1px solid #e0e0e0;
+    background-color: #ffffff;
     border-radius: 10px;
-    padding: 20px;
+    padding: 10px;
     margin-bottom: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .chatbox-user {
-    text-align: right;
+    background-color: #e6f7ff;
+    border-left: 5px solid #007bff;
 }
 
 .chatbox-assistant {
-    text-align: left;
+    background-color: #fffbe6;
+    border-left: 5px solid #ffcc00;
 }
 
-.chatbox p {
-    margin: 0;
-    padding: 5px 0;
+.stSidebar {
+    background-color: #f5f5f5;
+    padding: 20px;
 }
 
-.stTextInput input {
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
+.stButton>button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.stButton>button:hover {
+    background-color: #0056b3;
+}
+
+.stTextInput>div>input {
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
     padding: 10px;
     width: 100%;
+    box-sizing: border-box;
 }
 
-.stForm {
-    margin-bottom: 20px;
+.stSelectbox>div>div {
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
 }
 
-.stForm select, .stForm input {
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 10px;
-    width: 100%;
-    margin-bottom: 10px;
-}
-
-.stForm_submit {
-    text-align: center;
-}
-
-.stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
-    color: #333;
-    font-weight: 600;
-}
-
-.stMarkdown {
-    margin-bottom: 20px;
-}
-
-.stAlert {
-    border-radius: 10px;
-}
-
-.stTextArea textarea {
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 10px;
-    width: 100%;
+.stForm>div {
+    padding: 20px;
 }
