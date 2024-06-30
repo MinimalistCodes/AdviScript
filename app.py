@@ -10,7 +10,7 @@ load_dotenv()
 
 # Configure Google Gemini API - Remove this section as we will use langchain
 # google_genai = GoogleGenAI(api_key=os.getenv("GOOGLE_API_KEY"))
-GOOLGE_API_KEY = os.getenv("GOOGLE_API_KEY")
+api_key = os.getenv("GOOGLE_API_KEY")
 
 # Function to generate the cold call script
 def cold_script(industry):
@@ -20,10 +20,14 @@ Please generate a cold call script tailored for a sales representative calling p
 
 # Function for AI chatbot interaction using langchain
 def ai_chatbot(industry):
-    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=os.getenv("GOOGLE_API_KEY"))
+    llm = GoogleGenerativeAI(model="models/text-bison-001", google_api_key=api_key)
     prompt = cold_script(industry)
-    response = llm.generate_text(prompt)
+    template = PromptTemplate(prompt)
+    response = llm.invoke(template)
     st.session_state.messages.append({"role": "assistant", "content": response})
+    return response
+
+    
     
 
 
