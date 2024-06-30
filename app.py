@@ -17,10 +17,6 @@ def cold_script(industry):
     return f"""
 Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
 """
-# Display chat history in sidebar with a combobox and load into a separate column
-st.sidebar.title("Chat History")
-selected_message = st.sidebar.selectbox("Select Message", [msg["content"] for msg in st.session_state.messages])
-st.sidebar.write(selected_message)
 
 # Function for AI chatbot interaction using langchain
 def ai_chatbot(industry):
