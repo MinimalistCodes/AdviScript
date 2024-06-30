@@ -12,9 +12,9 @@ load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 
 # Function to generate the cold call script
-def cold_script(industry, keywords, length, tone):
+def cold_script(industry, keywords, length, tone, scripit_type):
     return f"""
-You are a skilled sales scriptwriter. Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. 
+You are a skilled {industry} scriptwriter. Please generate a {scripit_type} script tailored for a sales representative calling potential customers in the {industry} industry. 
 
 Incorporate these keywords to make the script more relevant: {keywords}
 
@@ -33,8 +33,8 @@ Incorporate these keywords to make the script more relevant: {keywords}
 """
 
 # Function for AI chatbot interaction using langchain
-def ai_chatbot(industry, keywords="", length="medium", tone="conversational"):
-    prompt = cold_script(industry, keywords, length, tone)
+def ai_chatbot(industry, keywords="", length="medium", tone="conversational", scripit_type="cold call"):
+    prompt = cold_script(industry, keywords, length, tone, scripit_type)
     llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
     st.write(llm.invoke(prompt))
 
@@ -58,7 +58,7 @@ for message in st.session_state.messages:
 with st.form("input_form"):
     form_choice = st.selectbox(
         "Select Industry:",
-        ["Technology", "Finance", "Healthcare", "Education", "Sales", "Other"]
+        ["Technology", "Finance", "Healthcare", "Education", "Sales", "Marketing", "Other"]
     )
 
     if form_choice == "Other":
@@ -66,6 +66,9 @@ with st.form("input_form"):
         industry = other_industry if other_industry else form_choice
     else:
         industry = form_choice
+
+# Form script type
+    form_script_type = st.selectbox("Select Script Type:", ["Cold Call", "Follow-up Call", "Voicemail", "Sales Email", "Other"])
 
     form_tone = st.selectbox("Select Tone:", ["Professional and Trustworthy", "Casual and conversational", "Persuasive and Assertive", "Empathetic and Supportive", "Energetic and Enthusiastic", "Urgent and persuasive", "Friendly and approachable"])
     form_length = st.selectbox("Select Length:", ["Short", "Medium", "Long"])
