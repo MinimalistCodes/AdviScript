@@ -20,7 +20,7 @@ Please generate a cold call script tailored for a sales representative calling p
 # Function for AI chatbot interaction using langchain
 def ai_chatbot(industry):
     prompt = cold_script(industry)
-    response = generate_text(prompt)  # Using langchain for text generation
+    response = generate_text(prompt.strip())
     return response
 
 # Initialize chat history
