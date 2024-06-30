@@ -54,7 +54,7 @@ with st.form("input_form"):
         industry = form_choice
 
 # Form script type
-    form_script_type = st.selectbox("Select Script Type:", ["Discovery Calls", ",Cold Calls", ",Elevator Pitches","Remote Selling Scripts","Product Demo Scripts","Objection Handling Scripts", "Negotiation Scripts", ",Referral Scripts", ",Customer Storytelling Scripts"])
+    form_script_type = st.selectbox("Select Script Type:", ["Discovery Calls", "Cold Calls", "Elevator Pitches","Remote Selling Scripts","Product Demo Scripts","Objection Handling Scripts", "Negotiation Scripts", "Referral Scripts", "Customer Storytelling Scripts"])
 
     form_tone = st.selectbox("Select Tone:", ["Professional and Trustworthy", "Casual and conversational", "Persuasive and Assertive", "Empathetic and Supportive", "Energetic and Enthusiastic", "Urgent and persuasive", "Friendly and approachable"])
     form_length = st.selectbox("Select Length:", ["Short", "Medium", "Long"])
