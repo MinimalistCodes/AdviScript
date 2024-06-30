@@ -47,11 +47,15 @@ for message in st.session_state.messages:
 with st.form("input_form"):
     form_choice = st.selectbox(
         "Select Industry:",
-        ["Technology", "Healthcare", "Finance", "Manufacturing", "Retail", "Professional Services", "Real Estate", "Marketing", "Legal", "Automotive", "Construction", "Entertainment", "Education", "Hospitality"]
+        ["Technology", "Healthcare", "Finance", "Manufacturing", "Retail", "Professional Services", "Real Estate", "Marketing", "Legal", "Automotive", "Construction", "Entertainment", "Education", "Hospitality", "Other"]
 
     )
-    
-    industry = form_choice
+
+    if form_choice == "Other":
+        other_industry = st.text_input("Please specify the industry:")
+        industry = other_industry if other_industry else form_choice
+    else:
+        industry = form_choice
 
 # Form script type
     form_script_type = st.selectbox("Select Script Type:", ["Discovery Calls", ",Cold Calls", ",Elevator Pitches","Remote Selling Scripts","Product Demo Scripts","Objection Handling Scripts", "Negotiation Scripts", ",Referral Scripts", ",Customer Storytelling Scripts"])
@@ -61,9 +65,9 @@ with st.form("input_form"):
     form_keywords = st.text_input("Enter 3 descriptive keywords (comma-separated):")
     
 
-submitted = st.form_submit_button("Generate Script")
-if submitted:
-    keywords_list = [keyword.strip() for keyword in form_keywords.split(",")]
-    response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), keywords_list)
-    st.session_state.messages.append({"role": "assistant", "content": response})
+    submitted = st.form_submit_button("Generate Script")
+    if submitted:
+        keywords_list = [keyword.strip() for keyword in form_keywords.split(",")]
+        response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), keywords_list)
+        st.session_state.messages.append({"role": "assistant", "content": response})
 
