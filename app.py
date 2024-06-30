@@ -1,8 +1,11 @@
 import streamlit as st
 import google.generativeai
-import langchain-google-genai
-import langchain
-import langchain_community from langchain.prompts import PromptTemplate
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_community.document_loaders import WebBaseLoader
+from langchain.prompts import PromptTemplate
+from langchain.chains import StuffDocumentsChain
+from langchain.chains.llm import LLMChain
 from dotenv import load_dotenv
 import os
 
