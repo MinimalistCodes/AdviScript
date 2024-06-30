@@ -38,7 +38,12 @@ st.title('Advi Script')
 st.markdown("An AI-powered tool to generate tailored cold call scripts.")
 st.markdown("Provide details about your target industry, preferred tone, script length, and keywords to get a customized script.")
 st.markdown("**Example Keywords (comma-separated):** efficiency, cost savings, scalability")
+#load css file
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
+local_css("style.css")
 
 # Form for Input
 with st.form("input_form"):
