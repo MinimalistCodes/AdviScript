@@ -33,13 +33,10 @@ Incorporate these keywords to make the script more relevant: {keywords}
 """
 
 # Function for AI chatbot interaction using langchain
-def ai_chatbot(industry, keywords, length, tone):
+def ai_chatbot(industry, keywords="", length="medium", tone="conversational"):
     prompt = cold_script(industry, keywords, length, tone)
     llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
-    for words in llm.stream(prompt):
-        sys.stdout.write(words)
-        sys.stdout.flush()
-    
+    llm.invoke(prompt)
 
 # Initialize chat history
 if "messages" not in st.session_state:
