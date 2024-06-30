@@ -36,9 +36,8 @@ st.set_page_config(page_title='Advi Script', layout='wide')
 st.title('Advi Script')
 st.markdown("An AI-powered tool to generate tailored cold call scripts.")
 st.markdown("Provide details about your target industry, preferred tone, script length, and keywords to get a customized script.")
-st.markdown("---")
 st.markdown("**Example Keywords (comma-separated):** efficiency, cost savings, scalability")
-
+st.navigation("Home", "About")
 # Display Chat Messages
 for message in st.session_state.messages:
     st.markdown(f'**{message["role"]}**: {message["content"]}')
@@ -64,15 +63,6 @@ with st.form("input_form"):
     form_length = st.selectbox("Select Length:", ["Short", "Medium", "Long"])
     form_keywords = st.text_input("Enter 3 descriptive keywords (comma-separated):")
     
-    #check box Send to Slack
-    send_to_slack = st.checkbox("Send to Slack")
-    if send_to_slack:
-        slack_webhook_url = os.getenv("SLACK_WEBHOOK_URL")
-        if slack_webhook_url:
-            st.write("Slack integration is enabled.")
-        else:
-            st.warning("Please set up a Slack webhook URL in the environment variables.")
-    submitted = st.form_submit_button("Generate Script")
     if submitted:
         keywords_list = [keyword.strip() for keyword in form_keywords.split(",")]
         response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), keywords_list)
