@@ -14,13 +14,12 @@ api_key = os.getenv("GOOGLE_API_KEY")
 # Function to generate the cold call script
 def cold_script(industry, keywords, length, tone, scripit_type):
     return f"""
-You are a skilled {industry} scriptwriter. Please generate a {scripit_type} script. 
+You are a skilled {industry} scriptwriter.
 
-Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. 
+Please generate a {scripit_type} script for a {industry} company that specializes in {keywords}.
+The script should be tailored to a {tone} tone and a {length} length. 
 Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. 
 The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
-Make it {length} in length, with a {tone} tone, and include the following keywords: {keywords}.
-
 """
 
 
