@@ -11,6 +11,14 @@ load_dotenv()
 # Configure Google Gemini API - Remove this section as we will use langchain
 api_key = os.getenv("GOOGLE_API_KEY")
 
+#load css file
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+local_css("style.css")
+
+
 # Function to generate the cold call script
 def cold_script(industry, keywords, length, tone, script_type):
     return f"""
