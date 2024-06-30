@@ -21,6 +21,14 @@ Include a structured call-flow, handle objections, and provide rebuttals both im
 The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
 """
 
+def load_chat_history(chat_title):
+    chat_history = []
+    with open(f"chat_logs/{chat_title}.txt", "r") as file:
+        for line in file:
+            role, content = line.strip().split(":")
+            chat_history.append({"role": role, "content": content})
+    return chat_history
+
 
 # Function for AI chatbot interaction using langchain
 def ai_chatbot(industry, keywords="", length="medium", tone="conversational", script_type=""):
