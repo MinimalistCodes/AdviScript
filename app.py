@@ -1,75 +1,43 @@
 import streamlit as st
-import google.generativeai
-from langchain_google_genai import GoogleGenerativeAI
-from langchain.prompts import PromptTemplate
-
+from langchain.google import GoogleGenAI
 from dotenv import load_dotenv
 import os
 
 # Load environment variables
 load_dotenv()
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
-# Check for API key
-if not GOOGLE_API_KEY:
-    st.error("Please set your GOOGLE_API_KEY in the .env file.")
-    st.stop()
+# Configure Google Gemini API - Remove this section as we will use langchain
+# google_genai = GoogleGenAI(api_key=os.getenv("GOOGLE_API_KEY"))
 
-# Configure Google Generative AI
-google_genai = GoogleGenerativeAI(api_key=GOOGLE_API_KEY)
-
-# Prompt Template (with keywords)
-template = """
-You are a skilled sales scriptwriter. Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. 
-
-Incorporate these keywords to make the script more relevant: {keywords}
-
-Specific Instructions:
-
-*Call Flow:  
-    -Introduction:  Begin with a warm greeting and introduce yourself and your company.
-    -Value Proposition:  Briefly and compellingly explain the core benefit of your product/service, using the keywords where appropriate.
-    -Qualifying Questions:  Ask open-ended questions to determine if the prospect is a good fit, incorporating the keywords if relevant.
-    -Objection Handling:   Anticipate and address common objections with persuasive rebuttals, potentially referencing the keywords.
-    -Call to Action:  Clearly propose a next step (e.g., schedule a demo, send more information).
-
--Pain Points:  Research and mention specific pain points relevant to businesses in the {industry} industry, using the keywords to highlight the relevance of your solution.
--Tone:  Use a {tone} tone that is appropriate for the {industry} industry.
--Length:  Aim for a script that is approximately {length} in length.
+# Function to generate the cold call script
+def cold_script(industry):
+    return f"""
+Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
 """
-prompt_template = PromptTemplate(
-    input_variables=["industry", "tone", "length", "keywords"],
-    template=template,
-)
 
-# AI Chatbot Function
-def ai_chatbot(industry, tone="conversational", length="medium", keywords=""):
-    prompt = prompt_template.format(industry=industry, tone=tone, length=length, keywords=keywords)
-    try:
-        response = google_genai(prompt)
-    except Exception as e:
-        st.error(f"Error generating script: {e}")
-        return "Error generating script. Please try again."
+# Function for AI chatbot interaction using langchain
+def ai_chatbot(industry):
+    prompt = cold_script(industry)
+    response = generate_text(prompt)  # Using langchain for text generation
     return response
 
-# Initialize Session State
+# Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # UI and Chat Logic
 st.set_page_config(page_title='Advi Script', layout='wide')
-
-
 st.title('Advi Script')
-st.markdown("An AI-powered tool to generate tailored cold call scripts.")
-st.markdown("Provide details about your target industry, preferred tone, script length, and keywords to get a customized script.")
-st.markdown(" Example Keywords (comma-separated):  efficiency, cost savings, scalability")
+st.markdown("An AI-powered chatbot designed to provide expert advice in the sales industry.")
 
-# Display Chat Messages
+# Display chat messages
 for message in st.session_state.messages:
-    st.markdown(f' {message["role"]} : {message["content"]}')
+    st.markdown(f'**{message["role"]}**: {message["content"]}')
 
-# Form for Input
+# User input for sending direct messages to the chatbot
+user_input = st.text_input("You:", key="user_input")
+
+# Form for selecting industry and sending user message to chatbot
 with st.form("input_form"):
     form_choice = st.selectbox(
         "Select Industry:",
@@ -82,25 +50,31 @@ with st.form("input_form"):
     else:
         industry = form_choice
 
-    form_tone = st.selectbox("Select Tone:", ["Conversational", "Professional", "Authoritative"])
-    form_length = st.selectbox("Select Length:", ["Short", "Medium", "Long"])
-    form_keywords = st.text_input("Enter 3 descriptive keywords (comma-separated):")
-
-# Main function
-def main():
-    st.title("Cold Call Script Generator")
-    st.write("Welcome to the Cold Call Script Generator! Please enter the industry you are targeting and let the AI generate a cold call script for you.")
-
-    industry = st.text_input("Enter the industry you are targeting:")
-    if st.button("Generate Cold Call Script"):
-        st.session_state.messages = []
+    submitted = st.form_submit_button("Send")
+    if submitted:
+        st.write(f"Generating a cold call script for the {industry} industry...")
         st.session_state.messages.append({"role": "user", "content": industry})
-        ai_chatbot(industry)
-        for message in st.session_state.messages:
-            if message["role"] == "user":
-                st.write(f"User: {message['content']}")
-            else:
-                st.write(f"Assistant: {message['content']}")
-                
-if __name__ == "__main__":
-    main()
+        response = ai_chatbot(industry)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+
+# Button to copy generated script to clipboard
+if st.button("Copy Script to Clipboard"):
+    if st.session_state.messages:
+        script_content = "\n".join([msg["content"] for msg in st.session_state.messages if msg["role"] == "assistant"])
+        st.text_area("Generated Script", value=script_content, height=200)
+
+# Button to clear chat history
+if st.button("Clear Chat"):
+    st.session_state.messages = []
+
+# Function to generate text using langchain
+def generate_text(prompt):
+    from langchain import LangChain
+
+    # Initialize LangChain with appropriate settings
+    lc = LangChain(provider="google", api_key=os.getenv("GOOGLE_API_KEY"))  # Adjust provider and configuration as needed
+
+    # Generate text
+    response = lc.generate_text(prompt)
+    return response
+
