@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_extras.app_logo import add_logo
 from langchain.llms import GoogleGenerativeAI
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
@@ -57,7 +56,7 @@ if "messages" not in st.session_state:
 
 # UI and Chat Logic
 st.set_page_config(page_title='Advi Script', layout='wide')
-add_logo("path/to/your/logo.png")  # Optional: Add your app logo
+
 
 st.title('Advi Script')
 st.markdown("An AI-powered tool to generate tailored cold call scripts.")
@@ -98,4 +97,3 @@ if st.session_state.messages and st.button("Copy Script to Clipboard"):
 
 if st.button("Clear Chat"):
     st.session_state.messages = []
-    
