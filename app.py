@@ -20,10 +20,13 @@ Please generate a cold call script tailored for a sales representative calling p
 # Function for AI chatbot interaction using langchain
 def ai_chatbot(industry):
     prompt = cold_script(industry)
-    llm = GoogleGenerativeAI(model="gpt-3.5-turbo", api_key=os.getenv("GOOGLE_API_KEY"))
-    response = llm.invoke(prompt)
-    return response
-
+    llm = GoogleGenerativeAI(model="gemini-pro", api_key=os.getenv("GOOGLE_API_KEY"))
+    st.write(
+        llm.invoke(
+            "" + prompt + ""
+        )
+    )
+    
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
