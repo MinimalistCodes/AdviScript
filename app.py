@@ -35,9 +35,6 @@ if "messages" not in st.session_state:
 # UI and Chat Logic
 st.markdown('<link rel="stylesheet" href="styles.css">', unsafe_allow_html=True)
 st.title('Advi Script')
-st.markdown("An AI-powered tool to generate tailored cold call scripts.")
-st.markdown("Provide details about your target industry, preferred tone, script length, and keywords to get a customized script.")
-st.markdown("**Example Keywords (comma-separated):** efficiency, cost savings, scalability")
 
 # Main Area for Displaying the Chat
 chat_container = st.container()
