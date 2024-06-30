@@ -1,5 +1,7 @@
 import streamlit as st
-from langchain.google import GoogleGenAI
+from langchain_google_genai import GoogleGenerativeAI
+
+
 from dotenv import load_dotenv
 import os
 
