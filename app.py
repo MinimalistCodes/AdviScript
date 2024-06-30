@@ -23,7 +23,7 @@ def ai_chatbot(industry):
     llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
     for words in llm.stream(prompt):
         sys.stdout.write(words)
-        sys.stdfout.flush()
+        sys.stdout.flush()
     
 
 # Initialize chat history
