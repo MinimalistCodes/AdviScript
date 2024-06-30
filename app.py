@@ -8,14 +8,6 @@ import os, sys
 # Load environment variables
 load_dotenv()
 
-
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-local_css("style.css")
-
-
 # Configure Google Gemini API - Remove this section as we will use langchain
 api_key = os.getenv("GOOGLE_API_KEY")
 
