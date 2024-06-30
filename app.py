@@ -44,39 +44,38 @@ st.markdown("An AI-powered tool to generate tailored cold call scripts.")
 st.markdown("Provide details about your target industry, preferred tone, script length, and keywords to get a customized script.")
 st.markdown("**Example Keywords (comma-separated):** efficiency, cost savings, scalability")
 
-# Sidebar
+# Sidebar Form for Input
 with st.sidebar:
-    st.header("Script Configuration")
-    form_choice = st.selectbox(
-        "Select Industry:",
-        ["Technology", "Healthcare", "Finance", "Manufacturing", "Retail", "Professional Services", "Real Estate", "Marketing", "Legal", "Automotive", "Construction", "Entertainment", "Education", "Hospitality", "Other"]
-    )
+    with st.form("input_form"):
+        form_choice = st.selectbox(
+            "Select Industry:",
+            ["Technology", "Healthcare", "Finance", "Manufacturing", "Retail", "Professional Services", "Real Estate", "Marketing", "Legal", "Automotive", "Construction", "Entertainment", "Education", "Hospitality", "Other"]
+        )
 
-    if form_choice == "Other":
-        other_industry = st.text_input("Please specify the industry:")
-        industry = other_industry if other_industry else form_choice
-    else:
-        industry = form_choice
+        if form_choice == "Other":
+            other_industry = st.text_input("Please specify the industry:")
+            industry = other_industry if other_industry else form_choice
+        else:
+            industry = form_choice
 
-    # Form script type
-    form_script_type = st.selectbox("Select Script Type:", ["Discovery Calls", "Cold Calls", "Elevator Pitches", "Remote Selling Scripts", "Product Demo Scripts", "Objection Handling Scripts", "Negotiation Scripts", "Referral Scripts", "Customer Storytelling Scripts"])
+        form_script_type = st.selectbox("Select Script Type:", ["Discovery Calls", "Cold Calls", "Elevator Pitches", "Remote Selling Scripts", "Product Demo Scripts", "Objection Handling Scripts", "Negotiation Scripts", "Referral Scripts", "Customer Storytelling Scripts"])
+        form_tone = st.selectbox("Select Tone:", ["Professional and Trustworthy", "Casual and conversational", "Persuasive and Assertive", "Empathetic and Supportive", "Energetic and Enthusiastic", "Urgent and persuasive", "Friendly and approachable"])
+        form_length = st.selectbox("Select Length:", ["Short", "Medium", "Long"])
+        form_keywords = st.text_input("Enter 3 descriptive keywords (comma-separated):")
 
-    form_tone = st.selectbox("Select Tone:", ["Professional and Trustworthy", "Casual and conversational", "Persuasive and Assertive", "Empathetic and Supportive", "Energetic and Enthusiastic", "Urgent and persuasive", "Friendly and approachable"])
-    form_length = st.selectbox("Select Length:", ["Short", "Medium", "Long"])
-    form_keywords = st.text_input("Enter 3 descriptive keywords (comma-separated):")
-    
-    submitted = st.button("Generate Script")
-    if submitted:
-        st.write(f"Generating a {form_length} {form_script_type} script for a {industry} company with a {form_tone} tone.")
-        st.session_state.messages.append({"role": "user", "content": industry})
-        response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), form_keywords)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+        submitted = st.form_submit_button("Generate Script")
+        if submitted:
+            st.write(f"Generating a {form_length} {form_script_type} script for a {industry} company with a {form_tone} tone.")
+            st.session_state.messages.append({"role": "user", "content": industry})
+            response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), form_keywords)
+            st.session_state.messages.append({"role": "assistant", "content": response})
 
-# Display Chat Messages in the main area
-st.markdown("## Generated Script")
-for message in st.session_state.messages:
-    role_class = "chatbox-user" if message["role"] == "user" else "chatbox-assistant"
-    st.markdown(f'<div class="chatbox {role_class}"><p>{message["content"]}</p></div>', unsafe_allow_html=True)
+# Display Generated Script in the Main Area
+if st.session_state.messages:
+    st.markdown("### Generated Script")
+    for message in st.session_state.messages:
+        if message["role"] == "assistant":
+            st.markdown(message["content"])
 
 # Button to copy generated script to clipboard
 if st.button("Copy Script to Clipboard"):
