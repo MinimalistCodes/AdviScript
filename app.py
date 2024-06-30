@@ -37,25 +37,6 @@ st.title('Advi Script')
 st.markdown("An AI-powered tool to generate tailored cold call scripts.")
 st.markdown("Provide details about your target industry, preferred tone, script length, and keywords to get a customized script.")
 st.markdown("**Example Keywords (comma-separated):** efficiency, cost savings, scalability")
-st.markdown("---")
-#Optio to send script to email, slack, or download
-st.sidebar.markdown("## Share Script")
-email = st.sidebar.text_input("Email:")
-slack = st.sidebar.text_input("Slack Channel:")
-download = st.sidebar.button("Download Script")
-
-if download:
-    st.markdown("Downloaded script to your local machine.")
-    st.markdown("Please check your email for the script.")
-    st.markdown("Please check your slack channel for the script.")
-    
-# Display chat history
-for message in st.session_state.messages:
-    if message["role"] == "user":
-        st.write(f"**You:** {message['content']}")
-    else:
-        st.write(f"**Advi:** {message['content']}")
-st.markdown("---")
 
 
 # Form for Input
@@ -72,15 +53,20 @@ with st.form("input_form"):
     else:
         industry = form_choice
 
-# Form script type
-    form_script_type = st.selectbox("Select Script Type:", ["Discovery Calls", ",Cold Calls", ",Elevator Pitches","Remote Selling Scripts","Product Demo Scripts","Objection Handling Scripts", "Negotiation Scripts", ",Referral Scripts", ",Customer Storytelling Scripts"])
-
-    form_tone = st.selectbox("Select Tone:", ["Professional and Trustworthy", "Casual and conversational", "Persuasive and Assertive", "Empathetic and Supportive", "Energetic and Enthusiastic", "Urgent and persuasive", "Friendly and approachable"])
-    form_length = st.selectbox("Select Length:", ["Short", "Medium", "Long"])
-    form_keywords = st.text_input("Enter 3 descriptive keywords (comma-separated):")
-    
+    submitted = st.form_submit_button("Get My Script")
     if submitted:
-        keywords_list = [keyword.strip() for keyword in form_keywords.split(",")]
-        response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), keywords_list)
+        st.write(f"Generating a cold call script for the {industry} industry...")
+        st.session_state.messages.append({"role": "user", "content": industry})
+        response = ai_chatbot(industry)
         st.session_state.messages.append({"role": "assistant", "content": response})
+
+# Button to copy generated script to clipboard
+if st.button("Copy Script to Clipboard"):
+    if st.session_state.messages:
+        script_content = "\n".join([msg["content"] for msg in st.session_state.messages if msg["role"] == "assistant"])
+        st.text_area("Generated Script", value=script_content, height=200)
+
+# Button to clear chat history
+if st.button("Clear Chat"):
+    st.session_state.messages = []
 
