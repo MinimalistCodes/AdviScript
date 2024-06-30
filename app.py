@@ -81,13 +81,3 @@ with st.form("input_form"):
         keywords_list = [keyword.strip() for keyword in form_keywords.split(",")]
         response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), keywords_list)
         st.session_state.messages.append({"role": "assistant", "content": response})
-
-
-# Copy and Clear Buttons
-if st.session_state.messages and st.button("Copy Script to Clipboard"):
-    script_content = "\n".join([msg["content"] for msg in st.session_state.messages if msg["role"] == "assistant"])
-    st.text_area("Generated Script", value=script_content, height=200)
-
-if st.button("Clear Chat"):
-    st.session_state.messages = []
-    
