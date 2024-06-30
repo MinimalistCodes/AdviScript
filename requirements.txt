@@ -4,3 +4,4 @@ numpy
 python-dotenv
 google-generativeai
 ipython
+langchain-google-genai
