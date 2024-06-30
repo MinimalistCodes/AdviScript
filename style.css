@@ -1,154 +1,98 @@
-/* ChatGPT Style CSS */
-
-/* Reset */
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-}
-
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
-    display: block;
-}
-
+/* style.css */
 body {
-    line-height: 1;
-}
-
-ol, ul {
-    list-style: none;
-}
-
-blockquote, q {
-    quotes: none;
-}
-
-blockquote:before, blockquote:after, q:before, q:after {
-    content: '';
-    content: none;
-}
-
-
-/* ChatGPT Style */
-body {
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f7f7f8;
     color: #333;
-    background-color: #f4f4f4;
     margin: 0;
     padding: 0;
 }
 
-.container {
-    width: 80%;
+.stApp {
+    max-width: 800px;
     margin: auto;
-    overflow: hidden;
-}
-
-header {
-    background: #333;
-    color: #fff;
-    padding-top: 30px;
-    min-height: 70px;
-    border-bottom: 1px solid #eaeaea;
-}
-
-header h1 {
-    text-align: center;
-    font-size: 24px;
-}
-
-nav {
-    float: right;
-}
-
-nav ul {
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-
-nav ul li {
-    list-style: none;
-}
-
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 15px;
-    display: block;
-}
-
-nav ul li a:hover {
-    background: #444;
-}
-
-.showcase {
-    background: url('https://images.unsplash.com/photo-1557683316-973673baf926');
-    background-size: cover;
-    background-position: center;
-    color: #fff;
-    text-align: center;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.showcase h1 {
-    font-size: 36px;
-}
-
-.showcase p {
-    font-size: 18px;
-}
-
-.main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
-}
-
-.post {
-    background: #fff;
     padding: 20px;
 }
 
-.sidebar {
-    background: #f4f4f4;
-    padding: 10px;
-}
-
-ul {
-    margin: 0;
-    padding: 0;
-}
-
-.widget {
-    background: #fff;
-    margin-bottom: 15px;
-    padding: 10px;
-}
-
-.widget h3 {
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #eaeaea;
-}
-
-.widget ul li {
-    border-bottom: 1px solid #eaeaea;
-    padding: 10px;
-}
-
-.widget ul li a {
+.stButton button {
+    background-color: #10a37f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
     text-decoration: none;
-    color: #333;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 16px;
+    transition: background-color 0.3s;
 }
 
+.stButton button:hover {
+    background-color: #0e8f6a;
+}
+
+.chatbox {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.chatbox-user {
+    text-align: right;
+}
+
+.chatbox-assistant {
+    text-align: left;
+}
+
+.chatbox p {
+    margin: 0;
+    padding: 5px 0;
+}
+
+.stTextInput input {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+}
+
+.stForm {
+    margin-bottom: 20px;
+}
+
+.stForm select, .stForm input {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.stForm_submit {
+    text-align: center;
+}
+
+.stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
+    color: #333;
+    font-weight: 600;
+}
+
+.stMarkdown {
+    margin-bottom: 20px;
+}
+
+.stAlert {
+    border-radius: 10px;
+}
+
+.stTextArea textarea {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+}
