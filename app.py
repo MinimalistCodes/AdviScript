@@ -16,7 +16,7 @@ def cold_script(industry, keywords, length, tone, scripit_type):
     return f"""
 You are a skilled {industry} scriptwriter. Please generate a {scripit_type} script tailored for a sales representative calling potential customers in the {industry} industry. 
 
-Incorporate these keywords to make the script more relevant: {keywords}
+The script must be based around the following, and i repeat, MUST BE FORMED AROUND BOTH {industry} & all of the following keywords: {keywords}
 
 **Specific Instructions:**
 
