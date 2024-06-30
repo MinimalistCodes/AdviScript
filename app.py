@@ -77,4 +77,4 @@ if st.session_state.messages and st.button("Copy Script to Clipboard"):
     st.text_area("Generated Script", value=script_content, height=200)
 
 if st.button("Clear Chat"):
-    st.session_state.messages = [])
+    st.session_state.messages = []
