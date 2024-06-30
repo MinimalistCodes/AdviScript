@@ -37,7 +37,7 @@ The script must be based around the following, and i repeat, MUST BE FORMED AROU
 # Function for AI chatbot interaction using langchain
 def ai_chatbot(industry, keywords="", length="medium", tone="conversational", scripit_type="cold call"):
     prompt = cold_script(industry, keywords, length, tone, scripit_type)
-    llm = GoogleGenerativeAI(model="models/text-bison-001", google_api_key=api_key)
+    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
     st.write(llm.invoke(prompt))
 
 # Initialize chat history
