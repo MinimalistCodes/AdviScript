@@ -45,10 +45,7 @@ with st.form("input_form"):
     if form_choice == "Other":
         other_industry = st.text_input("Please specify the industry:")
         industry = other_industry if other_industry else form_choice
-        industry = st.chat_input("Please specify the industry:")
-        industry = form_choice
-        selected = st.form_submit_button("Select")
-                
+        industry = st.chat_input("Please specify the industry:") 
     else:
         industry = form_choice
     submitted = st.form_submit_button("Send")
