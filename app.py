@@ -21,9 +21,10 @@ Please generate a cold call script tailored for a sales representative calling p
 # Function for AI chatbot interaction using langchain
 def ai_chatbot(industry):
     llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=os.getenv("GOOGLE_API_KEY"))
-    for script in llm.stream(cold_script(industry)):
-        st.write(f"Assistant: {script}")
-        return script
+    prompt = cold_script(industry)
+    response = llm.generate_text(prompt)
+    st.session_state.messages.append({"role": "assistant", "content": response})
+    
 
 
 # Main function
