@@ -22,7 +22,6 @@ Please generate a cold call script tailored for a sales representative calling p
 def ai_chatbot(industry):
     llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=os.getenv("GOOGLE_API_KEY"))
     for script in llm.stream(cold_script(industry)):
-        st.session_state.messages.append({"role": "assistant", "content": script})
         st.write(f"Assistant: {script}")
         return script
 
