@@ -45,11 +45,6 @@ def local_css(file_name):
 
 local_css("style.css")
 
-st.title('Advi Script')
-st.markdown("An AI-powered tool to generate tailored cold call scripts.")
-st.markdown("Provide details about your target industry, preferred tone, script length, and keywords to get a customized script.")
-st.markdown("**Example Keywords (comma-separated):** efficiency, cost savings, scalability")
-
 # Display Chat Messages
 for message in st.session_state.messages:
     role_class = "chatbox-user" if message["role"] == "user" else "chatbox-assistant"
