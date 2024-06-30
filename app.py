@@ -36,9 +36,28 @@ st.title('Advi Script')
 st.markdown("An AI-powered chatbot designed to provide expert advice in the sales industry.")
 
 #Conversational chatbot that will develop sales scripts for the user
-industry = st.text_input("Please enter the industry you would like to generate a cold call script for:")
-if st.button("Generate Cold Call Script"):
-    ai_chatbot(industry)
+
+#Conversation always on top. Chatbot speaks first
+if st.session_state.messages == []:
+    st.session_state.messages.append({"role": "assistant", "content": "Hello! I'm Advi Script, your AI-powered sales script assistant. How can I help you today?"})
+
+#Display chat history
+for message in st.session_state.messages:
+    if message["role"] == "assistant":
+        st.text_area("Advi Script", message["content"], disabled=True, height=100)
+    else:
+        st.text_area("You", message["content"], disabled=True, height=100)
+    
+
+#User input
+user_input = st.text_input("You", "What is the industry you are targeting?")
+if st.button("Send"):
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    st.session_state.messages.append({"role": "assistant", "content": ai_chatbot(user_input)})
+
+#Clear chat history
+if st.button("Clear Chat"):
+    st.session_state.messages = []
 
 
 
