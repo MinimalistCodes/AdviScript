@@ -22,10 +22,11 @@ Please generate a cold call script tailored for a sales representative calling p
 def ai_chatbot(industry):
     llm = GoogleGenerativeAI(model="models/text-bison-001", google_api_key=api_key)
     prompt = cold_script(industry)
-    template = PromptTemplate(prompt)
-    response = llm.invoke(template)
+    response = (
+        llm.invoke(f"""{prompt}""")
+    )
     st.session_state.messages.append({"role": "assistant", "content": response})
-    return response
+    
 
     
     
