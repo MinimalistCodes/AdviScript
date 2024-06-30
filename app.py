@@ -53,7 +53,14 @@ with st.form("input_form"):
     else:
         industry = form_choice
 
-    submitted = st.form_submit_button("Get My Script")
+# Form script type
+    form_script_type = st.selectbox("Select Script Type:", ["Discovery Calls", ",Cold Calls", ",Elevator Pitches","Remote Selling Scripts","Product Demo Scripts","Objection Handling Scripts", "Negotiation Scripts", ",Referral Scripts", ",Customer Storytelling Scripts"])
+
+    form_tone = st.selectbox("Select Tone:", ["Professional and Trustworthy", "Casual and conversational", "Persuasive and Assertive", "Empathetic and Supportive", "Energetic and Enthusiastic", "Urgent and persuasive", "Friendly and approachable"])
+    form_length = st.selectbox("Select Length:", ["Short", "Medium", "Long"])
+    form_keywords = st.text_input("Enter 3 descriptive keywords (comma-separated):")
+    
+    submitted = st.form_submit_button("Send")
     if submitted:
         st.write(f"Generating a cold call script for the {industry} industry...")
         st.session_state.messages.append({"role": "user", "content": industry})
