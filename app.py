@@ -3,13 +3,13 @@ from langchain_google_genai import GoogleGenerativeAI
 
 
 from dotenv import load_dotenv
-import os
+import os, sys
 
 # Load environment variables
 load_dotenv()
 
 # Configure Google Gemini API - Remove this section as we will use langchain
-# google_genai = GoogleGenAI(api_key=os.getenv("GOOGLE_API_KEY"))
+api_key = os.getenv("GOOGLE_API_KEY")
 
 # Function to generate the cold call script
 def cold_script(industry):
@@ -19,11 +19,18 @@ Please generate a cold call script tailored for a sales representative calling p
 
 # Function for AI chatbot interaction using langchain
 def ai_chatbot(industry):
-    prompt = cold_script(industry)
-    llm = GoogleGenerativeAI(model="models/text-bison-0011", api_key=os.getenv("GOOGLE_API_KEY"))
-    st.write(
-        llm.invoke(prompt)
-    )
+    script = cold_script(industry)
+llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+for words in llm.stream(script):
+    sys.stdout.write(words)
+    sys.stdout.flush()
+    
+    
+
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
 # UI and Chat Logic
 st.set_page_config(page_title='Advi Script', layout='wide')
 st.title('Advi Script')
@@ -33,7 +40,8 @@ st.markdown("An AI-powered chatbot designed to provide expert advice in the sale
 for message in st.session_state.messages:
     st.markdown(f'**{message["role"]}**: {message["content"]}')
 
-
+# User input for sending direct messages to the chatbot
+user_input = st.text_input("You:", key="user_input")
 
 # Form for selecting industry and sending user message to chatbot
 with st.form("input_form"):
@@ -45,8 +53,6 @@ with st.form("input_form"):
     if form_choice == "Other":
         other_industry = st.text_input("Please specify the industry:")
         industry = other_industry if other_industry else form_choice
-        # User input for sending direct messages to the chatbot
-        user_input = st.text_input("You:", key="user_input")
     else:
         industry = form_choice
 
