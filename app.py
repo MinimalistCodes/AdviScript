@@ -37,10 +37,26 @@ st.title('Advi Script')
 st.markdown("An AI-powered tool to generate tailored cold call scripts.")
 st.markdown("Provide details about your target industry, preferred tone, script length, and keywords to get a customized script.")
 st.markdown("**Example Keywords (comma-separated):** efficiency, cost savings, scalability")
-st.navigation("Home", "About")
-# Display Chat Messages
+st.markdown("---")
+#Optio to send script to email, slack, or download
+st.sidebar.markdown("## Share Script")
+email = st.sidebar.text_input("Email:")
+slack = st.sidebar.text_input("Slack Channel:")
+download = st.sidebar.button("Download Script")
+
+if download:
+    st.markdown("Downloaded script to your local machine.")
+    st.markdown("Please check your email for the script.")
+    st.markdown("Please check your slack channel for the script.")
+    
+# Display chat history
 for message in st.session_state.messages:
-    st.markdown(f'**{message["role"]}**: {message["content"]}')
+    if message["role"] == "user":
+        st.write(f"**You:** {message['content']}")
+    else:
+        st.write(f"**Advi:** {message['content']}")
+st.markdown("---")
+
 
 # Form for Input
 with st.form("input_form"):
