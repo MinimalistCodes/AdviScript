@@ -34,8 +34,6 @@ if "messages" not in st.session_state:
 
 # UI and Chat Logic
 st.set_page_config(page_title='Advi Script', layout='wide')
-add_logo("path/to/your/logo.png")  # Optional: Add your app logo
-
 st.title('Advi Script')
 
 # Main Area for Displaying the Chat
