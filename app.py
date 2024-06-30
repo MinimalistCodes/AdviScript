@@ -64,7 +64,14 @@ with st.form("input_form"):
     form_length = st.selectbox("Select Length:", ["Short", "Medium", "Long"])
     form_keywords = st.text_input("Enter 3 descriptive keywords (comma-separated):")
     
-
+    #check box Send to Slack
+    send_to_slack = st.checkbox("Send to Slack")
+    if send_to_slack:
+        slack_webhook_url = os.getenv("SLACK_WEBHOOK_URL")
+        if slack_webhook_url:
+            st.write("Slack integration is enabled.")
+        else:
+            st.warning("Please set up a Slack webhook URL in the environment variables.")
     submitted = st.form_submit_button("Generate Script")
     if submitted:
         keywords_list = [keyword.strip() for keyword in form_keywords.split(",")]
