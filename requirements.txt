@@ -3,5 +3,7 @@ pandas
 numpy
 python-dotenv
 google-generativeai
-ipython
 langchain-google-genai
+langchain
+langchain_community
+jupyter
