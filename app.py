@@ -62,7 +62,7 @@ with st.form("input_form"):
     
     submitted = st.form_submit_button("Send")
     if submitted:
-        st.write(f"Generating a {script_type} script for the {industry} industry...")
+        st.write(f"Generating a {form_length} {form_script_type} script for a {industry} company with a {form_tone} tone.")
         st.session_state.messages.append({"role": "user", "content": industry})
         response = ai_chatbot(industry)
         st.session_state.messages.append({"role": "assistant", "content": response})
