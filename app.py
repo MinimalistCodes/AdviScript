@@ -44,6 +44,16 @@ with st.form("input_form"):
     if industry == "Other":
         industry = st.text_input("Enter Industry Name")
     submit_button = st.form_submit_button("Send")
+    # If user message is submitted, add it to chat history and generate AI response
+    if submit_button:
+        st.session_state.messages.append({"role": "user", "content": industry})
+        ai_chatbot(industry)
+
+# Display chat history in sidebar with a combobox and load into a separate column
+st.sidebar.title("Chat History")
+selected_message = st.sidebar.selectbox("Select Message", [msg["content"] for msg in st.session_state.messages])
+st.sidebar.write(selected_message)
+
     
 # Button to copy generated script to clipboard
 if st.button("Copy Script to Clipboard"):
