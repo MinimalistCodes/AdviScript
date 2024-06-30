@@ -54,7 +54,8 @@ user_input = st.text_input("You", "What is the industry you are targeting?")
 if st.button("Send"):
     st.session_state.messages.append({"role": "user", "content": user_input})
     st.session_state.messages.append({"role": "assistant", "content": ai_chatbot(user_input)})
-
+    st.session_state.messages.append({"role": "assistant", "content": "Is there anything else I can help you with?"})
+    
 #Clear chat history
 if st.button("Clear Chat"):
     st.session_state.messages = []
