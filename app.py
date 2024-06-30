@@ -14,23 +14,13 @@ api_key = os.getenv("GOOGLE_API_KEY")
 # Function to generate the cold call script
 def cold_script(industry, keywords, length, tone, scripit_type):
     return f"""
-You are a skilled {industry} scriptwriter. Please generate a {scripit_type} script tailored for a sales representative calling potential customers in the {industry} industry. 
+You are a skilled {industry} scriptwriter. Please generate a {scripit_type} script. 
 
-The script must be based around the following, and i repeat, MUST BE FORMED AROUND BOTH {industry} & all of the following keywords: {keywords}
+Please generate a cold call script tailored for a sales representative calling potential customers in the {industry} industry. 
+Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. 
+The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
+Make it {length} in length, with a {tone} tone, and include the following keywords: {keywords}.
 
-**Specific Instructions:**
-
-* **Call Flow:**  
-    * **Introduction:** Begin with a warm greeting and introduce yourself and your company.
-    * **Value Proposition:** Briefly and compellingly explain the core benefit of your product/service, using the keywords where appropriate.
-    * **Qualifying Questions:** Ask open-ended questions to determine if the prospect is a good fit, incorporating the keywords if relevant.
-    * **Objection Handling:**  Anticipate and address and list common objections with persuasive rebuttals, potentially referencing the keywords.
-    * **Call to Action:** Clearly propose a next step (e.g., schedule a demo, send more information).
-    * **Closing:** Thank the prospect for their time and express interest in further discussions.
-
-* **Pain Points:** Research and mention specific pain points relevant to businesses in the {industry} industry, using the keywords to highlight the relevance of your solution.
-* **Tone:** Use a {tone} tone that is appropriate for the {industry} industry.
-* **Length:** Aim for a script that is approximately {length} in length.
 """
 
 
