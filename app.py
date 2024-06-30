@@ -80,14 +80,7 @@ with st.sidebar:
                 st.session_state.messages.append({"role": "user", "content": industry})
                 response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), form_keywords)
                 st.session_state.messages.append({"role": "assistant", "content": response})
-        st.markdown("### Chat History")
-        for chat_title in st.session_state.chat_history[::-1]:
-            if st.button(chat_title):
-                st.session_state.messages = []
-                chat_history = load_chat_history(chat_title)
-                for message in chat_history:
-                    with st.chat_message(message["role"]):
-                        st.markdown(message["content"])
+   
                           
 
     # Button to copy generated script to clipboard
