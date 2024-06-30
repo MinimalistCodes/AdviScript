@@ -33,17 +33,16 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # UI and Chat Logic
-st.set_page_config(page_title='Advi Script', layout='wide')
-st.title('Advi Script')
-st.markdown("An AI-powered tool to generate tailored cold call scripts.")
-st.markdown("Provide details about your target industry, preferred tone, script length, and keywords to get a customized script.")
-st.markdown("**Example Keywords (comma-separated):** efficiency, cost savings, scalability")
 #load css file
 def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 local_css("style.css")
+st.title('Advi Script')
+st.markdown("An AI-powered tool to generate tailored cold call scripts.")
+st.markdown("Provide details about your target industry, preferred tone, script length, and keywords to get a customized script.")
+st.markdown("**Example Keywords (comma-separated):** efficiency, cost savings, scalability")
 
 # Sidebar
 with st.sidebar:
@@ -73,7 +72,8 @@ with st.sidebar:
         response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), form_keywords)
         st.session_state.messages.append({"role": "assistant", "content": response})
 
-# Display Chat Messages
+# Display Chat Messages in the main area
+st.markdown("## Generated Script")
 for message in st.session_state.messages:
     role_class = "chatbox-user" if message["role"] == "user" else "chatbox-assistant"
     st.markdown(f'<div class="chatbox {role_class}"><p>{message["content"]}</p></div>', unsafe_allow_html=True)
