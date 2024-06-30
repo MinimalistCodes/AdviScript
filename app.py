@@ -38,13 +38,13 @@ st.markdown("An AI-powered chatbot designed to provide expert advice in the sale
 # Form for selecting industry and sending user message to chatbot
 with st.form("input_form"):
    #Add industries of common businesses
-   #If "Other" is selected, show a inputbox for the industry name
+   #When "Other" is selected, show a inputbox for the industry name, show input box after its clicked before the button is pressed
    #ONLY submit when button is pressed
-    industry = st.selectbox("Select Industry", ["Real Estate", "Insurance", "Finance", "Healthcare", "Technology", "Retail", "Other"])
+    industry = st.selectbox("Select Industry", ["Technology", "Finance", "Healthcare", "Real Estate", "Other"])
     if industry == "Other":
         industry = st.text_input("Enter Industry Name")
-    st.form_submit_button("Send")
-
+    submit_button = st.form_submit_button("Send")
+    
 # Button to copy generated script to clipboard
 if st.button("Copy Script to Clipboard"):
     if st.session_state.messages:
