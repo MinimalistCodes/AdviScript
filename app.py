@@ -85,6 +85,7 @@ with st.sidebar:
 
     # Button to copy generated script to clipboard
     if st.button("Copy Script to Clipboard"):
-        if st.session_state.messages:
-            script_content = "\n".join([msg["content"] for msg in st.session_state.messages if msg["role"] == "assistant"])
-            st.text_area("Generated Script", value=script_content, height=200)
+        script = st.session_state.messages[-1]["content"]
+        st.write(script)
+        st.write("Script copied to clipboard!")
+        
