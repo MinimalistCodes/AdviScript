@@ -40,24 +40,20 @@ st.markdown("An AI-powered chatbot designed to provide expert advice in the sale
 for message in st.session_state.messages:
     st.markdown(f'**{message["role"]}**: {message["content"]}')
 
-# User input for sending direct messages to the chatbot
-user_input = st.text_input("You:", key="user_input")
-
 # Form for selecting industry and sending user message to chatbot
-with st.form("input_form"):
-    form_choice = st.selectbox(
+form_choice = st.selectbox(
         "Select Industry:",
         ["Technology", "Finance", "Healthcare", "Education", "Sales", "Other"]
     )
 
-    if form_choice == "Other":
+if form_choice == "Other":
         other_industry = st.text_input("Please specify the industry:")
         industry = other_industry if other_industry else form_choice
-    else:
+else:
         industry = form_choice
 
-    submitted = st.form_submit_button("Send")
-    if submitted:
+submitted = st.form_submit_button("Send")
+if submitted:
         st.write(f"Generating a cold call script for the {industry} industry...")
         st.session_state.messages.append({"role": "user", "content": industry})
         response = ai_chatbot(industry)
