@@ -12,9 +12,9 @@ load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 
 # Function to generate the cold call script
-def cold_script(industry, keywords, length, tone, scripit_type):
+def cold_script(industry, keywords, length, tone, script_type):
     return f"""
-Please generate a {scripit_type} script for a {industry} company that specializes in {keywords}.
+Please generate a {script_type} script for a {industry} company that specializes in {keywords}.
 The script should be tailored to a {tone} tone and a {length} length. 
 Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. 
 The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
@@ -22,8 +22,8 @@ The script should aim to engage prospects effectively, highlight key benefits of
 
 
 # Function for AI chatbot interaction using langchain
-def ai_chatbot(industry, keywords="", length="medium", tone="conversational", scripit_type="cold call"):
-    prompt = cold_script(industry, keywords, length, tone, scripit_type)
+def ai_chatbot(industry, keywords="", length="medium", tone="conversational", script_type=""):
+    prompt = cold_script(industry, keywords, length, tone, script_type)
     llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
     st.write(llm.invoke(prompt))
 
@@ -62,7 +62,7 @@ with st.form("input_form"):
     
     submitted = st.form_submit_button("Send")
     if submitted:
-        st.write(f"Generating a cold call script for the {industry} industry...")
+        st.write(f"Generating a {script_type} script for the {industry} industry...")
         st.session_state.messages.append({"role": "user", "content": industry})
         response = ai_chatbot(industry)
         st.session_state.messages.append({"role": "assistant", "content": response})
