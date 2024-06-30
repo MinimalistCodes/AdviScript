@@ -22,9 +22,7 @@ def ai_chatbot(industry):
     prompt = cold_script(industry)
     llm = GoogleGenerativeAI(model="models/text-bison-0011", api_key=os.getenv("GOOGLE_API_KEY"))
     st.write(
-        llm.invoke(
-            
-        )
+        llm.invoke(prompt)
     )
 # UI and Chat Logic
 st.set_page_config(page_title='Advi Script', layout='wide')
