@@ -20,17 +20,12 @@ Please generate a cold call script tailored for a sales representative calling p
 # Function for AI chatbot interaction using langchain
 def ai_chatbot(industry):
     prompt = cold_script(industry)
-    llm = GoogleGenerativeAI(model="gemini-pro", api_key=os.getenv("GOOGLE_API_KEY"))
+    llm = GoogleGenerativeAI(model="models/text-bison-0011", api_key=os.getenv("GOOGLE_API_KEY"))
     st.write(
         llm.invoke(
-            "" + prompt + ""
+            
         )
     )
-    
-# Initialize chat history
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
 # UI and Chat Logic
 st.set_page_config(page_title='Advi Script', layout='wide')
 st.title('Advi Script')
@@ -40,20 +35,25 @@ st.markdown("An AI-powered chatbot designed to provide expert advice in the sale
 for message in st.session_state.messages:
     st.markdown(f'**{message["role"]}**: {message["content"]}')
 
+
+
 # Form for selecting industry and sending user message to chatbot
-form_choice = st.selectbox(
+with st.form("input_form"):
+    form_choice = st.selectbox(
         "Select Industry:",
         ["Technology", "Finance", "Healthcare", "Education", "Sales", "Other"]
     )
 
-if form_choice == "Other":
+    if form_choice == "Other":
         other_industry = st.text_input("Please specify the industry:")
         industry = other_industry if other_industry else form_choice
-else:
+        # User input for sending direct messages to the chatbot
+        user_input = st.text_input("You:", key="user_input")
+    else:
         industry = form_choice
 
-submitted = st.form_submit_button("Send")
-if submitted:
+    submitted = st.form_submit_button("Send")
+    if submitted:
         st.write(f"Generating a cold call script for the {industry} industry...")
         st.session_state.messages.append({"role": "user", "content": industry})
         response = ai_chatbot(industry)
