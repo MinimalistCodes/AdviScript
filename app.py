@@ -1,8 +1,9 @@
 import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
-
+from langchain_core.prompts import PromptTemplate
 from dotenv import load_dotenv
 import os
+
 
 # Load environment variables
 load_dotenv()
@@ -18,9 +19,16 @@ Please generate a cold call script tailored for a sales representative calling p
 
 # Function for AI chatbot interaction using langchain
 def ai_chatbot(industry):
-    prompt = cold_script(industry)
-    response = generate_text(prompt)  # Using langchain for text generation
+    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=GOOGLE_API_KEY)
+    prompt = PromptTemplate(
+        title="Cold Call Script",
+        description="Generate a cold call script for the sales industry.",
+        content=cold_script(industry)
+    )
+    response = llm.generate_text(prompt)
+    st.write(response)
     return response
+
 
 # Initialize chat history
 if "messages" not in st.session_state:
