@@ -46,9 +46,9 @@ if "messages" not in st.session_state:
     st.session_state.messages.append({"role": "assistant", "content": "Hi there! I'm your AI sales coach. Let's craft an awesome cold call script together. First, tell me about the product or service you're selling."})
 
 # UI Design
-st.set_page_config(page_title='Advi Script', layout='wide')
+st.set_page_config(page_title='AdviScript', layout='wide')
 
-colored_header(label="Advi Script", description="AI Sales Coach", color_name="blue-70")
+colored_header(label="AdviScript", description="AI Sales Coach", color_name="blue-70")
 st.markdown("<style>div.stButton > button:first-child {background-color: #007bff; color: white;}</style>", unsafe_allow_html=True)
 
 # Chat Display in Main Area
@@ -65,7 +65,7 @@ with st.form(key="user_input", clear_on_submit=True):
         st.session_state.messages.append({"role": "user", "content": user_input})
         
         # Build context for the AI
-        context = "\n".join([f"{msg['role']}: {msg['content']}" for msg in st.session_state.messages])
+        context = "\n".join([f"{msg['role']}: {msg['content']}"] for msg in st.session_state.messages)
         
         response = ai_chatbot(context)
         st.session_state.messages.append({"role": "assistant", "content": response})
