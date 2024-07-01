@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import os
 import datetime
 
-#Load environment variables
+# Load environment variables
 load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
@@ -71,4 +71,3 @@ with st.form(key="user_input", clear_on_submit=True):
         st.session_state.messages.append({"role": "assistant", "content": response})
 
         st.experimental_rerun()  # Refresh UI to show the new message
-
