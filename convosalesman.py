@@ -32,7 +32,7 @@ prompt_template = PromptTemplate(
 
 def ai_chatbot(context):
     prompt = prompt_template.render(context=context)
-    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=GOOGLE_API_KEY)
+    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=GOOGLE_API_KE)
     return llm.invoke(prompt)
 # Initialize Session State
 if "messages" not in st.session_state:
