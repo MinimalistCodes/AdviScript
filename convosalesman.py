@@ -4,10 +4,9 @@ from langchain_google_genai import GoogleGenerativeAI
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 import os
-import datetime
 
-# Load environment variables
 load_dotenv()
+
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 # Check for API key
@@ -15,50 +14,45 @@ if not GOOGLE_API_KEY:
     st.error("Please set your GOOGLE_API_KEY in the .env file.")
     st.stop()
 
-# Configure Google Generative AI
+llm = GoogleGenerativeAI(temperature=0, google_api_key=GOOGLE_API_KEY)
 
-# Prompt Template (dynamically built based on user input)
-template = """
-You are a skilled sales scriptwriter and coach. A sales rep is looking to craft a cold call script. Based on the information provided so far:
-
-{context}
-
-Please ask the next logical question to help the sales rep build their script. Keep the question focused on gathering essential information for an effective cold call.
-"""
-prompt_template = PromptTemplate(
-    input_variables=["context"],
-    template=template,
-)
-
-def ai_chatbot(context):
-    prompt = prompt_template.render(context=context)
-    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=GOOGLE_API_KE)
-    return llm.invoke(prompt)
-# Initialize Session State
 if "messages" not in st.session_state:
-    st.session_state.messages = []
-    st.session_state.messages.append({"role": "assistant", "content": "Hi there! I'm your AI sales coach. Let's craft an awesome cold call script together. First, tell me about the product or service you're selling."})
+    st.session_state["messages"] = [
+        {"role": "assistant", "content": "How can I help you create an awesome cold call script?"}
+    ]
 
-# UI Design
-st.set_page_config(page_title='AdviScript', layout='wide')
+# Prompt Template
+def get_template(messages):
+    formatted_messages = ""
+    for message in messages:
+        formatted_messages += f"{message['role']}: {message['content']}\n"
+    return formatted_messages
 
-colored_header(label="AdviScript", description="AI Sales Coach", color_name="blue-70")
-st.markdown("<style>div.stButton > button:first-child {background-color: #007bff; color: white;}</style>", unsafe_allow_html=True)
+# App UI
+st.set_page_config(page_title='SalesGPT')
 
-# Chat Display in Main Area
+st.header("SalesGPT - Your AI Sales Script Assistant")
+st.markdown("Start typing below to create your sales script.")
+
+# Display chat messages
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
-        if message["role"] == "assistant":
-            st.write(f"_{datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}_")
         st.markdown(message["content"])
 
-# User Input
-with st.form(key="user_input", clear_on_submit=True):
-    user_input = st.text_input("You:")
-    if st.form_submit_button("Send"):
-        st.session_state.messages.append({"role": "user", "content": user_input})
-        response = ai_chatbot(context=user_input)
+# Get user input
+if prompt := st.chat_input("Your input"):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    
+    # Generate AI response using the prompt template
+    with st.chat_message("assistant"):
+        response = llm(get_template(st.session_state.messages))
         st.session_state.messages.append({"role": "assistant", "content": response})
-        st.session_state.messages.append({"role": "assistant", "content": "What else can I help you with?"})
-        st.form_submit_button("Send")
-        
+        st.write(response)
+
+# Copy Button
+if st.session_state.messages and st.button("Copy Script"):
+    script_content = "\n".join(
+        [msg["content"] for msg in st.session_state.messages if msg["role"] == "assistant"]
+    )
+    st.code(script_content, language="text")
+    st.toast("Script copied to clipboard!")
