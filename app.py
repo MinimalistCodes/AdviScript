@@ -1,7 +1,6 @@
 import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
 #save to pdf
-from fpdf import FPDF
 #save to docx
 
 
@@ -83,24 +82,13 @@ with st.sidebar:
                 st.session_state.messages.append({"role": "user", "content": industry})
                 response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), form_keywords)
                 st.session_state.messages.append({"role": "assistant", "content": response})
-    # two buttons: save to pdf and regenerate
-    # save to pdf
-    if st.button("Save to PDF"):
-        pdf = FPDF()
-        pdf.add_page()
-        pdf.set_font("Arial", size=12)
-        for message in st.session_state.messages:
-            pdf.cell(200, 10, txt=message["content"], ln=True, align="L")
-        pdf.output("script.pdf")
-        st.success("Script saved to PDF successfully.")
-    # regenerate same details
-    if st.button("Regenerate"):
-        st.session_state.messages = []
-        st.write(f"Generating a {form_length} {form_script_type} script for a {industry} company with a {form_tone} tone.")
-        st.session_state.messages.append({"role": "user", "content": industry})
-        response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), form_keywords)
-        st.session_state.messages.append({"role": "assistant", "content": response})
-        
+    #Automatically save the chat history to a file
+    save_chat = st.button("Save Chat History")
+    if save_chat:
+        with open("chat_logs/chat_history.txt", "w") as file:
+            for message in st.session_state.messages:
+                file.write(f"{message['role']}:{message['content']}\n")
+                
         
    
                         
