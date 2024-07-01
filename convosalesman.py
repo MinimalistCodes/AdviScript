@@ -57,11 +57,8 @@ with st.form(key="user_input", clear_on_submit=True):
     user_input = st.text_input("You:")
     if st.form_submit_button("Send"):
         st.session_state.messages.append({"role": "user", "content": user_input})
-        
-        # Build context for the AI
-        context = "\n".join([f"{msg['role']}: {msg['content']}"] for msg in st.session_state.messages)
-        
-        response = ai_chatbot(context)
+        response = ai_chatbot(context=user_input)
         st.session_state.messages.append({"role": "assistant", "content": response})
-
-        st.experimental_rerun()  # Refresh UI to show the new message
+        st.session_state.messages.append({"role": "assistant", "content": "What else can I help you with?"})
+        st.form_submit_button("Send")
+        
