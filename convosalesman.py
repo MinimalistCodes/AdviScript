@@ -47,7 +47,6 @@ if "messages" not in st.session_state:
 
 # UI Design
 st.set_page_config(page_title='Advi Script', layout='wide')
-add_logo("path/to/your/logo.png")  # Optional: Add your app logo
 
 colored_header(label="Advi Script", description="AI Sales Coach", color_name="blue-70")
 st.markdown("<style>div.stButton > button:first-child {background-color: #007bff; color: white;}</style>", unsafe_allow_html=True)
