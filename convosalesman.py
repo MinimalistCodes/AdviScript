@@ -1,5 +1,5 @@
 import streamlit as st
-from streamlit_extras import colored_header
+from streamlit_extras.colored_header import colored_header
 from langchain.llms import GoogleGenerativeAI
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
