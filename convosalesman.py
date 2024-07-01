@@ -16,24 +16,24 @@ if not GOOGLE_API_KEY:
     st.stop()
 
 # Configure Google Generative AI
-google_genai = GoogleGenerativeAI(api_key=GOOGLE_API_KEY, model_name="models/chat-bison-001")  # Specify model_name
 
 # Prompt Template (dynamically built based on user input)
-def cold_script(contents):
-    return f"""
+template = """
 You are a skilled sales scriptwriter and coach. A sales rep is looking to craft a cold call script. Based on the information provided so far:
 
-{contents}
+{context}
 
 Please ask the next logical question to help the sales rep build their script. Keep the question focused on gathering essential information for an effective cold call.
 """
+prompt_template = PromptTemplate(
+    input_variables=["context"],
+    template=template,
+)
 
 def ai_chatbot(context):
-    prompt = cold_script(contents)
+    prompt = prompt_template.render(context=context)
     llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=GOOGLE_API_KEY)
-    st.write(llm.invoke(context))
-
-
+    return llm.invoke(prompt)
 # Initialize Session State
 if "messages" not in st.session_state:
     st.session_state.messages = []
