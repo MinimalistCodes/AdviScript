@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import os
 import datetime
 
-# Load environment variables
+#Load environment variables
 load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
@@ -16,7 +16,7 @@ if not GOOGLE_API_KEY:
     st.stop()
 
 # Configure Google Generative AI
-google_genai = GoogleGenerativeAI(api_key=GOOGLE_API_KEY)
+google_genai = GoogleGenerativeAI(api_key=GOOGLE_API_KEY, model_name="models/chat-bison-001")  # Specify model_name
 
 # Prompt Template (dynamically built based on user input)
 template = """
@@ -34,7 +34,7 @@ prompt_template = PromptTemplate(
 def ai_chatbot(context):
     prompt = prompt_template.format(context=context)
     try:
-        response = google_genai(prompt)
+        response = google_genai(prompt)  # Directly call the LLM instance
     except Exception as e:
         st.error(f"Error generating response: {e}")
         return "Sorry, I'm having trouble understanding. Could you rephrase that?"
@@ -43,7 +43,7 @@ def ai_chatbot(context):
 # Initialize Session State
 if "messages" not in st.session_state:
     st.session_state.messages = []
-    st.session_state.messages.append({"role": "assistant", "content": "Hi there! I'm your AI sales coach. Let's craft an awesome cold call script together. First, tell me about your product or service."})
+    st.session_state.messages.append({"role": "assistant", "content": "Hi there! I'm your AI sales coach. Let's craft an awesome cold call script together. First, tell me about the product or service you're selling."})
 
 # UI Design
 st.set_page_config(page_title='Advi Script', layout='wide')
@@ -71,3 +71,4 @@ with st.form(key="user_input", clear_on_submit=True):
         st.session_state.messages.append({"role": "assistant", "content": response})
 
         st.experimental_rerun()  # Refresh UI to show the new message
+
