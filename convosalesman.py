@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_extras.colored_header import colored_header
-from langchain.llms import GoogleGenerativeAI
+from langchain_google_genai import GoogleGenerativeAI
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 import os
