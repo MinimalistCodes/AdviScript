@@ -1,5 +1,8 @@
 import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
+#save to pdf
+from fpdf import FPDF
+#save to docx
 
 
 from dotenv import load_dotenv
@@ -80,12 +83,24 @@ with st.sidebar:
                 st.session_state.messages.append({"role": "user", "content": industry})
                 response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), form_keywords)
                 st.session_state.messages.append({"role": "assistant", "content": response})
-   
-                          
-
-    # Button to copy generated script to clipboard
-    if st.button("Copy Script to Clipboard"):
-        script = st.session_state.messages[-1]["content"]
-        st.write(script)
-        st.write("Script copied to clipboard!")
+    # two buttons: save to pdf and regenerate
+    # save to pdf
+    if st.button("Save to PDF"):
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", size=12)
+        for message in st.session_state.messages:
+            pdf.cell(200, 10, txt=message["content"], ln=True, align="L")
+        pdf.output("script.pdf")
+        st.success("Script saved to PDF successfully.")
+    # regenerate same details
+    if st.button("Regenerate"):
+        st.session_state.messages = []
+        st.write(f"Generating a {form_length} {form_script_type} script for a {industry} company with a {form_tone} tone.")
+        st.session_state.messages.append({"role": "user", "content": industry})
+        response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), form_keywords)
+        st.session_state.messages.append({"role": "assistant", "content": response})
         
+        
+   
+                        
