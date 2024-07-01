@@ -38,6 +38,9 @@ def ai_chatbot(industry, keywords="", length="medium", tone="conversational", sc
     llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
     st.write(llm.invoke(prompt))
 
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
 # UI and Chat Logic
 st.markdown('<link rel="stylesheet" href="styles.css">', unsafe_allow_html=True)
