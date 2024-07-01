@@ -7,4 +7,4 @@ langchain-google-genai
 langchain
 langchain_community
 jupyter
-FDF
+fpdf
