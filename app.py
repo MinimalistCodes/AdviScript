@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os, sys, json
 from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
-from gpt4free import Provider, gpt4free
+from g4f.client import Client
 
 
 # Load environment variables
@@ -65,8 +65,14 @@ def get_llm_response(user_input, llm_class, llm_kwargs):
                         {user_input}
                     """
             return llm.invoke(prompt)
-        else:  # GPT4Free
-            return llm.Completion(user_input)
+     else:  # GPT4Free
+            messages = [{"role": "user", "content": user_input}]
+            response = llm.create(model="gpt-3.5-turbo", messages=messages)
+            return response["choices"][0]["message"]["content"]  # Extract the response text
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
+        return "Sorry, I couldn't process your request at this time. Please try again later."
+
     except Exception as e:
         st.error(f"An error occurred: {e}")
         return "Sorry, I couldn't process your request at this time. Please try again later."
