@@ -59,15 +59,6 @@ def ai_sales_coach(user_input):
             st.error(f"An error occurred: {e}")
             return "Sorry, I couldn't process your request at this time. Please try again later."
 
-
-def cchat():
-    # Clear History Button (Placed before the chat container)
-    st.session_state.messages = []
-    st.session_state.pop("stored_messages", None)
-    st.experimental_rerun()
-
-
-
 # UI Layout
 st.title("Advi Script - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
@@ -116,7 +107,6 @@ body {
 }
 </style>
 
-
 """, unsafe_allow_html=True)
 
   
@@ -132,43 +122,42 @@ if "messages" not in st.session_state:
     except json.JSONDecodeError:
         st.error("Error loading chat history from local storage.")
 
-with st.container():
-    # Buttons in a Row
-    col1, col2 = st.columns(2)  # Create two columns for the buttons
+# Buttons in a Row (outside of container)
+col1, col2 = st.columns(2)  # Create two columns for the buttons
 
-    with col1:
-        if st.button("Clear History"):
-            # Clear chat history (same as before)
-            st.session_state.messages = []
-            st.session_state.pop("stored_messages", None)
-            st.experimental_rerun()
+with col1:
+    if st.button("Clear History"):
+        # Clear chat history (same as before)
+        st.session_state.messages = []
+        st.session_state.pop("stored_messages", None)
+        st.experimental_rerun()
 
-    with col2:
-        if st.button("Export Chat to PDF"):
-            # Export to PDF (same as before)
-            pdf = FPDF()
-            pdf.add_page()
-    pdf.set_font("Arial", size=12)
+with col2:
+    if st.button("Export Chat to PDF"):
+        # Export to PDF (same as before)
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font("Arial", size=12)
 
-    for message in st.session_state.messages:
-        role = message["role"].capitalize()
-        content = message["content"]
-        pdf.cell(200, 10, txt=f"{role}: {content}", ln=True, align="L")
+        for message in st.session_state.messages:
+            role = message["role"].capitalize()
+            content = message["content"]
+            pdf.cell(200, 10, txt=f"{role}: {content}", ln=True, align="L")
 
-    pdf_output = pdf.output(dest="S").encode("latin-1")
-    st.download_button(
-        label="Download PDF",
-        data=pdf_output,
-        file_name="chat_history.pdf",
-        mime="application/pdf",
-    )
+        pdf_output = pdf.output(dest="S").encode("latin-1")
+        st.download_button(
+            label="Download PDF",
+            data=pdf_output,
+            file_name="chat_history.pdf",
+            mime="application/pdf",
+        )
 
 
 with st.container():  # Use container for styling
     for message in st.session_state.messages:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
-                
+   
 # User Input
 if prompt := st.chat_input("Your message"):
     # Append user message to chat history
