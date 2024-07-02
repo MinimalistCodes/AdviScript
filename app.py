@@ -4,7 +4,10 @@ from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
 from fpdf import FPDF
-
+from streamlit_extras.switch_page_button import switch_page
+from streamlit_extras.add_vertical_space import add_vertical_space
+from streamlit_extras.toggle_theme import toggle_theme
+from PIL import Image
 
 # Load environment variables
 load_dotenv()
@@ -63,15 +66,18 @@ def ai_sales_coach(user_input):
 st.title("Advi Script - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
+toggle_theme()
+add_vertical_space(1)
+st.write("---")
 
 # Custom CSS for Gemini-like styling with full-screen chat and docked input
 st.markdown("""
 <style>
 body {
-    font-family: 'Arial', sans-serif; 
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Arrange elements vertically */
-    height: 100vh; /* Make the container take up full viewport height */
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; 
 }
 .chat-message {
     border-radius: 8px;
@@ -88,26 +94,33 @@ body {
     text-align: left;
 }
 #chat-input-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #FFFFFF;
+    background-color: #FFFFFF; 
     padding: 15px;
 }
-#chat-input { /* Style the textarea for input */
-    width: calc(100% - 30px); /* Account for padding */
-    resize: vertical; /* Allow vertical resizing */
-    min-height: 40px; /* Minimum height */
-    max-height: 200px; /* Maximum height */
+#chat-input {
+    width: calc(100% - 30px); 
+    resize: vertical;
+    min-height: 40px;
+    max-height: 200px; 
 }
-#chat-area {  /* Container for chat messages */
-    flex-grow: 1; /* Allow chat area to expand to fill available space */
-    overflow-y: auto;  /* Enable scrolling in the chat area */
+#chat-area {
+    flex-grow: 1; 
+    overflow-y: auto;  
+}
+
+/* Dark mode adjustments (customize as needed) */
+.stApp[data-theme="dark"] .user-message {
+    background-color: #333; /* Example dark mode background */
+    color: #fff; /* Example dark mode text color */
+}
+.stApp[data-theme="dark"] .bot-message {
+    background-color: #222; /* Example dark mode background */
+    color: #fff; /* Example dark mode text color */
 }
 </style>
+""", unsafe_allow_html=True)
 
-""", unsafe_allow_html=True)  
+  
 sidebar = st.sidebar
 sidebar.title("Theme Options")
 sidebar.markdown("Customize the appearance of the chat interface.")
@@ -165,37 +178,7 @@ with st.container():  # Use container for styling
     for message in st.session_state.messages:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
-                
-# Buttons in a Row (under the input box)
-with st.container():
-    st.markdown("<div id='button-container'>", unsafe_allow_html=True)  # Button container
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("Clear History"):
-            # Clear chat history (same as before)
-            st.session_state.messages = []
-            st.session_state.pop("stored_messages", None)
-            st.experimental_rerun()
-
-    with col2:
-        if st.button("Export Chat to PDF"):
-            # Export to PDF (same as before)
-            pdf = FPDF()
-            pdf.add_page()
-            pdf.set_font("Arial", size=12)
-            for message in st.session_state.messages:
-                role = message["role"].capitalize()
-                content = message["content"]
-                pdf.cell(200, 10, txt=f"{role}: {content}", ln=True, align="L")
-
-            pdf_output = pdf.output(dest="S").encode("latin-1")
-            st.download_button(
-                label="Download PDF",
-                data=pdf_output,
-                file_name="chat_history.pdf",
-                mime="application/pdf",
-            )
-    st.markdown("</div>", unsafe_allow_html=True)
+            
    
 # User Input
 if prompt := st.chat_input("Your message"):
