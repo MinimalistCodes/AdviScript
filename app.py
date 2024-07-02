@@ -71,29 +71,50 @@ st.markdown("""
     background-color: #F0F0F0; /* Light gray */
     text-align: left;
 }
+
+.typing-indicator {
+    color: #999999; /* Gray color for the typing indicator */
+    font-size: 12px;
+    margin-top: -10px; /* Adjust as needed for spacing */
+}
 </style>
 """, unsafe_allow_html=True)
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+# Chat History in Sidebar
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+with st.sidebar.container(): 
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+# Main Chat Area
 with st.container():
+
+    # Display "Sales Coach is typing..." message above input box
+    typing_indicator = st.empty()  # Placeholder for the typing indicator
+
     if user_input := st.chat_input("Your message"):
         st.session_state.messages.append({"role": "user", "content": user_input})
         with st.chat_message("user"):
             st.markdown(user_input)
 
-        # Display "Sales Coach is typing..." message
-        with st.chat_message("assistant"):
-            message_placeholder = st.empty()  # Create a placeholder for the typing message
-            message_placeholder.markdown("Sales Coach is typing...")
+        # Show the "Sales Coach is typing..." message
+        typing_indicator.markdown("<div class='typing-indicator'>Sales Coach is typing...</div>", unsafe_allow_html=True)
 
         # Get AI response with a slight delay to simulate typing
-        time.sleep(2)  # Simulate thinking (adjust delay as needed)
+        time.sleep(1)  # Adjust delay as needed
         response = ai_sales_coach(user_input)
-        
-        # Update the placeholder with the actual response
-        message_placeholder.markdown(response) 
-
         st.session_state.messages.append({"role": "assistant", "content": response})
+
+        # Clear the typing indicator
+        typing_indicator.empty()
+
+        # Display AI response
+        with st.chat_message("assistant"):
+            st.markdown(response) 
 
