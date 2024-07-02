@@ -45,22 +45,12 @@ def ai_sales_coach(user_input):
     return llm.invoke(prompt)
 
 
-import streamlit as st
-from langchain.llms import GoogleGenerativeAI
-from dotenv import load_dotenv
-import time
-import os
+# UI and Chat Logic
+st.title('Advi Script - Your AI Sales Coach')
+st.sidebar.markdown("**Chat History**")
+st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 
-load_dotenv()
-api_key = os.getenv("GOOGLE_API_KEY")
-
-def ai_sales_coach(user_input):
-    # ... (same as before)
-
-# UI Layout (Gemini-inspired with docked input)
-st.title("Advi Script - Your AI Sales Coach")
-
-# Custom CSS for Gemini-like styling with docked input
+# Custom CSS for ChatGPT-like styling
 st.markdown("""
 <style>
 body {
