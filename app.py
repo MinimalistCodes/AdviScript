@@ -80,6 +80,4 @@ if prompt := st.chat_input("Your message"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     response = ai_sales_coach(prompt)
     st.session_state.messages.append({"role": "assistant", "content": response})
-
-
                         
