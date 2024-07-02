@@ -35,20 +35,51 @@ def ai_sales_coach(user_input):
 
 # UI and Chat Logic
 st.title('Advi Script - Your AI Sales Coach')
+# UI and Chat Logic
+st.title('Advi Script - Your AI Sales Coach')
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
+
+# Custom CSS for ChatGPT-like styling
+st.markdown("""
+<style>
+.chat-container {
+    background-color: #F8F9FA; /* Light background */
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow-y: auto; /* Enable scrolling */
+    max-height: 500px;  /* Set maximum height */
+}
+.user-message, .bot-message {
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+.user-message {
+    background-color: #E2F0FF; /* Light blue */
+    text-align: right;
+}
+.bot-message {
+    background-color: #FFFFFF; /* White */
+    text-align: left;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # Chat History
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+with st.container():  # Use container for styling
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
 
 # User Input
 if prompt := st.chat_input("Your message"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     response = ai_sales_coach(prompt)
     st.session_state.messages.append({"role": "assistant", "content": response})
+
 
                         
