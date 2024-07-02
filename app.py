@@ -53,9 +53,9 @@ st.markdown("Ask any sales-related questions or request assistance with specific
 st.markdown("""
 <style>
 body {
-    font-family: 'Arial', sans-serif; 
+    font-family: 'Arial', sans-serif;
     display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Arrange elements vertically */
+    flex-direction: column;
     height: 100vh; /* Make the container take up full viewport height */
 }
 .chat-message {
@@ -72,41 +72,36 @@ body {
     background-color: #FFFFFF;
     text-align: left;
 }
+#chat-area {
+    flex-grow: 1; /* Allow chat area to expand to fill available space */
+    overflow-y: auto; /* Enable scrolling in the chat area */
+}
 #chat-input-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #FFFFFF;
+    background-color: #FFFFFF; /* White background for input area */
     padding: 15px;
 }
-#chat-input { /* Style the textarea for input */
-    width: calc(100% - 120px); /* Account for padding and button */
-    resize: vertical; /* Allow vertical resizing */
-    min-height: 40px; /* Minimum height */
-    max-height: 200px; /* Maximum height */
+#chat-input {
+    width: calc(100% - 30px); /* Account for padding */
+    resize: vertical;
+    min-height: 40px; 
+    max-height: 200px; 
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Chat History (No Sidebar)
+# Chat History and Input (Reversed Order)
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
 # Input Box at the Bottom (Docked and Centered)
-with st.container():  # Create a container for centering
+with st.container():  
     with st.form(key="chat_form"):
         user_input = st.text_area("Your message", key="chat_input", height=40, max_chars=None)
         submitted = st.form_submit_button("Send")
         if submitted:
-            if user_input:  
+            if user_input:
                 st.session_state.messages.append({"role": "user", "content": user_input})
-                with st.chat_message("user"):
-                    st.markdown(user_input)
+                
 
                 # Display "Sales Coach is typing..." message
                 with st.chat_message("assistant"):
@@ -123,3 +118,13 @@ with st.container():  # Create a container for centering
 
                 # Clear the input box after sending the message
                 st.session_state.chat_input = ""
+
+
+# Main Chat Area
+with st.container():
+    st.markdown("<div id='chat-area'>", unsafe_allow_html=True) 
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    st.markdown("</div>", unsafe_allow_html=True) 
