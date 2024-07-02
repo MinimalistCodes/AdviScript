@@ -119,6 +119,18 @@ body {
 
 """, unsafe_allow_html=True)
 
+  
+    
+# Chat History
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+    try:
+        stored_messages = st.session_state.get("stored_messages", None)
+        if stored_messages:
+            st.session_state.messages = json.loads(stored_messages)
+    except json.JSONDecodeError:
+        st.error("Error loading chat history from local storage.")
 
 with st.container():
     # Buttons in a Row
@@ -150,19 +162,6 @@ with st.container():
         file_name="chat_history.pdf",
         mime="application/pdf",
     )
-
-    
-# Chat History
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-    try:
-        stored_messages = st.session_state.get("stored_messages", None)
-        if stored_messages:
-            st.session_state.messages = json.loads(stored_messages)
-    except json.JSONDecodeError:
-        st.error("Error loading chat history from local storage.")
-
 
 
 with st.container():  # Use container for styling
