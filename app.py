@@ -1,3 +1,4 @@
+import time
 import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
 #save to pdf
@@ -35,6 +36,7 @@ def ai_sales_coach(user_input):
 
 # UI and Chat Logic
 st.title('Advi Script - Your AI Sales Coach')
+st.sidebar.markdown("**Chat History**")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 
 # Custom CSS for ChatGPT-like styling
@@ -72,19 +74,26 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Chat History in Sidebar
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-with st.sidebar.container(): 
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+with st.container():
+    if user_input := st.chat_input("Your message"):
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        with st.chat_message("user"):
+            st.markdown(user_input)
 
-# Main Chat Area
-with st.container():  # Use container for styling
-    if prompt := st.chat_input("Your message"):
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        response = ai_sales_coach(prompt)
+        # Display "Sales Coach is typing..." message
+        with st.chat_message("assistant"):
+            message_placeholder = st.empty()  # Create a placeholder for the typing message
+            message_placeholder.markdown("Sales Coach is typing...")
+
+        # Get AI response with a slight delay to simulate typing
+        time.sleep(2)  # Simulate thinking (adjust delay as needed)
+        response = ai_sales_coach(user_input)
+        
+        # Update the placeholder with the actual response
+        message_placeholder.markdown(response) 
+
         st.session_state.messages.append({"role": "assistant", "content": response})
-                        
+
