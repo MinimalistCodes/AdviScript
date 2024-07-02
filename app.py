@@ -40,8 +40,16 @@ st.markdown("Ask any sales-related questions or request assistance with specific
 # Custom CSS for ChatGPT-like styling
 st.markdown("""
 <style>
-.chat-container {
+.sidebar .sidebar-content {
     background-color: #F8F9FA; /* Light background */
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow-y: auto;
+    max-height: 500px; 
+}
+.chat-container {
+    background-color: #FFFFFF; /* White background for main chat area */
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
@@ -58,25 +66,25 @@ st.markdown("""
     text-align: right;
 }
 .bot-message {
-    background-color: #FFFFFF; /* White */
+    background-color: #F0F0F0; /* Light gray */
     text-align: left;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Chat History
+# Chat History in Sidebar
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-with st.container():  # Use container for styling
+with st.sidebar.container(): 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-# User Input
-if prompt := st.chat_input("Your message"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    st.session_state.messages.append({"role": "assistant", "content": "Let me think about that..."})
-    response = ai_sales_coach(prompt)
-    st.session_state.messages.append({"role": "assistant", "content": response})
+# Main Chat Area
+with st.container():  # Use container for styling
+    if prompt := st.chat_input("Your message"):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        response = ai_sales_coach(prompt)
+        st.session_state.messages.append({"role": "assistant", "content": response})
                         
