@@ -3,22 +3,24 @@ import streamlit as st
 from dotenv import load_dotenv
 import os, sys, json
 
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from langchain_huggingface import ChatHuggingFace
+
 
 # Choose a suitable model name (e.g., "EleutherAI/gpt-neo-125M")
-model_name = "togethercomputer/RedPajama-INCITE-Chat-3B-v1" 
-
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name)
-
+model_name = "meta-llama/Llama-2-70b-hf" 
 
 # Load environment variables
 load_dotenv()
 
-api_key = os.getenv("GOOGLE_API_KEY")
+huggingfacehub_api_token = os.getenv("HUGGINGFACEHUB_API_TOKEN")  # Hugging Face API token
 
 def ai_sales_coach(user_input):
-    
+    chat_llm = ChatHuggingFace(
+        repo_id="meta-llama/Llama-2-70b-hf",  # Use the Falcon 7B Instruct model
+        huggingfacehub_api_token=huggingfacehub_api_token,
+        model_kwargs={"temperature": 0.5},  # Adjust temperature for creativity (optional)
+    )
+
     prompt = f"""
     You are an expert sales coach. You can help with various aspects of sales, including:
 
@@ -47,12 +49,12 @@ def ai_sales_coach(user_input):
     {user_input}
  """
     try:
-            input_ids = tokenizer(prompt, return_tensors="pt").input_ids  # Tokenize the prompt
-            output = model.generate(input_ids, max_length=1000)  # Generate the response
-            return tokenizer.decode(output[0], skip_special_tokens=True)  # Decode the response
-    except Exception as e:  
-            st.error(f"An error occurred: {e}")  
-            return "Sorry, I couldn't process your request at this time. Please try again later."
+        response = chat_llm.invoke(prompt)
+        return response
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
+        return "Sorry, I couldn't process your request at this time. Please try again later."
+
 
 
 # UI Layout
