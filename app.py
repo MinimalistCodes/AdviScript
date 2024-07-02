@@ -89,9 +89,5 @@ if user_input := st.chat_input("Your message"):
     st.session_state.messages.append({"role": "user", "content": user_input})  # Append user message immediately
     with st.chat_message("user"):  # Display user message before getting response
         st.markdown(user_input)
-
-# User Input
-if prompt := st.chat_input("Your message"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    response = ai_sales_coach(prompt)
-    st.session_state.messages.append({"role": "assistant", "content": response})
+        response = ai_sales_coach(user_input)
+        st.session_state.messages.append({"role": "assistant", "content": response})
