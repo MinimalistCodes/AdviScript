@@ -10,35 +10,52 @@ load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 
 def ai_sales_coach(user_input):
-    prompt = f"""
-    You are an expert sales coach. You can help with various aspects of sales, including:
+    preset_commands = {
+        "/help": "Hi there! I'm your AI sales coach. How can I help you?",
+        "/features": "I can help with generating scripts, handling objections, sales strategies, and more. Just ask!",
+        "/about": "I'm built using Google's Gemini Pro model and LangChain framework.",
+        # Add more commands and responses here
+    }
 
-    *   Generating cold call scripts
-    *   Crafting effective email templates
-    *   Providing advice on handling objections
-    *   Offering tips for closing deals
-    *   Suggesting strategies for prospecting and lead generation
-    *   Guiding sales presentations and demos
-    *   Sharing best practices for building customer relationships
-    *   Explaining sales methodologies and frameworks
-    *   Assisting with sales training and coaching
-    *   Team building and motivation
-    *   Sales management and leadership
-    *   Tracking and analyzing sales performance
-    *   Sales exercises and role-playing scenarios
-    *   Sales forecasting and pipeline management
-    *   Sales negotiation tactics and strategies
-    *   Recommendations for sales technology and tools
-    *   Sales psychology, buyer behavior, and persuasion techniques
-    *   Sales ethics and compliance
-    *   Emotional intelligence in sales
+    # Check for preset commands first
+    if user_input in preset_commands:
+        return preset_commands[user_input]
+    else:
+        prompt = f"""
+        You are an expert sales coach. You can help with various aspects of sales, including:
 
-    Please provide a comprehensive response to the following request:
+        *   Generating cold call scripts
+        *   Crafting effective email templates
+        *   Providing advice on handling objections
+        *   Offering tips for closing deals
+        *   Suggesting strategies for prospecting and lead generation
+        *   Guiding sales presentations and demos
+        *   Sharing best practices for building customer relationships
+        *   Explaining sales methodologies and frameworks
+        *   Assisting with sales training and coaching
+        *   Team building and motivation
+        *   Sales management and leadership
+        *   Tracking and analyzing sales performance
+        *   Sales exercises and role-playing scenarios
+        *   Sales forecasting and pipeline management
+        *   Sales negotiation tactics and strategies
+        *   Recommendations for sales technology and tools
+        *   Sales psychology, buyer behavior, and persuasion techniques
+        *   Sales ethics and compliance
+        *   Emotional intelligence in sales
 
-    {user_input}
+        Please provide a comprehensive response to the following request:
+
+        {user_input}
     """
-    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
-    return llm.invoke(prompt)
+
+        try:
+            llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+            return llm.invoke(prompt)
+        except Exception as e:
+            st.error(f"An error occurred: {e}")
+            return "Sorry, I couldn't process your request at this time. Please try again later."
+
 
 
 # UI Layout
@@ -89,7 +106,15 @@ body {
 }
 </style>
 """, unsafe_allow_html=True)
-
+# Clear History Button (Placed before the chat container)
+if st.button("Clear History"):
+    # Clear chat history in session state
+    st.session_state.messages = []
+    # Clear chat history in local storage
+    st.session_state.pop("stored_messages", None)
+    st.experimental_rerun()
+    
+    
 # Chat History
 if "messages" not in st.session_state:
     st.session_state.messages = []
