@@ -166,7 +166,36 @@ with st.container():  # Use container for styling
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
                 
+# Buttons in a Row (under the input box)
+with st.container():
+    st.markdown("<div id='button-container'>", unsafe_allow_html=True)  # Button container
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("Clear History"):
+            # Clear chat history (same as before)
+            st.session_state.messages = []
+            st.session_state.pop("stored_messages", None)
+            st.experimental_rerun()
 
+    with col2:
+        if st.button("Export Chat to PDF"):
+            # Export to PDF (same as before)
+            pdf = FPDF()
+            pdf.add_page()
+            pdf.set_font("Arial", size=12)
+            for message in st.session_state.messages:
+                role = message["role"].capitalize()
+                content = message["content"]
+                pdf.cell(200, 10, txt=f"{role}: {content}", ln=True, align="L")
+
+            pdf_output = pdf.output(dest="S").encode("latin-1")
+            st.download_button(
+                label="Download PDF",
+                data=pdf_output,
+                file_name="chat_history.pdf",
+                mime="application/pdf",
+            )
+    st.markdown("</div>", unsafe_allow_html=True)
    
 # User Input
 if prompt := st.chat_input("Your message"):
