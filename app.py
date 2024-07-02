@@ -80,13 +80,16 @@ st.markdown("""
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-with st.container():  # Use container for styling
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+# Main Chat Area
+with st.container():
+    if user_input := st.chat_input("Your message"):  
+        st.session_state.messages.append({"role": "user", "content": user_input})  # Append user message immediately
+        with st.chat_message("user"):  # Display user message before getting response
+            st.markdown(user_input)
 
-# User Input
-if prompt := st.chat_input("Your message"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    response = ai_sales_coach(prompt)
-    st.session_state.messages.append({"role": "assistant", "content": response})
+        # Get AI response (you might want to add a loading indicator here)
+        response = ai_sales_coach(user_input)
+        st.session_state.messages.append({"role": "assistant", "content": response})  # Append and display AI response
+
+        # Rerun to display the AI response in the sidebar
+        st.experimental_rerun() 
