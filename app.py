@@ -1,9 +1,15 @@
 import streamlit as st
-from langchain.llms import GoogleGenerativeAI
-from dotenv import load_dotenv
-import os
+from langchain_google_genai import GoogleGenerativeAI
+#save to pdf
+#save to docx
 
+
+from dotenv import load_dotenv
+import os, sys
+
+# Load environment variables
 load_dotenv()
+
 api_key = os.getenv("GOOGLE_API_KEY")
 
 def ai_sales_coach(user_input):
@@ -44,3 +50,5 @@ if prompt := st.chat_input("Your message"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     response = ai_sales_coach(prompt)
     st.session_state.messages.append({"role": "assistant", "content": response})
+
+                        
