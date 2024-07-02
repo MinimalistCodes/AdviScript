@@ -45,81 +45,64 @@ def ai_sales_coach(user_input):
     return llm.invoke(prompt)
 
 
-# UI and Chat Logic
-st.title('Advi Script - Your AI Sales Coach')
-st.sidebar.markdown("**Chat History**")
-st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
+# UI Layout (Gemini-inspired)
+st.title("Advi Script - Your AI Sales Coach")  # Larger title at the top
 
-# Custom CSS for ChatGPT-like styling
+# Custom CSS for Gemini-like styling
 st.markdown("""
 <style>
-.sidebar .sidebar-content {
-    background-color: #F8F9FA; /* Light background */
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    overflow-y: auto;
-    max-height: 500px; 
+body {
+    font-family: 'Arial', sans-serif; /* Use a simple sans-serif font */
 }
-.chat-container {
-    background-color: #FFFFFF; /* White background for main chat area */
+.chat-message {
     border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    overflow-y: auto; /* Enable scrolling */
-    max-height: 500px;  /* Set maximum height */
-}
-.user-message, .bot-message {
-    border-radius: 8px;
-    padding: 10px;
+    padding: 12px; /* Slightly more padding */
     margin-bottom: 10px;
+    line-height: 1.5; /* Improve line height for readability */
 }
 .user-message {
-    background-color: #E2F0FF; /* Light blue */
+    background-color: #F0F0F0; /* Light gray for user */
     text-align: right;
 }
 .bot-message {
-    background-color: #F0F0F0; /* Light gray */
+    background-color: #FFFFFF; /* White for bot */
     text-align: left;
 }
-
-.typing-indicator {
-    color: #999999; /* Gray color for the typing indicator */
-    font-size: 12px;
-    margin-top: -10px; /* Adjust as needed for spacing */
-}
-.chat-card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
-    cursor: pointer; /* Make card clickable */
-}
-.chat-card:hover {
-    background-color: #f5f5f5; /* Light gray on hover */
+#chat-input-container {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #FFFFFF; /* White background for input area */
+    padding: 15px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Chat History in Sidebar
+# Chat History
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-with st.sidebar.container(): 
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
-# Main Chat Area
+# Input Box at the Bottom (Outside the Container)
 with st.container():
-    if user_input := st.chat_input("Your message"):  
-        st.session_state.messages.append({"role": "user", "content": user_input})  # Append user message immediately
-        with st.chat_message("user"):  # Display user message before getting response
+    user_input = st.chat_input("Your message", key="chat_input")
+    if user_input:  
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        with st.chat_message("user"):
             st.markdown(user_input)
 
-        # Get AI response (you might want to add a loading indicator here)
-        response = ai_sales_coach(user_input)
-        st.session_state.messages.append({"role": "assistant", "content": response})  # Append and display AI response
+        # Display "Sales Coach is typing..." message
+        with st.chat_message("assistant"):
+            message_placeholder = st.empty() 
+            message_placeholder.markdown("Sales Coach is typing...")
 
-        # Rerun to display the AI response in the sidebar
-        st.experimental_rerun() 
+        # Get AI response with a slight delay to simulate typing
+        time.sleep(1)  # Adjust delay as needed
+        response = ai_sales_coach(user_input)
+        st.session_state.messages.append({"role": "assistant", "content": response})
+
+        # Clear the typing indicator
+        message_placeholder.markdown(response) 
