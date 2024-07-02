@@ -49,29 +49,46 @@ def ai_sales_coach(user_input):
 st.title("Advi Script - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 
-# Custom CSS for basic styling (you can customize this further)
+# Custom CSS for Gemini-like styling with full-screen chat and docked input
 st.markdown("""
 <style>
-.chat-container {
-    background-color: #F8F9FA; /* Light background */
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    overflow-y: auto; /* Enable scrolling */
-    max-height: 500px;  /* Set maximum height */
+body {
+    font-family: 'Arial', sans-serif; 
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange elements vertically */
+    height: 100vh; /* Make the container take up full viewport height */
 }
-.user-message, .bot-message {
+.chat-message {
     border-radius: 8px;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 10px;
+    line-height: 1.5; 
 }
 .user-message {
-    background-color: #E2F0FF; /* Light blue */
+    background-color: #F0F0F0; 
     text-align: right;
 }
 .bot-message {
-    background-color: #FFFFFF; /* White */
+    background-color: #FFFFFF;
     text-align: left;
+}
+#chat-input-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #FFFFFF;
+    padding: 15px;
+}
+#chat-input { /* Style the textarea for input */
+    width: calc(100% - 30px); /* Account for padding */
+    resize: vertical; /* Allow vertical resizing */
+    min-height: 40px; /* Minimum height */
+    max-height: 200px; /* Maximum height */
+}
+#chat-area {  /* Container for chat messages */
+    flex-grow: 1; /* Allow chat area to expand to fill available space */
+    overflow-y: auto;  /* Enable scrolling in the chat area */
 }
 </style>
 """, unsafe_allow_html=True)
@@ -95,9 +112,9 @@ if prompt := st.chat_input("Your message"):
         st.markdown(prompt)
 
     # Display "Sales Coach is typing..."
-        with st.chat_message("assistant"):
-            message_placeholder = st.empty() 
-            message_placeholder.markdown("Sales Coach is typing...")
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty() 
+        message_placeholder.markdown("Sales Coach is typing...")
 
     # Get and append AI response (with a delay to simulate typing)
     time.sleep(1)  # Adjust the delay as needed
