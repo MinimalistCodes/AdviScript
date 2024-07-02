@@ -83,11 +83,12 @@ if "messages" not in st.session_state:
 with st.container():  # Use container for styling
     for message in st.session_state.messages:
             with st.chat_message(message["role"]):
-             if user_input := st.chat_input("Your message"):  
-                st.session_state.messages.append({"role": "user", "content": user_input})  # Append user message immediately
-                with st.chat_message("user"):  # Display user message before getting response
-                    st.markdown(user_input)
-            st.markdown(message["content"])
+                st.markdown(message["content"])
+                
+if user_input := st.chat_input("Your message"):  
+    st.session_state.messages.append({"role": "user", "content": user_input})  # Append user message immediately
+    with st.chat_message("user"):  # Display user message before getting response
+        st.markdown(user_input)
 
 # User Input
 if prompt := st.chat_input("Your message"):
