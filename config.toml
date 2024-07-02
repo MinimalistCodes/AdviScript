@@ -1,0 +1,13 @@
+[theme]
+base="dark"
+primary="dark-gray"
+secondary="white"
+accent="blue"
+
+[theme.font]
+family="Arial"
+size=12
+
+[theme.button]
+color="gray"
+size=12
