@@ -45,23 +45,21 @@ def ai_sales_coach(user_input):
     return llm.invoke(prompt)
 
 
-# UI Layout 
+# UI Layout
 st.title("Advi Script - Your AI Sales Coach")
+st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 
-# Custom CSS for basic styling
+# Custom CSS for basic styling (you can customize this further)
 st.markdown("""
 <style>
-body {
-    font-family: 'Arial', sans-serif; 
-}
 .chat-message {
     border-radius: 8px;
     padding: 12px;
     margin-bottom: 10px;
-    line-height: 1.5; 
+    line-height: 1.5;
 }
 .user-message {
-    background-color: #F0F0F0; 
+    background-color: #F0F0F0;
     text-align: right;
 }
 .bot-message {
@@ -71,11 +69,11 @@ body {
 #chat-input-container {
     padding: 15px;
 }
-#chat-input { /* Style the textarea for input */
-    width: calc(100% - 30px); /* Account for padding */
-    resize: vertical; /* Allow vertical resizing */
-    min-height: 40px; /* Minimum height */
-    max-height: 200px; /* Maximum height */
+#chat-input {
+    width: calc(100% - 30px);
+    resize: vertical;
+    min-height: 40px; 
+    max-height: 200px; 
 }
 </style>
 """, unsafe_allow_html=True)
@@ -88,22 +86,14 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Input Box and Send Button
-with st.container():  # Create a container for centering
+# Input Box
+with st.container():
     with st.form(key="chat_form"):
         user_input = st.text_area("Your message", key="chat_input", height=40, max_chars=None)
         submitted = st.form_submit_button("Send")
-        if submitted:
-            if user_input:
-                st.session_state.messages.append({"role": "user", "content": user_input})
-                with st.chat_message("user"):
-                    st.markdown(user_input)
-
-                # Get and display AI response directly
-                response = ai_sales_coach(user_input)
-                st.session_state.messages.append({"role": "assistant", "content": response})
-                with st.chat_message("assistant"):
-                    st.markdown(response)
-
-                # Clear the input box after sending the message
-                st.session_state.chat_input = ""
+        if submitted and user_input:  
+            st.session_state.messages.append({"role": "user", "content": user_input})
+            response = ai_sales_coach(user_input)
+            st.session_state.messages.append({"role": "assistant", "content": response})
+            st.session_state.chat_input = ""  # Clear the input box
+            st.experimental_rerun()   # Rerun to update the chat display
