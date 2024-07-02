@@ -3,6 +3,8 @@ import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
+from fpdf import FPDF
+
 
 # Load environment variables
 load_dotenv()
@@ -14,7 +16,8 @@ def ai_sales_coach(user_input):
         "/help": "Hi there! I'm your AI sales coach. How can I help you?",
         "/features": "I can help with generating scripts, handling objections, sales strategies, and more. Just ask!",
         "/about": "I'm built using Google's Gemini Pro model and LangChain framework.",
-        # Add more commands and responses here
+        "/clear": "Sure! Let's start fresh. How can I assist you today?", # Clear chat history
+        
     }
 
     # Check for preset commands first
@@ -55,6 +58,13 @@ def ai_sales_coach(user_input):
         except Exception as e:
             st.error(f"An error occurred: {e}")
             return "Sorry, I couldn't process your request at this time. Please try again later."
+
+
+def cchat():
+    # Clear History Button (Placed before the chat container)
+    st.session_state.messages = []
+    st.session_state.pop("stored_messages", None)
+    st.experimental_rerun()
 
 
 
@@ -105,15 +115,42 @@ body {
     overflow-y: auto;  /* Enable scrolling in the chat area */
 }
 </style>
+
+
 """, unsafe_allow_html=True)
-# Clear History Button (Placed before the chat container)
-if st.button("Clear History"):
-    # Clear chat history in session state
-    st.session_state.messages = []
-    # Clear chat history in local storage
-    st.session_state.pop("stored_messages", None)
-    st.experimental_rerun()
-    
+
+
+with st.container():
+    # Buttons in a Row
+    col1, col2 = st.columns(2)  # Create two columns for the buttons
+
+    with col1:
+        if st.button("Clear History"):
+            # Clear chat history (same as before)
+            st.session_state.messages = []
+            st.session_state.pop("stored_messages", None)
+            st.experimental_rerun()
+
+    with col2:
+        if st.button("Export Chat to PDF"):
+            # Export to PDF (same as before)
+            pdf = FPDF()
+            pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    for message in st.session_state.messages:
+        role = message["role"].capitalize()
+        content = message["content"]
+        pdf.cell(200, 10, txt=f"{role}: {content}", ln=True, align="L")
+
+    pdf_output = pdf.output(dest="S").encode("latin-1")
+    st.download_button(
+        label="Download PDF",
+        data=pdf_output,
+        file_name="chat_history.pdf",
+        mime="application/pdf",
+    )
+
     
 # Chat History
 if "messages" not in st.session_state:
