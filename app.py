@@ -6,8 +6,7 @@ import os, sys, json
 from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
 from streamlit_extras.add_vertical_space import add_vertical_space
-from streamlit_extras.toggle_theme import toggle_theme
-from PIL import Image
+from streamlit_extras.dataframe_explorer import dataframe_explorer
 
 # Load environment variables
 load_dotenv()
@@ -66,17 +65,39 @@ def ai_sales_coach(user_input):
 st.title("Advi Script - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
-toggle_theme()
-add_vertical_space(1)
-st.write("---")
+# JavaScript Code for Theme Switching
+theme_switch_script = """
+<script>
+const themeToggleButton = document.createElement("button");
+themeToggleButton.textContent = "Toggle Theme";
+themeToggleButton.style.padding = "8px 16px";
+themeToggleButton.style.margin = "10px 0";
+themeToggleButton.style.border = "none";
+themeToggleButton.style.borderRadius = "4px";
+themeToggleButton.style.cursor = "pointer";
+themeToggleButton.style.backgroundColor = "#007bff";  // Default blue color
+themeToggleButton.style.color = "white";
+
+document.body.insertBefore(themeToggleButton, document.body.firstChild); //add to top
+
+themeToggleButton.addEventListener("click", () => {
+    const currentTheme = document.body.classList.contains("light-mode") ? "light-mode" : "dark-mode";
+    document.body.classList.remove(currentTheme);
+    document.body.classList.add(currentTheme === "light-mode" ? "dark-mode" : "light-mode");
+});
+</script>
+"""
+
+st.markdown(theme_switch_script, unsafe_allow_html=True)
+
 
 # Custom CSS for Gemini-like styling with full-screen chat and docked input
 st.markdown("""
 <style>
 body {
-    font-family: 'Arial', sans-serif;
-    display: flex;
-    flex-direction: column;
+    font-family: 'Arial', sans-serif; 
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; 
     height: 100vh; 
 }
 .chat-message {
@@ -108,14 +129,28 @@ body {
     overflow-y: auto;  
 }
 
-/* Dark mode adjustments (customize as needed) */
-.stApp[data-theme="dark"] .user-message {
-    background-color: #333; /* Example dark mode background */
-    color: #fff; /* Example dark mode text color */
+/* Light mode styles (default) */
+body {
+    background-color: white;
+    color: black;
 }
-.stApp[data-theme="dark"] .bot-message {
-    background-color: #222; /* Example dark mode background */
-    color: #fff; /* Example dark mode text color */
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #262730; 
+    color: white;
+}
+/* Additional Styles for Dark Mode */
+body.dark-mode .user-message {
+    background-color: #3a3b42; /* Darker gray for user messages */
+}
+
+body.dark-mode #chat-input-container {
+    background-color: #262730; /* Match dark background */
+}
+
+body.dark-mode #chat-input {
+    color: white; /* White text for input field */
 }
 </style>
 """, unsafe_allow_html=True)
