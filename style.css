@@ -1,63 +1,45 @@
 /* styles.css */
 
-body {
-    background-color: #333;
-    color: #ddd;
-    font-family: Arial, sans-serif;
-}
-
-.sidebar .sidebar-content {
-    background-color: #222;
-    color: #ddd;
-}
-
-.stButton>button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 24px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.stButton>button:hover {
-    background-color: #45a049;
-}
-
-.stTextInput input {
-    background-color: #555;
-    color: #ddd;
-    border: none;
-    border-radius: 4px;
-    padding: 10px;
-}
-
-.stSelectbox>div>div {
-    background-color: #555;
-    color: #ddd;
-    border: none;
-    border-radius: 4px;
-    padding: 10px;
-}
-
-.stTextArea textarea {
-    background-color: #555;
-    color: #ddd;
-    border: none;
-    border-radius: 4px;
-    padding: 10px;
-}
-
-.stForm>div {
-    background-color: #444;
-    border-radius: 4px;
+/* Chat container */
+.chat-container {
+    background-color: #f5f5f5;
+    border-radius: 10px;
     padding: 20px;
-    margin-bottom: 20px;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
-.stMarkdown {
+/* Chat bubble */
+.chat-bubble {
     background-color: #ffffff;
-    border-radius: 4px;
-    padding: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* User message */
+.user-message {
+    background-color: #e2f0ff;
+}
+
+/* Bot message */
+.bot-message {
+    background-color: #f0f0f0;
+}
+
+/* Message text */
+.message-text {
+    color: #333333;
+    font-size: 14px;
+}
+
+/* User name */
+.user-name {
+    font-weight: bold;
+}
+
+/* Timestamp */
+.timestamp {
+    color: #999999;
+    font-size: 12px;
 }

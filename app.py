@@ -51,19 +51,36 @@ st.sidebar.markdown("**Chat History**")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 
 # Custom CSS for ChatGPT-like styling
+import streamlit as st
+from langchain.llms import GoogleGenerativeAI
+from dotenv import load_dotenv
+import time
+import os
+
+load_dotenv()
+api_key = os.getenv("GOOGLE_API_KEY")
+
+def ai_sales_coach(user_input):
+    # ... (same as before)
+
+# UI Layout (Gemini-inspired, full-screen chat, input at bottom)
+st.title("Advi Script - Your AI Sales Coach")
+
+# Custom CSS for Gemini-like styling with docked input
 st.markdown("""
 <style>
 body {
-    font-family: 'Arial', sans-serif; 
+    font-family: 'Arial', sans-serif;
+    background-color: #F8F9FA; /* Background for entire page */
 }
 .chat-message {
     border-radius: 8px;
     padding: 12px;
     margin-bottom: 10px;
-    line-height: 1.5; 
+    line-height: 1.5;
 }
 .user-message {
-    background-color: #F0F0F0; 
+    background-color: #F0F0F0;
     text-align: right;
 }
 .bot-message {
@@ -78,42 +95,50 @@ body {
     background-color: #FFFFFF;
     padding: 15px;
 }
-#chat-input { /* Style the textarea for input */
-    width: calc(100% - 30px); /* Account for padding */
-    resize: vertical; /* Allow vertical resizing */
-    min-height: 40px; /* Minimum height */
-    max-height: 200px; /* Maximum height */
+#chat-input {
+    width: calc(100% - 30px);
+    resize: vertical;
+    min-height: 40px;
+    max-height: 200px;
+}
+#chat-messages-container {
+    padding-bottom: 80px; /* Adjust based on input container height */
+    overflow-y: auto;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Chat History
+# Chat History and AI Responses
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+with st.container():
+    # Display Chat History
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
 
 # Input Box at the Bottom (Docked and Centered)
-with st.container():  # Create a container for centering
-    with st.form(key="chat_form"):
-        user_input = st.text_area("Your message", key="chat_input", height=40, max_chars=None)
-        submitted = st.form_submit_button("Send")
-        if submitted:
-            st.session_state.messages.append({"role": "user", "content": user_input})
-            with st.chat_message("user"):
-                st.markdown(user_input)
+with st.container():
+    user_input = st.text_area("Your message", key="chat_input", height=40, on_submit=ai_sales_coach(user_input))
 
-            # Display "Sales Coach is typing..." message
-            with st.chat_message("assistant"):
-                message_placeholder = st.empty() 
-                message_placeholder.markdown("Sales Coach is typing...")
+if user_input:
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    with st.chat_message("user"):
+        st.markdown(user_input)
 
-            # Get AI response with a slight delay to simulate typing
-            time.sleep(1)  # Adjust delay as needed
-            response = ai_sales_coach(user_input)
-            st.session_state.messages.append({"role": "assistant", "content": response})
+    # Display "Sales Coach is typing..." message
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty()
+        message_placeholder.markdown("Sales Coach is typing...")
 
-            # Clear the typing indicator
-            message_placeholder.markdown(response) 
+    # Get AI response with a slight delay to simulate typing
+    time.sleep(1)
+    response = ai_sales_coach(user_input)
+    st.session_state.messages.append({"role": "assistant", "content": response})
+
+    # Clear the typing indicator and display the response
+    message_placeholder.markdown(response)
+
+    # Clear the input box after sending the message
+    st.session_state.chat_input = ""
