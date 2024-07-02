@@ -98,14 +98,6 @@ st.markdown("""
 .chat-card:hover {
     background-color: #f5f5f5; /* Light gray on hover */
 }
-
-#chat-input-container {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #F8F9FA; /* Match the background of the chat area */
-    padding: 10px;
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -119,30 +111,15 @@ with st.sidebar.container():
             st.markdown(message["content"])
 
 # Main Chat Area
-with st.container():  
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-# Input Box at the Bottom (Outside the Container)
 with st.container():
-    user_input = st.chat_input("Your message", key="chat_input")
+    if user_input := st.chat_input("Your message"):  
+        st.session_state.messages.append({"role": "user", "content": user_input})  # Append user message immediately
+        with st.chat_message("user"):  # Display user message before getting response
+            st.markdown(user_input)
 
-if user_input:  
-    st.session_state.messages.append({"role": "user", "content": user_input})
-    with st.chat_message("user"):
-        st.markdown(user_input)
+        # Get AI response (you might want to add a loading indicator here)
+        response = ai_sales_coach(user_input)
+        st.session_state.messages.append({"role": "assistant", "content": response})  # Append and display AI response
 
-    # Display "Sales Coach is typing..." message
-    with st.chat_message("assistant"):
-        message_placeholder = st.empty() 
-        message_placeholder.markdown("Sales Coach is typing...")
-
-    # Get AI response with a slight delay to simulate typing
-    time.sleep(1)  # Adjust delay as needed
-    response = ai_sales_coach(user_input)
-    st.session_state.messages.append({"role": "assistant", "content": response})
-
-    # Clear the typing indicator
-    message_placeholder.markdown(response)
-    user_input = st.chat_input("Your message", key="chat_input")
+        # Rerun to display the AI response in the sidebar
+        st.experimental_rerun() 
