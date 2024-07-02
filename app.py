@@ -44,6 +44,7 @@ def ai_sales_coach(user_input):
 # UI Layout
 st.title("Advi Script - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
+st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
 
 # Custom CSS for Gemini-like styling with full-screen chat and docked input
 st.markdown("""
