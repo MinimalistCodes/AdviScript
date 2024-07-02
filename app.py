@@ -50,22 +50,6 @@ st.title('Advi Script - Your AI Sales Coach')
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 
 # Custom CSS for ChatGPT-like styling
-import streamlit as st
-from langchain.llms import GoogleGenerativeAI
-from dotenv import load_dotenv
-import time
-import os
-
-load_dotenv()
-api_key = os.getenv("GOOGLE_API_KEY")
-
-def ai_sales_coach(user_input):
-    # ... (same as before)
-
-# UI Layout (Gemini-inspired, full-screen chat, input at bottom)
-st.title("Advi Script - Your AI Sales Coach")
-
-# Custom CSS for Gemini-like styling with full-screen chat and docked input
 st.markdown("""
 <style>
 body {
@@ -97,14 +81,10 @@ body {
     padding: 15px;
 }
 #chat-input { /* Style the textarea for input */
-    width: calc(100% - 30px); /* Account for padding */
+    width: calc(100% - 120px); /* Account for padding and button */
     resize: vertical; /* Allow vertical resizing */
     min-height: 40px; /* Minimum height */
     max-height: 200px; /* Maximum height */
-}
-#chat-area {  /* Container for chat messages */
-    flex-grow: 1; /* Allow chat area to expand to fill available space */
-    overflow-y: auto;  /* Enable scrolling in the chat area */
 }
 </style>
 """, unsafe_allow_html=True)
@@ -115,35 +95,39 @@ if "messages" not in st.session_state:
 
 # Main Chat Area
 with st.container():
-    st.markdown("<div id='chat-area'>", unsafe_allow_html=True)  # Create the chat area div
+    st.markdown("<div id='chat-area'>", unsafe_allow_html=True)  
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-    st.markdown("</div>", unsafe_allow_html=True)  # Close the chat area div
+    st.markdown("</div>", unsafe_allow_html=True) 
 
-# Input Box at the Bottom (Docked and Centered)
+# Input Box and Button at the Bottom (Docked and Centered)
 with st.container():
-    user_input = st.text_area("Your message", key="chat_input", height=40, on_submit=ai_sales_coach(user_input))
+    col1, col2 = st.columns([8, 1])  # Create two columns: one for input, one for button
 
-if user_input: 
-    st.session_state.messages.append({"role": "user", "content": user_input})
-    with st.chat_message("user"):
-        st.markdown(user_input)
+    with col1:
+        user_input = st.text_area("Your message", key="chat_input", height=40, max_chars=None)
 
-    # Display "Sales Coach is typing..." message
-    with st.chat_message("assistant"):
-        message_placeholder = st.empty() 
-        message_placeholder.markdown("Sales Coach is typing...")
+    with col2:
+        if st.button("Send", key="send_button") and user_input:
+            st.session_state.messages.append({"role": "user", "content": user_input})
+            with st.chat_message("user"):
+                st.markdown(user_input)
 
-    # Get AI response with a slight delay to simulate typing
-    time.sleep(1)  # Adjust delay as needed
-    response = ai_sales_coach(user_input)
-    st.session_state.messages.append({"role": "assistant", "content": response})
+            # Display "Sales Coach is typing..." message
+            with st.chat_message("assistant"):
+                message_placeholder = st.empty() 
+                message_placeholder.markdown("Sales Coach is typing...")
 
-    # Clear the typing indicator
-    message_placeholder.markdown(response) 
+            # Get AI response with a slight delay to simulate typing
+            time.sleep(1) 
+            response = ai_sales_coach(user_input)
+            st.session_state.messages.append({"role": "assistant", "content": response})
 
-    # Clear the input box after sending the message
-    st.session_state.chat_input = "
+            # Clear the typing indicator
+            message_placeholder.markdown(response) 
+
+            # Clear the input box after sending the message
+            st.session_state.chat_input = ""
