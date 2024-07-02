@@ -67,8 +67,6 @@ st.markdown("Ask any sales-related questions or request assistance with specific
 st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
 # JavaScript Code for Theme Switching
 
-st.sidebar.title("Theme")
-# Dark/Light Mode Toggle
 if "theme" not in st.session_state:
     st.session_state.theme = "light"
 
