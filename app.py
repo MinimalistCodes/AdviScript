@@ -25,6 +25,17 @@ def ai_sales_coach(user_input):
     *   Guiding sales presentations and demos
     *   Sharing best practices for building customer relationships
     *   Explaining sales methodologies and frameworks
+    *   Assisting with sales training and coaching
+    *   Team building and motivation
+    *   Sales management and leadership
+    *   Tracking and analyzing sales performance
+    *   Sales exercises and role-playing scenarios
+    *   Sales forecasting and pipeline management
+    *   Sales negotiation tactics and strategies
+    *   Recommendations for sales technology and tools
+    *   Sales psychology, buyer behavior, and persuasion techniques
+    *   Sales ethics and compliance
+    *   Emotional intelligence in sales
 
     Please provide a comprehensive response to the following request:
 
