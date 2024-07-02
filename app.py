@@ -5,10 +5,6 @@ import os, sys, json
 
 from langchain_huggingface import ChatHuggingFace
 
-
-# Choose a suitable model name (e.g., "EleutherAI/gpt-neo-125M")
-model_name = "meta-llama/Llama-2-70b-hf" 
-
 # Load environment variables
 load_dotenv()
 
