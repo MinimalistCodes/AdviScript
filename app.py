@@ -18,6 +18,7 @@ load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 
 def ai_sales_coach(user_input):
+    
     prompt = f"""
     You are an expert sales coach. You can help with various aspects of sales, including:
 
@@ -45,12 +46,13 @@ def ai_sales_coach(user_input):
 
     {user_input}
  """
-
-     # Tokenize the input and generate a response
-    input_ids = tokenizer(prompt, return_tensors="pt").input_ids
-    output = model.generate(input_ids, max_length=1000) # Adjust max_length as needed
-
-    return tokenizer.decode(output[0], skip_special_tokens=True) # Decode the generated response
+    try:
+            input_ids = tokenizer(prompt, return_tensors="pt").input_ids  # Tokenize the prompt
+            output = model.generate(input_ids, max_length=1000)  # Generate the response
+            return tokenizer.decode(output[0], skip_special_tokens=True)  # Decode the response
+        except Exception as e:  
+            st.error(f"An error occurred: {e}")  
+            return "Sorry, I couldn't process your request at this time. Please try again later."
 
 
 # UI Layout
