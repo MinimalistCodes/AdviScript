@@ -68,6 +68,7 @@ st.markdown("<small>Chat history is saved in your browser's local storage.</smal
 # JavaScript Code for Theme Switching
 
 st.sidebar.title("Theme")
+# Dark/Light Mode Toggle
 if "theme" not in st.session_state:
     st.session_state.theme = "light"
 
@@ -98,6 +99,7 @@ st.markdown(
     </style>
     """,
     unsafe_allow_html=True,
+),
 
 
 
