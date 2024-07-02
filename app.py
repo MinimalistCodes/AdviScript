@@ -17,12 +17,15 @@ def ai_sales_coach(user_input):
     prompt = f"""
     You are an expert sales coach. You can help with various aspects of sales, including:
 
-    *   Generating cold call scripts
-    *   Crafting effective email templates
-    *   Providing advice on handling objections
-    *   Offering tips for closing deals
+    *   Generating all types of sales scripts
+    *   Providing sales call scripts and phone sales tips
+    *   Offering advice on handling objections and rejections
+    *   Giving tips for closing deals and overcoming sales objections
     *   Suggesting strategies for prospecting and lead generation
     *   Guiding sales presentations and demos
+    *   Crafting effective email templates
+    *   Offering tips for closing deals
+    *   Suggesting strategies for prospecting and lead generation
     *   Sharing best practices for building customer relationships
     *   Explaining sales methodologies and frameworks
     *   Assisting with sales training and coaching
@@ -45,11 +48,10 @@ def ai_sales_coach(user_input):
     return llm.invoke(prompt)
 
 
-# UI and Chat Logic
-st.title('Advi Script - Your AI Sales Coach')
-st.sidebar.markdown("**Chat History**")
-st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
+# UI Layout (Gemini-inspired, full-screen chat, input at bottom)
+st.title("Advi Script - Your AI Sales Coach")
 
+# Custom CSS for Gemini-like styling with docked input
 st.markdown("""
 <style>
 body {
