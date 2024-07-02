@@ -6,6 +6,9 @@ google-generativeai
 langchain-google-genai
 langchain
 langchain_community
-jupyter
-fpdf
 streamlit-extras
+gradio
+transformers
+torch
+langchain-huggingface
+
