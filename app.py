@@ -12,7 +12,7 @@ huggingfacehub_api_token = os.getenv("HUGGINGFACEHUB_API_TOKEN")  # Hugging Face
 
 def ai_sales_coach(user_input):
     chat_llm = ChatHuggingFace(
-        repo_id="meta-llama/Llama-2-70b-hf",  # Use the Falcon 7B Instruct model
+        repo_id="tiiuae/falcon-7b-instruct",  # Use the Falcon 7B Instruct model
         huggingfacehub_api_token=huggingfacehub_api_token,
         model_kwargs={"temperature": 0.5},  # Adjust temperature for creativity (optional)
     )
