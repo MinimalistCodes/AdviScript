@@ -7,8 +7,5 @@ langchain-google-genai
 langchain
 langchain_community
 streamlit-extras
-gradio
-transformers
-torch
-langchain-huggingface
+fpdf
 
