@@ -19,10 +19,9 @@ api_key = os.getenv("GOOGLE_API_KEY")
 
 LLM_MODELS = {
     "GPT-Neo 125M": "EleutherAI/gpt-neo-125M",
-    "DialoGPT-medium": "microsoft/DialoGPT-medium",
-    "Flan-T5-base": "google/flan-t5-base",
     # Add more models as needed
 }
+
 
 def load_model_and_tokenizer(model_name):
     tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -59,12 +58,24 @@ def ai_sales_coach(user_input):
     {user_input}
  """
     try:
-            input_ids = tokenizer(prompt, return_tensors="pt").input_ids  # Tokenize the prompt
-            output = model.generate(input_ids, max_length=1000)  # Generate the response
-            return tokenizer.decode(output[0], skip_special_tokens=True)  # Decode the response
+            # Tokenize the input 
+            input_ids = tokenizer(prompt, return_tensors="pt").input_ids
+            attention_mask = tokenizer(prompt, return_tensors="pt").attention_mask  # Generate attention mask
+            
+            # Generate response (providing attention mask)
+            output = model.generate(
+                input_ids, 
+                attention_mask=attention_mask, 
+                max_length=1000, 
+                pad_token_id=tokenizer.eos_token_id
+            )
+            
+            # Decode the generated response
+            return tokenizer.decode(output[0], skip_special_tokens=True)
     except Exception as e:  
             st.error(f"An error occurred: {e}")  
             return "Sorry, I couldn't process your request at this time. Please try again later."
+
 
 
 # UI Layout
