@@ -71,8 +71,20 @@ if "messages" not in st.session_state:
 with st.container():  # Use container for styling
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+            st.markdown(message["content"]) 
+ with st.chat_message("assistant"):
+            message_placeholder = st.empty()  # Create a placeholder for the typing message
+            message_placeholder.markdown("Sales Coach is typing...")
 
+        # Get AI response with a slight delay to simulate typing
+        time.sleep(2)  # Simulate thinking (adjust delay as needed)
+        response = ai_sales_coach(user_input)
+        
+        # Update the placeholder with the actual response
+        message_placeholder.markdown(response) 
+
+        st.session_state.messages.append({"role": "assistant", "content": response})
+       
 # User Input
 if prompt := st.chat_input("Your message"):
     st.session_state.messages.append({"role": "user", "content": prompt})
