@@ -41,26 +41,70 @@ st.title('Advi Script')
 st.markdown(
     """
     <style>
-    .chat-message {
-        padding: 5px 10px;
-        margin: 5px;
-        border-radius: 10px;
-        display: inline-block;
-    }
-    .chat-message.user {
-        background-color: #f1f0f0;
-        text-align: right;
-    }
-    .chat-message.assistant {
-        background-color: #0071bc;
-        color: white;
-    }
-    .chat-message.user p {
-        margin: 0;
-    }
-    .chat-message.assistant p {
-        margin: 0;
-    }
+/* styles.css */
+
+body {
+    background-color: #333;
+    color: #ddd;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar .sidebar-content {
+    background-color: #222;
+    color: #ddd;
+}
+
+.stButton>button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 24px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.stButton>button:hover {
+    background-color: #45a049;
+}
+
+.stTextInput input {
+    background-color: #555;
+    color: #ddd;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.stSelectbox>div>div {
+    background-color: #555;
+    color: #ddd;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.stTextArea textarea {
+    background-color: #555;
+    color: #ddd;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.stForm>div {
+    background-color: #444;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.stMarkdown {
+    background-color: #ffffff;
+    border-radius: 4px;
+    padding: 20px;
+}
+
     </style>
     """,
     unsafe_allow_html=True
