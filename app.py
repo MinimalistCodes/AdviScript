@@ -1,13 +1,16 @@
-import json
 import time
 import streamlit as st
-from langchain_google_genai import GoogleGenerativeAI
-#save to pdf
-#save to docx
-
-
 from dotenv import load_dotenv
-import os, sys
+import os, sys, json
+
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+# Choose a suitable model name (e.g., "EleutherAI/gpt-neo-125M")
+model_name = "EleutherAI/gpt-neo-125M" 
+
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name)
+
 
 # Load environment variables
 load_dotenv()
@@ -41,14 +44,19 @@ def ai_sales_coach(user_input):
     Please provide a comprehensive response to the following request:
 
     {user_input}
-    """
-    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
-    return llm.invoke(prompt)
+ """
+
+     # Tokenize the input and generate a response
+    input_ids = tokenizer(prompt, return_tensors="pt").input_ids
+    output = model.generate(input_ids, max_length=1000) # Adjust max_length as needed
+
+    return tokenizer.decode(output[0], skip_special_tokens=True) # Decode the generated response
 
 
 # UI Layout
 st.title("Advi Script - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
+st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
 
 # Custom CSS for Gemini-like styling with full-screen chat and docked input
 st.markdown("""
@@ -98,7 +106,6 @@ body {
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-    # Load chat history from local storage
     try:
         stored_messages = st.session_state.get("stored_messages", None)
         if stored_messages:
@@ -106,36 +113,31 @@ if "messages" not in st.session_state:
     except json.JSONDecodeError:
         st.error("Error loading chat history from local storage.")
 
-with st.container():
-    # Display chat messages
+
+
+with st.container():  # Use container for styling
     for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+                
+# User Input
+if prompt := st.chat_input("Your message"):
+    # Append user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    
+    # Display user message
+    with st.chat_message("user"):
+        st.markdown(prompt)
 
-    # Input Box at the Bottom (Docked and Centered)
-    with st.container():  
-        # Removed the button and form
-        user_input = st.text_area("Your message", key="chat_input", height=40, on_change=None)
-        if user_input:  # Check if Enter was pressed or text area changed significantly
-            st.session_state.messages.append({"role": "user", "content": user_input})
-            with st.chat_message("user"):
-                st.markdown(user_input)
+    # Display "Sales Coach is typing..."
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty() 
+        message_placeholder.markdown("Sales Coach is typing...")
 
-            # Display "Sales Coach is typing..." message
-            with st.chat_message("assistant"):
-                message_placeholder = st.empty() 
-                message_placeholder.markdown("Sales Coach is typing...")
+    # Get and append AI response (with a delay to simulate typing)
+    time.sleep(1)  # Adjust the delay as needed
+    response = ai_sales_coach(prompt)
+    message_placeholder.markdown(response)  # Update the placeholder
+    st.session_state.messages.append({"role": "assistant", "content": response})
 
-            # Get AI response with a slight delay to simulate typing
-            time.sleep(1)  # Adjust delay as needed
-            response = ai_sales_coach(user_input)
-            st.session_state.messages.append({"role": "assistant", "content": response})
-
-            # Update the placeholder with the actual response
-            message_placeholder.markdown(response) 
-
-            # Clear the input box after sending the message
-            st.session_state.chat_input = ""
-
-            # Save chat history to local storage
-            st.session_state.stored_messages = json.dumps(st.session_state.messages)
+st.session_state.stored_messages = json.dumps(st.session_state.messages)
