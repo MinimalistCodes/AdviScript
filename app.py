@@ -17,6 +17,18 @@ load_dotenv()
 
 api_key = os.getenv("GOOGLE_API_KEY")
 
+LLM_MODELS = {
+    "GPT-Neo 125M": "EleutherAI/gpt-neo-125M",
+    "DialoGPT-medium": "microsoft/DialoGPT-medium",
+    "Flan-T5-base": "google/flan-t5-base",
+    # Add more models as needed
+}
+
+def load_model_and_tokenizer(model_name):
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForCausalLM.from_pretrained(model_name)
+    return tokenizer, model
+
 def ai_sales_coach(user_input):
     
     prompt = f"""
@@ -50,7 +62,7 @@ def ai_sales_coach(user_input):
             input_ids = tokenizer(prompt, return_tensors="pt").input_ids  # Tokenize the prompt
             output = model.generate(input_ids, max_length=1000)  # Generate the response
             return tokenizer.decode(output[0], skip_special_tokens=True)  # Decode the response
-        except Exception as e:  
+    except Exception as e:  
             st.error(f"An error occurred: {e}")  
             return "Sorry, I couldn't process your request at this time. Please try again later."
 
@@ -103,16 +115,27 @@ body {
 </style>
 """, unsafe_allow_html=True)
 
-# Chat History
 if "messages" not in st.session_state:
     st.session_state.messages = []
+    st.session_state.model_name = "GPT-Neo 125M"  # Default model
 
+    # Load chat history from local storage
     try:
         stored_messages = st.session_state.get("stored_messages", None)
         if stored_messages:
             st.session_state.messages = json.loads(stored_messages)
     except json.JSONDecodeError:
         st.error("Error loading chat history from local storage.")
+
+
+with st.sidebar:
+    st.markdown("**Model Selection**")
+    selected_model = st.selectbox("Choose a model:", list(LLM_MODELS.keys()), key="model_select")
+
+    if selected_model != st.session_state.model_name:  # Model changed
+        st.session_state.model_name = selected_model
+        tokenizer, model = load_model_and_tokenizer(LLM_MODELS[selected_model]) 
+
 
 
 
