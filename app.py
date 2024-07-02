@@ -1,22 +1,15 @@
 import time
 import streamlit as st
+from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
-
-from langchain_huggingface import ChatHuggingFace
 
 # Load environment variables
 load_dotenv()
 
-huggingfacehub_api_token = os.getenv("HUGGINGFACEHUB_API_TOKEN")  # Hugging Face API token
+api_key = os.getenv("GOOGLE_API_KEY")
 
 def ai_sales_coach(user_input):
-    chat_llm = ChatHuggingFace(
-        repo_id="tiiuae/falcon-7b-instruct",  # Use the Falcon 7B Instruct model
-        huggingfacehub_api_token=huggingfacehub_api_token,
-        model_kwargs={"temperature": 0.5},  # Adjust temperature for creativity (optional)
-    )
-
     prompt = f"""
     You are an expert sales coach. You can help with various aspects of sales, including:
 
@@ -43,14 +36,9 @@ def ai_sales_coach(user_input):
     Please provide a comprehensive response to the following request:
 
     {user_input}
- """
-    try:
-        response = chat_llm.invoke(prompt)
-        return response
-    except Exception as e:
-        st.error(f"An error occurred: {e}")
-        return "Sorry, I couldn't process your request at this time. Please try again later."
-
+    """
+    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+    return llm.invoke(prompt)
 
 
 # UI Layout
