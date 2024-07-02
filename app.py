@@ -41,70 +41,49 @@ st.title('Advi Script')
 st.markdown(
     """
     <style>
-/* styles.css */
+    /* Chat container */
+    .chat-container {
+        background-color: #f5f5f5;
+        border-radius: 10px;
+        padding: 20px;
+        max-width: 500px;
+        margin: 0 auto;
+    }
 
-body {
-    background-color: #333;
-    color: #ddd;
-    font-family: Arial, sans-serif;
-}
+    /* Chat bubble */
+    .chat-bubble {
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
 
-.sidebar .sidebar-content {
-    background-color: #222;
-    color: #ddd;
-}
+    /* User message */
+    .user-message {
+        background-color: #e2f0ff;
+    }
 
-.stButton>button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 24px;
-    font-size: 16px;
-    cursor: pointer;
-}
+    /* Bot message */
+    .bot-message {
+        background-color: #f0f0f0;
+    }
 
-.stButton>button:hover {
-    background-color: #45a049;
-}
+    /* Message text */
+    .message-text {
+        color: #333333;
+        font-size: 14px;
+    }
 
-.stTextInput input {
-    background-color: #555;
-    color: #ddd;
-    border: none;
-    border-radius: 4px;
-    padding: 10px;
-}
+    /* User name */
+    .user-name {
+        font-weight: bold;
+    }
 
-.stSelectbox>div>div {
-    background-color: #555;
-    color: #ddd;
-    border: none;
-    border-radius: 4px;
-    padding: 10px;
-}
-
-.stTextArea textarea {
-    background-color: #555;
-    color: #ddd;
-    border: none;
-    border-radius: 4px;
-    padding: 10px;
-}
-
-.stForm>div {
-    background-color: #444;
-    border-radius: 4px;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.stMarkdown {
-    background-color: #ffffff;
-    border-radius: 4px;
-    padding: 20px;
-}
-
+    /* Timestamp */
+    .timestamp {
+        color: #999999;
+        font-size: 12px;
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -142,9 +121,6 @@ with st.sidebar:
         if submitted:
             with chat_container:
                 st.write(f"Generating a {form_length} {form_script_type} script for a {industry} company with a {form_tone} tone.")
-                st.session_state.messages.append({"role": "user", "content": industry})
-                response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), form_keywords)
-                st.session_state.messages.append({"role": "assistant", "content": response})
     #Save Text to PDF
     savePDF = st.button("Save Chat to PDF")
     if savePDF:
