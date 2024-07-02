@@ -6,6 +6,6 @@ google-generativeai
 langchain-google-genai
 langchain
 langchain_community
-st-extras
+streamlit-extras
 fpdf
 
