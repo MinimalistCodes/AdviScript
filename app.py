@@ -122,7 +122,34 @@ if "messages" not in st.session_state:
     except json.JSONDecodeError:
         st.error("Error loading chat history from local storage.")
 
-# Buttons in a Row (outside of container)
+
+with st.container():  # Use container for styling
+    for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+                
+
+   
+# User Input
+if prompt := st.chat_input("Your message"):
+    # Append user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    
+    # Display user message
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # Display "Sales Coach is typing..."
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty() 
+        message_placeholder.markdown("Sales Coach is typing...")
+
+    # Get and append AI response (with a delay to simulate typing)
+    time.sleep(1)  # Adjust the delay as needed
+    response = ai_sales_coach(prompt)
+    message_placeholder.markdown(response)  # Update the placeholder
+    st.session_state.messages.append({"role": "assistant", "content": response})
+
 col1, col2 = st.columns(2)  # Create two columns for the buttons
 
 with col1:
@@ -152,30 +179,5 @@ with col2:
             mime="application/pdf",
         )
 
-
-with st.container():  # Use container for styling
-    for message in st.session_state.messages:
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
-   
-# User Input
-if prompt := st.chat_input("Your message"):
-    # Append user message to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    
-    # Display user message
-    with st.chat_message("user"):
-        st.markdown(prompt)
-
-    # Display "Sales Coach is typing..."
-    with st.chat_message("assistant"):
-        message_placeholder = st.empty() 
-        message_placeholder.markdown("Sales Coach is typing...")
-
-    # Get and append AI response (with a delay to simulate typing)
-    time.sleep(1)  # Adjust the delay as needed
-    response = ai_sales_coach(prompt)
-    message_placeholder.markdown(response)  # Update the placeholder
-    st.session_state.messages.append({"role": "assistant", "content": response})
 
 st.session_state.stored_messages = json.dumps(st.session_state.messages)
