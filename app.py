@@ -1,13 +1,16 @@
 import streamlit as st
 from streamlit_extras.add_vertical_space import add_vertical_space
-from streamlit_extras.toggle_theme import toggle_theme
-st.set_page_config(
-    page_title="AdviScript - AI Sales & Marketing Assistant",
-    page_icon="🤖",
-    layout="wide",
-    initial_sidebar_state="collapsed",
+ from streamlit_extras.switch_page_button import switch_page
+
+ 
+ st.set_page_config(
+ page_title="AdviScript - AI Sales & Marketing Assistant",
+ page_icon="🤖",
+layout="wide",
+initial_sidebar_state="collapsed",
 )
 # UI Layout
+
 st.title("AdviScript - AI Sales & Marketing Assistant")
 
 
@@ -21,8 +24,6 @@ st.markdown(
 )
 
 
-
-toggle_theme()
 st.sidebar.title("Menu")
 selected_page = st.sidebar.radio("Go to", ["Chat with Coach", "Sales Script Generator", "Email Generator", "Summarizer", "Image Scan", "Settings"])
 

@@ -14,45 +14,49 @@ load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 
 def ai_sales_coach(user_input):
+    # Preset Commands with Enhanced Replies
     preset_commands = {
-        "/help": "Hi there! I'm your AI sales coach. How can I help you?",
-        "/features": "I can help with generating scripts, handling objections, sales strategies, and more. Just ask!",
-        "/about": "I'm built using Google's Gemini Pro model and LangChain framework.",
-        "/clear": "Sure! Let's start fresh. How can I assist you today?", # Clear chat history
-        
+        "/help": "Hi! I'm here to help you excel in sales. Whether you're a rep or a manager, I can assist with strategy, training, motivation, tools, and more. Just ask!",
+        "/features": """I offer a wide range of features, including:
+                      * Generating sales scripts and email templates
+                      * Sales advice, objection handling, and closing techniques
+                      * Prospecting, lead generation, and pipeline management strategies
+                      * Guidance on presentations, demos, and building relationships
+                      * Sales methodology explanations
+                      * Sales training, coaching, and team building resources
+                      * Sales performance analysis and tracking 
+                      * Sales leadership and management advice
+                      * ...and much more! Just ask away.""",
+        "/about": "I'm an AI-powered sales coach built using Google's Gemini Pro model and LangChain.",
+        "/clear": "Let's start fresh. What can I help you with today?",  
     }
 
     # Check for preset commands first
     if user_input in preset_commands:
         return preset_commands[user_input]
     else:
+        # Enhanced Prompt for Sales Coach and Manager
         prompt = f"""
-        You are an expert sales coach. You can help with various aspects of sales, including:
+        You are an experienced sales leader and coach. You have in-depth knowledge of sales strategies, techniques, and best practices for both individual contributors and sales managers. You are skilled in providing guidance on:
 
-        *   Generating cold call scripts
-        *   Crafting effective email templates
-        *   Providing advice on handling objections
-        *   Offering tips for closing deals
-        *   Suggesting strategies for prospecting and lead generation
-        *   Guiding sales presentations and demos
-        *   Sharing best practices for building customer relationships
-        *   Explaining sales methodologies and frameworks
-        *   Assisting with sales training and coaching
-        *   Team building and motivation
-        *   Sales management and leadership
-        *   Tracking and analyzing sales performance
-        *   Sales exercises and role-playing scenarios
-        *   Sales forecasting and pipeline management
-        *   Sales negotiation tactics and strategies
-        *   Recommendations for sales technology and tools
-        *   Sales psychology, buyer behavior, and persuasion techniques
-        *   Sales ethics and compliance
-        *   Emotional intelligence in sales
+        *   Sales methodologies (e.g., SPIN selling, Sandler, Challenger Sale)
+        *   Effective communication and presentation skills
+        *   Building rapport and trust with prospects and customers
+        *   Handling objections and overcoming challenges
+        *   Closing techniques and negotiation strategies
+        *   Sales team management and leadership
+        *   Motivating and coaching sales representatives
+        *   Performance analysis and goal setting
+        *   Recruiting, onboarding, and training new sales team members
+        *   Developing and implementing sales strategies
+        *   Analyzing market trends and identifying opportunities
+        *   Utilizing CRM systems and other sales tools
+        *   Building a positive and high-performing sales culture
 
-        Please provide a comprehensive response to the following request:
+        Please provide a comprehensive response to the following request from a sales professional:
 
         {user_input}
-    """
+        """
 
         try:
             llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
@@ -63,96 +67,15 @@ def ai_sales_coach(user_input):
 
 # UI Layout
 st.title("Advi Script - Your AI Sales Coach")
-st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
-st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
 
-
-
-
-# Custom CSS for Gemini-like styling with full-screen chat and docked input
-st.markdown("""
-<style>
-body {
-    font-family: 'Arial', sans-serif; 
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Arrange elements vertically */
-    height: 100vh; /* Make the container take up full viewport height */
-}
-.chat-message {
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 10px;
-    line-height: 1.5; 
-}
-.user-message {
-    background-color: #F0F0F0; 
-    text-align: right;
-}
-.bot-message {
-    background-color: #FFFFFF;
-    text-align: left;
-}
-#chat-input-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #FFFFFF;
-    padding: 15px;
-}
-#chat-input { /* Style the textarea for input */
-    width: calc(100% - 30px); /* Account for padding */
-    resize: vertical; /* Allow vertical resizing */
-    min-height: 40px; /* Minimum height */
-    max-height: 200px; /* Maximum height */
-}
-#chat-area {  /* Container for chat messages */
-    flex-grow: 1; /* Allow chat area to expand to fill available space */
-    overflow-y: auto;  /* Enable scrolling in the chat area */
-}
-</style>
-
-""", unsafe_allow_html=True)  
-sidebar = st.sidebar
-sidebar.title("Theme Options")
-sidebar.markdown("Customize the appearance of the chat interface.")
-#streamlit-extras
-# Theme options
-theme = sidebar.selectbox("Select a theme", ["Light", "Dark", "Custom"])
-if theme == "Light":
-    st.markdown(
-        """
-        <style>
-        body {
-            background-color: #F0F0F0;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-elif theme == "Dark":
-    st.markdown(
-        """
-        <style>
-        body {
-            background-color: #1E1E1E;
-            color: #FFFFFF;
-        }
-        .chat-message {
-            background-color: #2E2E2E;
-            color: #FFFFFF;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-else:
-    custom_css = sidebar.text_area("Custom CSS")
-    st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
-    
-
-
-
+st.markdown(
+    """
+    <style>
+        .reportview-container .main footer {visibility: hidden;}
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 # Chat History
 if "messages" not in st.session_state:
