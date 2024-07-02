@@ -1,47 +1,35 @@
 import streamlit as st
-from langchain_google_genai import GoogleGenerativeAI
-#save to pdf
-#save to docx
-
-
+from langchain.llms import GoogleGenerativeAI
 from dotenv import load_dotenv
-import os, sys
+import os
 
-# Load environment variables
 load_dotenv()
-
-# Configure Google Gemini API - Remove this section as we will use langchain
 api_key = os.getenv("GOOGLE_API_KEY")
 
+def ai_sales_coach(user_input):
+    prompt = f"""
+    You are an expert sales coach. You can help with various aspects of sales, including:
 
-# Function to generate the cold call script
-def cold_script(industry, keywords, length, tone, script_type):
-    return f"""
-Please generate a {script_type} script for a {industry} company that specializes in {keywords}.
-The script should be tailored to a {tone} tone and a {length} length. 
-Include a structured call-flow, handle objections, and provide rebuttals both implied and explicitly handled within the script. 
-The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
-"""
+    *   Generating cold call scripts
+    *   Crafting effective email templates
+    *   Providing advice on handling objections
+    *   Offering tips for closing deals
+    *   Suggesting strategies for prospecting and lead generation
+    *   Guiding sales presentations and demos
+    *   Sharing best practices for building customer relationships
+    *   Explaining sales methodologies and frameworks
 
+    Please provide a comprehensive response to the following request:
 
-def ai_chatbot(user_input):
-    if user_input.lower().startswith("generate"):
-        # Extract details from user input
-        try:
-            _, industry, keywords, length, tone, script_type = user_input.split(", ")
-        except ValueError:
-            st.error("Please provide all details in this format: 'generate, industry, keywords, length, tone, script_type'")
-            return "Error: Invalid input format."
-        
-        prompt = cold_script(industry, keywords, length, tone, script_type)
-        llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
-        return llm.invoke(prompt)
-    else:
-        return "Please start your request with 'generate' followed by a comma and then provide industry, keywords, length, tone, and script_type (e.g., 'generate, Technology, efficiency, cost savings, scalability, medium, professional')."
+    {user_input}
+    """
+    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+    return llm.invoke(prompt)
+
 
 # UI and Chat Logic
-st.title('Advi Script - Conversational Chatbot')
-st.markdown("Chat with the AI to generate tailored cold call scripts. Use the format: 'generate, industry, keywords, length, tone, script_type'.")
+st.title('Advi Script - Your AI Sales Coach')
+st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 
 # Chat History
 if "messages" not in st.session_state:
@@ -54,7 +42,5 @@ for message in st.session_state.messages:
 # User Input
 if prompt := st.chat_input("Your message"):
     st.session_state.messages.append({"role": "user", "content": prompt})
-    response = ai_chatbot(prompt)
+    response = ai_sales_coach(prompt)
     st.session_state.messages.append({"role": "assistant", "content": response})
-
-                        
