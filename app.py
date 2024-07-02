@@ -82,12 +82,11 @@ with st.sidebar:
                 st.session_state.messages.append({"role": "user", "content": industry})
                 response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), form_keywords)
                 st.session_state.messages.append({"role": "assistant", "content": response})
-    #Automatically save the chat history to a file
-    save_chat = st.button("Save Chat History")
-    if save_chat:
-        with open("chat_logs/chat_history.txt", "w") as file:
-            for message in st.session_state.messages:
-                file.write(f"{message['role']}:{message['content']}\n")
+    #Save Text to PDF
+    savePDF = st.button("Save Chat to PDF")
+    if savePDF:
+        st.write("Saving Chat to PDF")
+        #save_chat_to_pdf(chat_title, chat_history) #save to pdf
                 
         
    
