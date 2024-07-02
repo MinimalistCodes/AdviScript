@@ -121,6 +121,8 @@ with st.sidebar:
         if submitted:
             with chat_container:
                 st.write(f"Generating a {form_length} {form_script_type} script for a {industry} company with a {form_tone} tone.")
+                st.session_state.messages.append({"role": "user", "content": industry})
+                response = ai_chatbot(industry, form_tone.lower(), form_length.lower(), form_keywords)
     #Save Text to PDF
     savePDF = st.button("Save Chat to PDF")
     if savePDF:
