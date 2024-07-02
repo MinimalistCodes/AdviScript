@@ -86,7 +86,6 @@ with st.container():  # Use container for styling
                 st.markdown(message["content"])
                 
 # User Input
-# User Input
 if prompt := st.chat_input("Your message"):
     # Append user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
@@ -94,7 +93,14 @@ if prompt := st.chat_input("Your message"):
     # Display user message
     with st.chat_message("user"):
         st.markdown(prompt)
-        
-    # Get and append AI response
+
+    # Display "Sales Coach is typing..."
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty()  
+        message_placeholder.markdown("Sales Coach is typing...")
+
+    # Get and append AI response (with a delay to simulate typing)
+    time.sleep(1)  # Adjust the delay as needed
     response = ai_sales_coach(prompt)
+    message_placeholder.markdown(response)  # Update the placeholder
     st.session_state.messages.append({"role": "assistant", "content": response})
