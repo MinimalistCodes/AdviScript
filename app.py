@@ -77,62 +77,54 @@ body {
     background-color: #FFFFFF;
     padding: 15px;
 }
-#chat-input { /* Style the textarea for input */
-    width: calc(100% - 30px); /* Account for padding */
-    resize: vertical; /* Allow vertical resizing */
-    min-height: 40px; /* Minimum height */
-    max-height: 200px; /* Maximum height */
+#chat-input {
+    width: calc(100% - 30px); 
+    resize: vertical;
+    min-height: 40px;
+    max-height: 200px; 
 }
-.typing-indicator { /* Move the typing indicator above the chat messages */
-    color: #999999;
-    font-size: 12px;
-    margin-bottom: 10px; /* Add some space below the indicator */
+#chat-container {
+    padding-bottom: 80px; /* Make space for input area */
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Chat History and Typing Indicator
-chat_placeholder = st.empty() # Placeholder for both chat history and typing indicator
-typing_indicator = st.empty() # Placeholder for the typing indicator
-
+# Chat History (No Sidebar)
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-with chat_placeholder.container():
+# Main Chat Area
+with st.container():
+    st.markdown("<div id='chat-container'></div>", unsafe_allow_html=True)  # Create chat container div
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-    # Display "Sales Coach is typing..." if there's an ongoing interaction
-    if "typing" in st.session_state and st.session_state.typing:
-        typing_indicator.markdown("<div class='typing-indicator'>Sales Coach is typing...</div>", unsafe_allow_html=True)
-    else:
-        typing_indicator.empty()
+    # Display "Sales Coach is typing..." message (if applicable)
+    if "typing" in st.session_state:
+        with st.chat_message("assistant"):
+            st.markdown("Sales Coach is typing...")
 
 # Input Box at the Bottom (Docked and Centered)
-with st.container():  # Create a container for centering
+with st.container():  
     user_input = st.text_area("Your message", key="chat_input", height=40, on_change=None)
 
 if user_input:
     st.session_state.messages.append({"role": "user", "content": user_input})
-    st.session_state.typing = True  # Start "typing" indicator
-    with chat_placeholder.container(): # Refresh the container to show "typing"
-        for message in st.session_state.messages:
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
-        typing_indicator.markdown("<div class='typing-indicator'>Sales Coach is typing...</div>", unsafe_allow_html=True)
+    with st.chat_message("user"):
+        st.markdown(user_input)
+
+    # Indicate typing
+    st.session_state.typing = True
+
     # Get AI response with a slight delay to simulate typing
     time.sleep(1)  # Adjust delay as needed
     response = ai_sales_coach(user_input)
     st.session_state.messages.append({"role": "assistant", "content": response})
-    st.session_state.typing = False  # Stop "typing" indicator
 
-    # Update the chat_placeholder to display the response
-    with chat_placeholder.container():
-        for message in st.session_state.messages:
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
-        typing_indicator.empty()  # Clear the typing indicator
+    # Clear the typing indicator and input box
+    del st.session_state.typing
+    st.session_state.chat_input = ""
 
-    # Clear the input box after sending the message
-    st.session_state.chat_input = "" 
+    # Rerun to update the chat display
+    st.experimental_rerun() 
