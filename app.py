@@ -96,28 +96,41 @@ body {
 # Chat History
 if "messages" not in st.session_state:
     st.session_state.messages = []
+    # Load chat history from local storage
+    if stored_messages := st.session_state.get("stored_messages", None):
+        st.session_state.messages = json.loads(stored_messages)
 
-with st.container():  # Use container for styling
-    for message in st.session_state.messages:
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
-                
-# User Input
-if prompt := st.chat_input("Your message"):
-    # Append user message to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    
-    # Display user message
-    with st.chat_message("user"):
-        st.markdown(prompt)
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
-    # Display "Sales Coach is typing..."
-    with st.chat_message("assistant"):
-        message_placeholder = st.empty() 
-        message_placeholder.markdown("Sales Coach is typing...")
+# Input Box at the Bottom (Docked and Centered)
+with st.container():
+    col1, col2 = st.columns([9, 1])  # Create two columns for the input box and button
+    with col1:
+        user_input = st.text_area("Your message", key="chat_input", height=40, on_change=None)
+    with col2:
+        if st.button("Send", key="send_button"):
+            if user_input:
+                st.session_state.messages.append({"role": "user", "content": user_input})
+                with st.chat_message("user"):
+                    st.markdown(user_input)
 
-    # Get and append AI response (with a delay to simulate typing)
-    time.sleep(1)  # Adjust the delay as needed
-    response = ai_sales_coach(prompt)
-    message_placeholder.markdown(response)  # Update the placeholder
-    st.session_state.messages.append({"role": "assistant", "content": response})
+                # Display "Sales Coach is typing..." message
+                with st.chat_message("assistant"):
+                    message_placeholder = st.empty() 
+                    message_placeholder.markdown("Sales Coach is typing...")
+
+                # Get AI response with a slight delay to simulate typing
+                time.sleep(1)  # Adjust delay as needed
+                response = ai_sales_coach(user_input)
+                st.session_state.messages.append({"role": "assistant", "content": response})
+
+                # Update the placeholder with the actual response
+                message_placeholder.markdown(response) 
+
+                # Clear the input box after sending the message
+                st.session_state.chat_input = ""
+
+                # Save chat history to local storage
+                st.session_state.stored_messages = json.dumps(st.session_state.messages)
