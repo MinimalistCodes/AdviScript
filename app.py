@@ -85,9 +85,16 @@ with st.container():  # Use container for styling
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
                 
-if user_input := st.chat_input("Your message"):  
-    st.session_state.messages.append({"role": "user", "content": user_input})  # Append user message immediately
-    with st.chat_message("user"):  # Display user message before getting response
-        st.markdown(user_input)
-        response = ai_sales_coach(user_input)
-        st.session_state.messages.append({"role": "assistant", "content": response})
+# User Input
+# User Input
+if prompt := st.chat_input("Your message"):
+    # Append user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    
+    # Display user message
+    with st.chat_message("user"):
+        st.markdown(prompt)
+        
+    # Get and append AI response
+    response = ai_sales_coach(prompt)
+    st.session_state.messages.append({"role": "assistant", "content": response})
