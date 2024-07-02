@@ -6,7 +6,7 @@ import os, sys, json
 from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
 from streamlit_extras.add_vertical_space import add_vertical_space
-from streamlit_extras.dataframe_explorer import dataframe_explorer
+from PIL import Image
 
 # Load environment variables
 load_dotenv()
@@ -65,39 +65,87 @@ def ai_sales_coach(user_input):
 st.title("Advi Script - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
-# JavaScript Code for Theme Switching
 
-if "theme" not in st.session_state:
-    st.session_state.theme = "light"
+# Custom CSS for Gemini-like styling with full-screen chat and docked input
+st.markdown("""
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; 
+}
+.chat-message {
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    line-height: 1.5; 
+}
+.user-message {
+    background-color: #F0F0F0; 
+    text-align: right;
+}
+.bot-message {
+    background-color: #FFFFFF;
+    text-align: left;
+}
+#chat-input-container {
+    background-color: #FFFFFF; 
+    padding: 15px;
+}
+#chat-input {
+    width: calc(100% - 30px); 
+    resize: vertical;
+    min-height: 40px;
+    max-height: 200px; 
+}
+#chat-area {
+    flex-grow: 1; 
+    overflow-y: auto;  
+}
 
-if st.button("Toggle Theme"):
-    st.session_state.theme = "dark" if st.session_state.theme == "light" else "light"
+</style>
+""", unsafe_allow_html=True)
 
-# Dynamic CSS based on theme
-st.markdown(
-    f"""
-    <style>
-        body {{
-            background-color: {'#262730' if st.session_state.theme == "dark" else '#ffffff'};
-            color: {'#ffffff' if st.session_state.theme == "dark" else '#262730'};
-        }}
-        .chat-message {{
-            background-color: {'#40414F' if st.session_state.theme == "dark" else '#F0F0F0'};
-            color: {'#ffffff' if st.session_state.theme == "dark" else '#333333'};
-        }}
-        .user-message {{
-            background-color: {'#545569' if st.session_state.theme == "dark" else '#E2F0FF'}; 
-        }}
-        #chat-input-container {{
-            background-color: {'#333444' if st.session_state.theme == "dark" else '#FFFFFF'};
-        }}
-        #chat-input {{
-            color: {'#ffffff' if st.session_state.theme == "dark" else '#262730'};
-        }}
-    </style>
-    """,
-    unsafe_allow_html=True,
-),
+  
+sidebar = st.sidebar
+sidebar.title("Theme Options")
+sidebar.markdown("Customize the appearance of the chat interface.")
+#streamlit-extras
+# Theme options
+theme = sidebar.selectbox("Select a theme", ["Light", "Dark", "Custom"])
+if theme == "Light":
+    st.markdown(
+        """
+        <style>
+        body {
+            background-color: #F0F0F0;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+elif theme == "Dark":
+    st.markdown(
+        """
+        <style>
+        body {
+            background-color: #1E1E1E;
+            color: #FFFFFF;
+        }
+        .chat-message {
+            background-color: #2E2E2E;
+            color: #FFFFFF;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+else:
+    custom_css = sidebar.text_area("Custom CSS")
+    st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
+    
+
 
 
 
