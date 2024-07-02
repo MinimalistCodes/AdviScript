@@ -93,41 +93,33 @@ body {
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# Main Chat Area
-with st.container():
-    st.markdown("<div id='chat-area'>", unsafe_allow_html=True)  
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-    st.markdown("</div>", unsafe_allow_html=True) 
-
-# Input Box and Button at the Bottom (Docked and Centered)
-with st.container():
-    col1, col2 = st.columns([8, 1])  # Create two columns: one for input, one for button
-
-    with col1:
+# Input Box at the Bottom (Docked and Centered)
+with st.container():  # Create a container for centering
+    with st.form(key="chat_form"):
         user_input = st.text_area("Your message", key="chat_input", height=40, max_chars=None)
+        submitted = st.form_submit_button("Send")
+        if submitted:
+            if user_input:  
+                st.session_state.messages.append({"role": "user", "content": user_input})
+                with st.chat_message("user"):
+                    st.markdown(user_input)
 
-    with col2:
-        if st.button("Send", key="send_button") and user_input:
-            st.session_state.messages.append({"role": "user", "content": user_input})
-            with st.chat_message("user"):
-                st.markdown(user_input)
+                # Display "Sales Coach is typing..." message
+                with st.chat_message("assistant"):
+                    message_placeholder = st.empty() 
+                    message_placeholder.markdown("Sales Coach is typing...")
 
-            # Display "Sales Coach is typing..." message
-            with st.chat_message("assistant"):
-                message_placeholder = st.empty() 
-                message_placeholder.markdown("Sales Coach is typing...")
+                # Get AI response with a slight delay to simulate typing
+                time.sleep(1)  # Adjust delay as needed
+                response = ai_sales_coach(user_input)
+                st.session_state.messages.append({"role": "assistant", "content": response})
 
-            # Get AI response with a slight delay to simulate typing
-            time.sleep(1) 
-            response = ai_sales_coach(user_input)
-            st.session_state.messages.append({"role": "assistant", "content": response})
+                # Clear the typing indicator
+                message_placeholder.markdown(response) 
 
-            # Clear the typing indicator
-            message_placeholder.markdown(response) 
-
-            # Clear the input box after sending the message
-            st.session_state.chat_input = ""
+                # Clear the input box after sending the message
+                st.session_state.chat_input = ""
