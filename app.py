@@ -52,28 +52,26 @@ st.markdown("Ask any sales-related questions or request assistance with specific
 # Custom CSS for basic styling (you can customize this further)
 st.markdown("""
 <style>
-.chat-message {
+.chat-container {
+    background-color: #F8F9FA; /* Light background */
     border-radius: 8px;
-    padding: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow-y: auto; /* Enable scrolling */
+    max-height: 500px;  /* Set maximum height */
+}
+.user-message, .bot-message {
+    border-radius: 8px;
+    padding: 10px;
     margin-bottom: 10px;
-    line-height: 1.5;
 }
 .user-message {
-    background-color: #F0F0F0;
+    background-color: #E2F0FF; /* Light blue */
     text-align: right;
 }
 .bot-message {
-    background-color: #FFFFFF;
+    background-color: #FFFFFF; /* White */
     text-align: left;
-}
-#chat-input-container {
-    padding: 15px;
-}
-#chat-input {
-    width: calc(100% - 30px);
-    resize: vertical;
-    min-height: 40px; 
-    max-height: 200px; 
 }
 </style>
 """, unsafe_allow_html=True)
@@ -82,9 +80,10 @@ st.markdown("""
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+with st.container():  # Use container for styling
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
 
 # User Input
 if prompt := st.chat_input("Your message"):
