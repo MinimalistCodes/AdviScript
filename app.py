@@ -23,13 +23,6 @@ Include a structured call-flow, handle objections, and provide rebuttals both im
 The script should aim to engage prospects effectively, highlight key benefits of our product/service, and encourage further conversation or action.
 """
 
-def load_chat_history(chat_title):
-    chat_history = []
-    with open(f"chat_logs/{chat_title}.txt", "r") as file:
-        for line in file:
-            role, content = line.strip().split(":")
-            chat_history.append({"role": role, "content": content})
-    return chat_history
 
 
 # Function for AI chatbot interaction using langchain
@@ -43,9 +36,35 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # UI and Chat Logic
-st.markdown('<link rel="stylesheet" href="styles.css">', unsafe_allow_html=True)
 st.title('Advi Script')
-
+#load styles.css
+st.markdown(
+    """
+    <style>
+    .chat-message {
+        padding: 5px 10px;
+        margin: 5px;
+        border-radius: 10px;
+        display: inline-block;
+    }
+    .chat-message.user {
+        background-color: #f1f0f0;
+        text-align: right;
+    }
+    .chat-message.assistant {
+        background-color: #0071bc;
+        color: white;
+    }
+    .chat-message.user p {
+        margin: 0;
+    }
+    .chat-message.assistant p {
+        margin: 0;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 # Main Area for Displaying the Chat
 chat_container = st.container()
 with chat_container:
