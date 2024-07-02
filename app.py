@@ -109,6 +109,16 @@ body {
 
 """, unsafe_allow_html=True)
 
+#put buttons in side bar
+st.sidebar.title("Options")
+st.sidebar.write("Click the buttons below to access the different features of the app.")
+st.sidebar.button("Generate Script")
+st.sidebar.button("Handle Objections")
+st.sidebar.button("Sales Strategies")
+st.sidebar.button("Sales Training")
+st.sidebar.button("Sales Management")
+st.sidebar.button("Sales Psychology")
+st.sidebar.button("Sales Ethics")
   
     
 # Chat History
@@ -151,33 +161,6 @@ if prompt := st.chat_input("Your message"):
     st.session_state.messages.append({"role": "assistant", "content": response})
 
 col1, col2 = st.columns(2)  # Create two columns for the buttons
-
-with col1:
-    if st.button("Clear History"):
-        # Clear chat history (same as before)
-        st.session_state.messages = []
-        st.session_state.pop("stored_messages", None)
-        st.experimental_rerun()
-
-with col2:
-    if st.button("Export Chat to PDF"):
-        # Export to PDF (same as before)
-        pdf = FPDF()
-        pdf.add_page()
-        pdf.set_font("Arial", size=12)
-
-        for message in st.session_state.messages:
-            role = message["role"].capitalize()
-            content = message["content"]
-            pdf.cell(200, 10, txt=f"{role}: {content}", ln=True, align="L")
-
-        pdf_output = pdf.output(dest="S").encode("latin-1")
-        st.download_button(
-            label="Download PDF",
-            data=pdf_output,
-            file_name="chat_history.pdf",
-            mime="application/pdf",
-        )
 
 
 st.session_state.stored_messages = json.dumps(st.session_state.messages)
