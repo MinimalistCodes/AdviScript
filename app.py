@@ -107,20 +107,48 @@ body {
 }
 </style>
 
-""", unsafe_allow_html=True)
-
-#put buttons in side bar
-st.sidebar.title("Options")
-st.sidebar.write("Click the buttons below to access the different features of the app.")
-st.sidebar.button("Generate Script")
-st.sidebar.button("Handle Objections")
-st.sidebar.button("Sales Strategies")
-st.sidebar.button("Sales Training")
-st.sidebar.button("Sales Management")
-st.sidebar.button("Sales Psychology")
-st.sidebar.button("Sales Ethics")
-  
+""", unsafe_allow_html=True)  
+sidebar = st.sidebar
+sidebar.title("Theme Options")
+sidebar.markdown("Customize the appearance of the chat interface.")
+#streamlit-extras
+# Theme options
+theme = sidebar.selectbox("Select a theme", ["Light", "Dark", "Custom"])
+if theme == "Light":
+    st.markdown(
+        """
+        <style>
+        body {
+            background-color: #F0F0F0;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+elif theme == "Dark":
+    st.markdown(
+        """
+        <style>
+        body {
+            background-color: #1E1E1E;
+            color: #FFFFFF;
+        }
+        .chat-message {
+            background-color: #2E2E2E;
+            color: #FFFFFF;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+else:
+    custom_css = sidebar.text_area("Custom CSS")
+    st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
     
+
+
+
+
 # Chat History
 if "messages" not in st.session_state:
     st.session_state.messages = []
