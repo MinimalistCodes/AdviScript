@@ -35,8 +35,6 @@ def ai_sales_coach(user_input):
 
 # UI and Chat Logic
 st.title('Advi Script - Your AI Sales Coach')
-# UI and Chat Logic
-st.title('Advi Script - Your AI Sales Coach')
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 
 # Custom CSS for ChatGPT-like styling
@@ -78,6 +76,7 @@ with st.container():  # Use container for styling
 # User Input
 if prompt := st.chat_input("Your message"):
     st.session_state.messages.append({"role": "user", "content": prompt})
+    st.session_state.messages.append({"role": "assistant", "content": "Let me think about that..."})
     response = ai_sales_coach(prompt)
     st.session_state.messages.append({"role": "assistant", "content": response})
                         
