@@ -144,4 +144,5 @@ if user_input:
     st.session_state.messages.append({"role": "assistant", "content": response})
 
     # Clear the typing indicator
-    message_placeholder.markdown(response) 
+    message_placeholder.markdown(response)
+    user_input = st.chat_input("Your message", key="chat_input")
