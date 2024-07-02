@@ -86,14 +86,8 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Input Box
-with st.container():
-    with st.form(key="chat_form"):
-        user_input = st.text_area("Your message", key="chat_input", height=40, max_chars=None)
-        submitted = st.form_submit_button("Send")
-        if submitted and user_input:  
-            st.session_state.messages.append({"role": "user", "content": user_input})
-            response = ai_sales_coach(user_input)
-            st.session_state.messages.append({"role": "assistant", "content": response})
-            st.session_state.chat_input = ""  # Clear the input box
-            st.experimental_rerun()   # Rerun to update the chat display
+# User Input
+if prompt := st.chat_input("Your message"):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    response = ai_sales_coach(prompt)
+    st.session_state.messages.append({"role": "assistant", "content": response})
