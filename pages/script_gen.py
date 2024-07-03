@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os, sys, json
 from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
+from streamlit_extras.add_vertical_space import add_vertical_space
 from PIL import Image
 import runtimes as rt
 
@@ -126,71 +127,33 @@ if "messages" not in st.session_state:
         st.error("Error loading chat history from local storage.")
 
 
-# Main Chat Area
-with st.container():
-    # Display chat messages
+with st.container():  # Use container for styling
     for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+            
+   
+# User Input
+if user_input := st.chat_input("Your message"):
+    # Append user message to chat history
+    st.session_state.messages.append({"role": "user", "content": user_input})
+    
+    # Display user message
+    with st.chat_message("user"):
+        st.markdown(user_input)
 
-    # Input Box at the Bottom (Docked and Centered)
-    with st.container():  # Create a container for centering
-        with st.form(key="chat_form"):
-            user_input = st.text_area("Your message", key="chat_input", height=40, max_chars=None)
-            submitted = st.form_submit_button("Send")
-            if submitted:
-                if user_input:  
-                    st.session_state.messages.append({"role": "user", "content": user_input})
-                    with st.chat_message("user"):
-                        st.markdown(user_input)
+    # Display "Sales Coach is typing..."
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty() 
+        message_placeholder.markdown("Sales Coach is typing...")
 
-                    # Display "Sales Coach is typing..." message
-                    with st.chat_message("assistant"):
-                        message_placeholder = st.empty() 
-                        message_placeholder.markdown("Sales Coach is typing...")
+    # Get and append AI response (with a delay to simulate typing)
+    time.sleep(1)  # Adjust the delay as needed
+    response = ai_sales_coach(user_input)
+    message_placeholder.markdown(response)  # Update the placeholder
+    st.session_state.messages.append({"role": "assistant", "content": response})
 
-                    # Get AI response with a slight delay to simulate typing
-                    time.sleep(1)  # Adjust delay as needed
-                    response = ai_sales_coach(user_input)
-                    st.session_state.messages.append({"role": "assistant", "content": response})
-
-                    # Update the placeholder with the actual response
-                    message_placeholder.markdown(response) 
-
-                    # Clear the input box after sending the message
-                    st.session_state.chat_input = ""
-
-                    # Save chat history to local storage
-                    st.session_state.stored_messages = json.dumps(st.session_state.messages)
+col1, col2 = st.columns(2)  # Create two columns for the buttons
 
 
-# Buttons in a Row (under the input box)
-with st.container():
-    st.markdown("<div id='button-container'>", unsafe_allow_html=True)  # Button container
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("Clear History"):
-            # Clear chat history (same as before)
-            st.session_state.messages = []
-            st.session_state.pop("stored_messages", None)
-            st.experimental_rerun()
-
-    with col2:
-        if st.button("Export Chat to PDF"):
-            # Export to PDF (same as before)
-            pdf = FPDF()
-            pdf.add_page()
-            pdf.set_font("Arial", size=12)
-            for message in st.session_state.messages:
-                role = message["role"].capitalize()
-                content = message["content"]
-                pdf.cell(200, 10, txt=f"{role}: {content}", ln=True, align="L")
-
-            pdf_output = pdf.output(dest="S").encode("latin-1")
-            st.download_button(
-                label="Download PDF",
-                data=pdf_output,
-                file_name="chat_history.pdf",
-                mime="application/pdf",
-            )
-    st.markdown("</div>", unsafe_allow_html=True)  # Close button container
+st.session_state.stored_messages = json.dumps(st.session_state.messages)
