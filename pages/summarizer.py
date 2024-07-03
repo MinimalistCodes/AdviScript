@@ -1,4 +1,5 @@
 import time
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -8,7 +9,7 @@ from langchain.chains import StuffDocumentsChain
 from langchain.chains.llm import LLMChain
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
-
+import sys, os, json, fpdf
 # Load environment variables
 load_dotenv()
 
