@@ -4,6 +4,7 @@ from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
 from PIL import Image
 import runtimes as rt
+from extra_streamlit_components import TabBar
 
 
 
@@ -17,9 +18,25 @@ rt.todaysDate = date
 rt.mins_used = 0
 rt.hours_used = 0
 
-#set the page title
-st.set_page_config(page_title="SalesTrek - Your multi-tool for sales and marketing!", page_icon="🚀", layout="wide", initial_sidebar_state="expanded")
-st.title("Main Page")
-st.write("Welcome to SalesTrek! Your multi-tool for sales and marketing!")
-st.write("This app is powered by Google's Gemini Pro model and LangChain framework.")
-st.write("Please select a tool from the sidebar to get started.")
+# Define your tab data
+tab_labels = ["Home", "Image Scanner", "Script Generator", "About"]
+tab_icons = ["🏠", "📷", "📝", "ℹ️"] # Example icons, replace with your own
+tab_data = [
+    {"id": "home", "label": tab_labels[0], "icon": tab_icons[0]},
+    {"id": "image_scanner", "label": tab_labels[1], "icon": tab_icons[1]},
+    {"id": "script_generator", "label": tab_labels[2], "icon": tab_icons[2]},
+    {"id": "about", "label": tab_labels[3], "icon": tab_icons[3]},
+]
+
+# Create the tab bar
+tab_bar = TabBar(data=tab_data, key="main_tab_bar")
+
+# Display content based on selected tab
+if tab_bar == "home":
+    st.write("Welcome to the home page!")  # Your home page content
+elif tab_bar == "image_scanner":
+    image_scan()  
+elif tab_bar == "script_generator":
+    script_gen()  
+elif tab_bar == "about":
+    st.write("About this app...")  # Your about page content
