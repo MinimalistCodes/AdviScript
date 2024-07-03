@@ -4,7 +4,12 @@ from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
 from PIL import Image
 import runtimes as rt
+from auth_helper import requires_auth
 
+
+
+
+@requires_auth
 #get todays date and save it
 import datetime
 now = datetime.datetime.now()

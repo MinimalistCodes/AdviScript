@@ -3,12 +3,13 @@ import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
-
+from auth_helper import requires_auth
 # Load environment variables
 load_dotenv()
 
 api_key = os.getenv("GOOGLE_API_KEY")
 
+@requires_auth
 def ai_sales_coach(user_input):
     prompt = f"""
     You are an expert sales coach. You can help with various aspects of sales, including:

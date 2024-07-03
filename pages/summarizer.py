@@ -10,11 +10,19 @@ from langchain.chains.llm import LLMChain
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 import os, sys, json
+from fpdf import FPDF
+from streamlit_extras.switch_page_button import switch_page
+from auth_helper import requires_auth
+
+
+
 
 # Load environment variables
 
 api_key = os.getenv("GOOGLE_API_KEY")
 
+
+@requires_auth
 def summarize_text_or_url(input_value):
     try:
         # Load the content

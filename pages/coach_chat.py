@@ -8,14 +8,16 @@ import os, sys, json
 from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
 from PIL import Image
+from auth_helper import requires_auth
 
-# Load environment variables
+# Load environment variablesf
 load_dotenv()
 
 st.set_page_config(page_title="SalesTrek: Chat with AI Sales Coach", page_icon="🚀", layout="wide", initial_sidebar_state="expanded")
 
 api_key = os.getenv("GOOGLE_API_KEY")
 
+@requires_auth
 def ai_sales_coach(user_input):
     # Preset Commands with Enhanced Replies
     preset_commands = {
