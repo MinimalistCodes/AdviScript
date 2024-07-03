@@ -9,7 +9,7 @@ from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
 from streamlit_extras.add_vertical_space import add_vertical_space
 from PIL import Image
-from pages import chat_with_coach, sales_script_generator, email_generator, summarizer, image_scan, settings, home
+from .pages import chat_with_coach, sales_script_generator, email_generator, summarizer, image_scan, settings, home
 
 st.set_page_config(
     page_title="SalesTrek - AI Sales & Marketing Assistant",
