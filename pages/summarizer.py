@@ -7,6 +7,7 @@ from langchain_community.document_loaders import WebBaseLoader
 from langchain.chains import StuffDocumentsChain
 from langchain.chains.llm import LLMChain
 from langchain.prompts import PromptTemplate
+from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
