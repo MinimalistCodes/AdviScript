@@ -8,6 +8,4 @@ langchain
 langchain_community
 streamlit-extras
 fpdf
-streamlit-pages
-st-pages
 streamlit-multipage
