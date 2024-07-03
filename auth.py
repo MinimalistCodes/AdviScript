@@ -68,7 +68,7 @@ def main():
         """,
         unsafe_allow_html=True,
     )
-        st.title("Welcome to SalesTrek!")
+    st.title("Welcome to SalesTrek!")
     st.header("Login with Supabase Auth")
     session = login_form(providers=["apple", "facebook", "github", "google"])
     st.write(session)
