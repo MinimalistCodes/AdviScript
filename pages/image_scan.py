@@ -3,7 +3,6 @@ from langchain_core.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 import io
 from PIL import Image
-from st_paywall import Paywall
 
 # Paywall Configuration (replace placeholders with your actual values)
 paywall = Paywall(

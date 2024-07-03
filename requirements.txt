@@ -1,4 +1,9 @@
-streamlit
+stripe
+httpx-oauth
+pyjwt
+st-paywall
+mkdocs
+streamlit>=1.30.0
 python-dotenv
 google-generativeai
 langchain-google-genai
@@ -10,6 +15,4 @@ streamlit-multipage
 streamlit-folium
 google.generativeai
 jupyter
-streamlit-supabase-auth
-st-paywall
 extra_streamlit_components
