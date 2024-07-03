@@ -35,8 +35,8 @@ tab_bar = TabBar(data=tab_data, key="main_tab_bar")
 if tab_bar == "home":
     st.write("Welcome to the home page!")  # Your home page content
 elif tab_bar == "image_scanner":
-    image_scanner()  
+    image_scan()  
 elif tab_bar == "script_generator":
-    script_gen_content()  
+    script_gen()  
 elif tab_bar == "about":
     st.write("About this app...")  # Your about page content
