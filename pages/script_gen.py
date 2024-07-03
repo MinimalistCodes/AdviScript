@@ -109,7 +109,7 @@ with st.container():  # Use container for styling
                 st.markdown(message["content"])
                 
 # User Input
-if prompt := st.input("Your message"):
+if prompt := st.chat_input("Your message"):
     # Append user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
     
