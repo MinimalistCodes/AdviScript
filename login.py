@@ -1,5 +1,5 @@
 import streamlit as st
-from streamlit_supabase_auth import login_form
+from streamlit_supabase_auth import login_form, logout_button
 
 # Load Supabase credentials from secrets
 SUPABASE_URL = st.secrets["supabase_url"]
