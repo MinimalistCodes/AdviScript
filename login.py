@@ -54,7 +54,6 @@ st.markdown(
 # --- MAIN CONTENT ---
 with st.container():  # Center the content
     with st.form("login_form"):
-        st.markdown("<div class='login-container'>", unsafe_allow_html=True)
         st.subheader("Login")
         email = st.text_input("Email")
         password = st.text_input("Password", type="password")
@@ -68,3 +67,7 @@ with st.container():  # Center the content
             else:
                 st.error("Incorrect username or password")
         st.markdown("</div>", unsafe_allow_html=True)  # Close the login container
+
+
+
+
