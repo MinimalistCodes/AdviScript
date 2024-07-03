@@ -10,7 +10,7 @@ from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
 from PIL import Image
 import runtimes as rt
-from auth_helper import requires_auth
+from st_paywall import Paywall
 
 # Load environment variables
 load_dotenv()
@@ -18,7 +18,6 @@ load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 
 
-@requires_auth
 def ai_sales_coach(user_input):
     preset_commands = {
         "/help": "Hi there! I'm your AI sales coach. How can I help you?",

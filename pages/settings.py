@@ -7,11 +7,8 @@ from dotenv import load_dotenv
 import os, sys, json
 from fpdf import FPDF
 from datetime import datetime
-from auth_helper import requires_auth
 
 
-@requires_auth
-#... rest of the chat functionality
 st.header("Settings and Statistics")
 st.write("This page displays settings and statistics for the app.") 
 st.markdown("---") 

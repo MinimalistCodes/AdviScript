@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 import os, sys, json
 from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
-from auth_helper import requires_auth
+from st_paywall import Paywall
 
 
 
@@ -21,8 +21,6 @@ from auth_helper import requires_auth
 
 api_key = os.getenv("GOOGLE_API_KEY")
 
-
-@requires_auth
 def summarize_text_or_url(input_value):
     try:
         # Load the content
