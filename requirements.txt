@@ -11,4 +11,5 @@ streamlit-folium
 google.generativeai
 jupyter
 streamlit-supabase-auth
-st-paywall 
+st-paywall
+extra_streamlit_components
