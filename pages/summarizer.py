@@ -9,9 +9,9 @@ from langchain.chains import StuffDocumentsChain
 from langchain.chains.llm import LLMChain
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
-import sys, os, json, fpdf
+import os, sys, json
+
 # Load environment variables
-load_dotenv()
 
 api_key = os.getenv("GOOGLE_API_KEY")
 

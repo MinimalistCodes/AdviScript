@@ -120,7 +120,13 @@ if prompt := st.chat_input("Your message"):
     # Display "Sales Coach is typing..."
     with st.chat_message("assistant"):
         message_placeholder = st.empty() 
-        message_placeholder.markdown("Generating Your")
+        with st.status("Analyzing your request..."):
+            st.write("Combing over resources...")
+            time.sleep(2)
+            st.write("Script finished")
+            time.sleep(1)
+            st.write("Sending script...")
+            time.sleep(1)
 
     # Get and append AI response (with a delay to simulate typing)
     time.sleep(1)  # Adjust the delay as needed
