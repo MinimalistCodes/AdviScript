@@ -43,7 +43,7 @@ def ai_sales_coach(user_input):
 
 
 # UI Layout
-st.title("Advi Script - Your AI Sales Coach")
+st.title("SalesTrek - Script Generator")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
 
@@ -121,14 +121,14 @@ if prompt := st.chat_input("Your message"):
     # Display "Sales Coach is typing..."
     with st.chat_message("assistant"):
         message_placeholder = st.empty() 
-        with st.status("Downloading data...", expanded=True) as status:
+        with st.status("Thinking...", expanded=True) as status:
             st.write("Combing over resources...")
             time.sleep(2)
             st.write("Script finished")
             time.sleep(1)
             st.write("Sending script...")
             time.sleep(1)  # Adjust the delay as needed
-            status.update(label="Download complete!", state="complete", expanded=False)
+            status.update(label="Crafting complete!", state="complete", expanded=False)
             message_placeholder.markdown("Sales Coach is typing...")
             response = ai_sales_coach(prompt)
             message_placeholder.markdown(response)  # Update the placeholder

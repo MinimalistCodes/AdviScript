@@ -68,7 +68,7 @@ def ai_sales_coach(user_input):
             return "Sorry, I couldn't process your request at this time. Please try again later."
 
 # UI Layout
-st.title("Advi Script - Your AI Sales Coach")
+st.title("Sales Email Generator")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
 
@@ -150,13 +150,17 @@ if prompt := st.chat_input("Your message"):
     # Display "Sales Coach is typing..."
     with st.chat_message("assistant"):
         message_placeholder = st.empty() 
-        message_placeholder.markdown("Sales Coach is typing...")
-
-    # Get and append AI response (with a delay to simulate typing)
-    time.sleep(1)  # Adjust the delay as needed
-    response = ai_sales_coach(prompt)
-    message_placeholder.markdown(response)  # Update the placeholder
-    st.session_state.messages.append({"role": "assistant", "content": response})
+        with st.status("Creating an email copy...", expanded=True) as status:
+            st.write("Combing over resources...")
+            time.sleep(2)
+            st.write("Email Draft finished")
+            time.sleep(1)
+            st.write("Sending Draft...")
+            time.sleep(1)  # Adjust the delay as needed
+            status.update(label="Crafting complete!", state="complete", expanded=False)
+            response = ai_sales_coach(prompt)
+            message_placeholder.markdown(response)  # Update the placeholder
+            st.session_state.messages.append({"role": "assistant", "content": response})
 
 col1, col2 = st.columns(2)  # Create two columns for the buttons
 

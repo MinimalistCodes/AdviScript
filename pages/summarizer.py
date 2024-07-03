@@ -62,3 +62,4 @@ def app():
                 st.write(summary)
         else:
             st.warning("Please enter text or a URL to summarize.")
+app()

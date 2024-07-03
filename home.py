@@ -12,6 +12,48 @@ from PIL import Image
 
 # Home Page Content
 def app():
+    st.markdown("""
+<style>
+body {
+    font-family: 'Arial', sans-serif; 
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Arrange elements vertically */
+    height: 100vh; /* Make the container take up full viewport height */
+}
+.chat-message {
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    line-height: 1.5; 
+}
+.user-message {
+    background-color: #F0F0F0; 
+    text-align: right;
+}
+.bot-message {
+    background-color: #FFFFFF;
+    text-align: left;
+}
+#chat-input-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #FFFFFF;
+    padding: 15px;
+}
+#chat-input { /* Style the textarea for input */
+    width: calc(100% - 30px); /* Account for padding */
+    resize: vertical; /* Allow vertical resizing */
+    min-height: 40px; /* Minimum height */
+    max-height: 200px; /* Maximum height */
+}
+#chat-area {  /* Container for chat messages */
+    flex-grow: 1; /* Allow chat area to expand to fill available space */
+    overflow-y: auto;  /* Enable scrolling in the chat area */
+}
+</style>
+""", unsafe_allow_html=True)
     st.markdown("<h1 style='text-align: center;'>🚀 Welcome to SalesTrek</h1>", unsafe_allow_html=True)
     # You can add your about section content here
     st.write("""

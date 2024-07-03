@@ -79,14 +79,6 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-    
-
-# Display time and date 
-current_time = datetime.now()
-formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
-st.sidebar.markdown(f"**Chat History:** {formatted_time}")  # Display time and date on the sidebar
-
-
 
 # Chat History
 if "messages" not in st.session_state:
