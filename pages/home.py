@@ -1,4 +1,15 @@
+from datetime import datetime
+import time
+
 import streamlit as st
+from langchain_google_genai import GoogleGenerativeAI
+from dotenv import load_dotenv
+import os, sys, json
+from fpdf import FPDF
+from streamlit_extras.switch_page_button import switch_page
+from streamlit_extras.add_vertical_space import add_vertical_space
+from PIL import Image
+
 
 # Home Page Content
 def app():
@@ -8,3 +19,14 @@ def app():
     SalesTrek is your AI-powered sales and marketing assistant designed to help you succeed in the competitive world of sales. Whether you're an experienced sales professional or new to the field, SalesTrek has the tools and guidance you need to achieve your goals.
     """)
     
+    st.write("""
+    SalesTrek offers a range of features, including:
+    - AI Sales Coach: Get expert advice and guidance on sales strategies, objection handling, and more.
+    - Sales Script Generator: Generate custom sales scripts and email templates tailored to your needs.
+    - Email Generator: Create engaging and effective email templates for your sales campaigns.
+    - Summarizer: Summarize long texts or articles quickly and efficiently.
+    - Image Scan: Analyze images and extract text for further processing.
+    - Settings: Customize your SalesTrek experience with personalized settings.
+    """)
+    
+app()        
