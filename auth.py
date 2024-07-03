@@ -4,7 +4,6 @@ from streamlit_supabase_auth import login_form, logout_button
 
 
 def main():
-    st.title("Component Gallery")
     st.header("Login with Supabase Auth")
     session = login_form(providers=["apple", "facebook", "github", "google"])
     st.write(session)
