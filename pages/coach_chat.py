@@ -1,4 +1,3 @@
-import datetime
 import time
 import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
