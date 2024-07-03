@@ -12,9 +12,11 @@ load_dotenv()
 
 api_key = os.getenv("GOOGLE_API_KEY")
 
-#import pages
-import chat_with_coach, sales_script_generator, email_generator, summarizer, image_scan, settings
-
+try:
+    from pages import chat_with_coach, sales_script_generator, home, email_generator, summarizer, image_scan, settings
+except ModuleNotFoundError as e:
+    st.error(f"Error importing modules: {e}")
+    
 # Add all your applications (pages) here
 app.add_page("Home", home.app)
 app.add_page("Chat with Coach", chat_with_coach.app)
