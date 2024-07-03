@@ -33,16 +33,3 @@ app.add_page("Settings", settings.app)
 
 # The main app
 app.run()
-
-with st.beta_expander("About"):
-    st.write(
-        """
-        SalesTrek is an AI Sales & Marketing Assistant that helps you with various tasks such as generating sales scripts, emails, summarizing text, and more. 
-        """
-    )
-    st.write(
-        """
-        This app is built using Streamlit, Google Gemini, and other open-source libraries. 
-        """
-    )
-    
