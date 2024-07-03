@@ -120,14 +120,15 @@ if prompt := st.chat_input("Your message"):
     # Display "Sales Coach is typing..."
     with st.chat_message("assistant"):
         message_placeholder = st.empty() 
-        with st.status("Analyzing your request..."):
+        with st.status("Downloading data...", expanded=True) as status:
             st.write("Combing over resources...")
             time.sleep(2)
             st.write("Script finished")
             time.sleep(1)
             st.write("Sending script...")
-            time.sleep(1)
             time.sleep(1)  # Adjust the delay as needed
+            status.update(label="Download complete!", state="complete", expanded=False)
+            message_placeholder.markdown("Sales Coach is typing...")
             response = ai_sales_coach(prompt)
             message_placeholder.markdown(response)  # Update the placeholder
             st.session_state.messages.append({"role": "assistant", "content": response})
