@@ -113,46 +113,6 @@ body {
 </style>
 
 """, unsafe_allow_html=True)  
-sidebar = st.sidebar
-sidebar.title("Theme Options")
-sidebar.markdown("Customize the appearance of the chat interface.")
-#streamlit-extras
-# Theme options
-theme = sidebar.selectbox("Select a theme", ["Light", "Dark", "Custom"])
-if theme == "Light":
-    st.markdown(
-        """
-        <style>
-        body {
-            background-color: #F0F0F0;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-elif theme == "Dark":
-    st.markdown(
-        """
-        <style>
-        body {
-            background-color: #1E1E1E;
-            color: #FFFFFF;
-        }
-        .chat-message {
-            background-color: #2E2E2E;
-            color: #FFFFFF;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-else:
-    custom_css = sidebar.text_area("Custom CSS")
-    st.markdown(f"<style>{custom_css}</style>", unsafe_allow_html=True)
-    
-
-
-
 
 # Chat History
 if "messages" not in st.session_state:
