@@ -127,11 +127,12 @@ if prompt := st.chat_input("Your message"):
             time.sleep(1)
             st.write("Sending script...")
             time.sleep(1)
+            time.sleep(1)  # Adjust the delay as needed
+            response = ai_sales_coach(prompt)
+            message_placeholder.markdown(response)  # Update the placeholder
+            st.session_state.messages.append({"role": "assistant", "content": response})
 
     # Get and append AI response (with a delay to simulate typing)
-    time.sleep(1)  # Adjust the delay as needed
-    response = ai_sales_coach(prompt)
-    message_placeholder.markdown(response)  # Update the placeholder
-    st.session_state.messages.append({"role": "assistant", "content": response})
+
 
 st.session_state.stored_messages = json.dumps(st.session_state.messages)
