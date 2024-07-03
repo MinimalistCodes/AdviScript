@@ -53,7 +53,6 @@ st.markdown(
 
 # --- MAIN CONTENT ---
 with st.container():  # Center the content
-    st.image("your_logo.png")  # Replace with your actual logo path
     with st.form("login_form"):
         st.markdown("<div class='login-container'>", unsafe_allow_html=True)
         st.subheader("Login")
