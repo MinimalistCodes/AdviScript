@@ -151,8 +151,3 @@ if user_input := st.chat_input("Your message"):
     response = ai_sales_coach(user_input)
     message_placeholder.markdown(response)  # Update the placeholder
     st.session_state.messages.append({"role": "assistant", "content": response})
-
-col1, col2 = st.columns(2)  # Create two columns for the buttons
-
-
-st.session_state.stored_messages = json.dumps(st.session_state.messages)
