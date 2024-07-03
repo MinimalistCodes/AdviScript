@@ -1,27 +1,23 @@
-from datetime import datetime
-import time
-
 import streamlit as st
-from langchain_google_genai import GoogleGenerativeAI
-from dotenv import load_dotenv
-import os, sys, json
-from fpdf import FPDF
-from streamlit_extras.switch_page_button import switch_page
-from streamlit_extras.add_vertical_space import add_vertical_space
-from PIL import Image
-from .pages import chat_with_coach, sales_script_generator, email_generator, summarizer, image_scan, settings, home
+from multipage import MultiPage
 
-st.set_page_config(
-    page_title="SalesTrek - AI Sales & Marketing Assistant",
-    page_icon="🤖",
-    layout="wide",
-)
+# Import your page modules directly
+from pages import chat_with_coach, sales_script_generator, email_generator, summarizer, image_scan, settings
 
 # Create an instance of the app 
-app = st.create_app("SalesTrek - AI Sales & Marketing Assistant")
+app = MultiPage()
+
 # Title of the main page
 st.title("SalesTrek - AI Sales & Marketing Assistant")
 
+st.markdown(
+    """
+    <style>
+        .reportview-container .main footer {visibility: hidden;}
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
 # Add all your applications (pages) here
 app.add_page("Chat with Coach", chat_with_coach.app)
