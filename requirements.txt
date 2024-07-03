@@ -8,3 +8,5 @@ streamlit-extras
 fpdf
 streamlit-multipage
 streamlit-folium
+google.generativeai
+jupyter
