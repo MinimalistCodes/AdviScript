@@ -16,8 +16,8 @@ st.title("SalesTrek - AI Sales & Marketing Assistant")
 
 
 # Add all your applications (pages) here
-app.add_page("Chat with Coach", chat_with_coach.app)
-app.add_page("Sales Script Generator", sales_script_generator.app)
+app.add_page("Chat with Coach", coach_chat.app)
+app.add_page("Sales Script Generator", script_gen.app)
 app.add_page("Email Generator", email_generator.app)
 app.add_page("Summarizer", summarizer.app)
 app.add_page("Image Scan", image_scan.app)
