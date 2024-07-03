@@ -16,7 +16,6 @@ rt.mins_used = 0
 rt.hours_used = 0
 
 
-st.sidebar.success("Select a page above.")
 
 st.set_page_config(
     page_title="SalesTrek - Your multi-tool for sales and marketing!",
@@ -25,8 +24,5 @@ st.set_page_config(
 
 st.title("Main Page")
 st.write("Welcome to SalesTrek! Your multi-tool for sales and marketing!")
-st.markdown("---")
-st.header("User Statistics")
-st.write(f"Total minutes used: {rt.total_time()}")
-st.write(f"Scripts Generated: {rt.get_times_ran()}")
-st.write(f"Last run: {rt.last_ran()}")
+st.write("This app is powered by Google's Gemini Pro model and LangChain framework.")
+st.write("Please select a tool from the sidebar to get started.")
