@@ -7,6 +7,7 @@ from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
 from streamlit_extras.add_vertical_space import add_vertical_space
 from PIL import Image
+import runtimes as rt
 
 # Load environment variables
 load_dotenv()
@@ -56,6 +57,7 @@ def ai_sales_coach(user_input):
 
         try:
             llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+            rt.iterate_times_ran()
             return llm.invoke(prompt)
         except Exception as e:
             st.error(f"An error occurred: {e}")
