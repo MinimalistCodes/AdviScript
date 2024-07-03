@@ -3,10 +3,6 @@ import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
-from fpdf import FPDF
-from streamlit_extras.switch_page_button import switch_page
-from PIL import Image
-import runtimes as rt
 
 # Load environment variables
 load_dotenv()
@@ -14,60 +10,41 @@ load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 
 def ai_sales_coach(user_input):
-    preset_commands = {
-        "/help": "Hi there! I'm your AI sales coach. How can I help you?",
-        "/features": "I can help with generating scripts, handling objections, sales strategies, and more. Just ask!",
-        "/about": "I'm built using Google's Gemini Pro model and LangChain framework.",
-        "/clear": "Sure! Let's start fresh. How can I assist you today?", # Clear chat history
-        
-    }
+    prompt = f"""
+    You are an expert sales coach. You can help with various aspects of sales, including:
 
-    # Check for preset commands first
-    if user_input in preset_commands:
-        return preset_commands[user_input]
-    else:
-        prompt = f"""
-        You are an expert sales coach. You can help with various aspects of sales, including:
+    *   Generating cold call scripts
+    *   Crafting effective email templates
+    *   Providing advice on handling objections
+    *   Offering tips for closing deals
+    *   Suggesting strategies for prospecting and lead generation
+    *   Guiding sales presentations and demos
+    *   Sharing best practices for building customer relationships
+    *   Explaining sales methodologies and frameworks
+    *   Assisting with sales training and coaching
+    *   Team building and motivation
+    *   Sales management and leadership
+    *   Tracking and analyzing sales performance
+    *   Sales exercises and role-playing scenarios
+    *   Sales forecasting and pipeline management
+    *   Sales negotiation tactics and strategies
+    *   Recommendations for sales technology and tools
+    *   Sales psychology, buyer behavior, and persuasion techniques
+    *   Sales ethics and compliance
+    *   Emotional intelligence in sales
 
-        *   Generating cold call scripts
-        *   Crafting effective email templates
-        *   Providing advice on handling objections
-        *   Offering tips for closing deals
-        *   Suggesting strategies for prospecting and lead generation
-        *   Guiding sales presentations and demos
-        *   Sharing best practices for building customer relationships
-        *   Explaining sales methodologies and frameworks
-        *   Assisting with sales training and coaching
-        *   Team building and motivation
-        *   Sales management and leadership
-        *   Tracking and analyzing sales performance
-        *   Sales exercises and role-playing scenarios
-        *   Sales forecasting and pipeline management
-        *   Sales negotiation tactics and strategies
-        *   Recommendations for sales technology and tools
-        *   Sales psychology, buyer behavior, and persuasion techniques
-        *   Sales ethics and compliance
-        *   Emotional intelligence in sales
+    Please provide a comprehensive response to the following request:
 
-        Please provide a comprehensive response to the following request:
-
-        {user_input}
+    {user_input}
     """
+    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+    return llm.invoke(prompt)
 
-        try:
-            llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
-            return llm.invoke(prompt)
-        except Exception as e:
-            st.error(f"An error occurred: {e}")
-            return "Sorry, I couldn't process your request at this time. Please try again later."
 
 # UI Layout
 st.title("Advi Script - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
-
-
-
 
 # Custom CSS for Gemini-like styling with full-screen chat and docked input
 st.markdown("""
@@ -111,8 +88,7 @@ body {
     overflow-y: auto;  /* Enable scrolling in the chat area */
 }
 </style>
-
-""", unsafe_allow_html=True)  
+""", unsafe_allow_html=True)
 
 # Chat History
 if "messages" not in st.session_state:
@@ -126,28 +102,30 @@ if "messages" not in st.session_state:
         st.error("Error loading chat history from local storage.")
 
 
+
 with st.container():  # Use container for styling
     for message in st.session_state.messages:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
-            
-   
+                
 # User Input
-if user_input := st.chat_input("Your message"):
+if prompt := st.chat_input("Your message"):
     # Append user message to chat history
-    st.session_state.messages.append({"role": "user", "content": user_input})
+    st.session_state.messages.append({"role": "user", "content": prompt})
     
     # Display user message
     with st.chat_message("user"):
-        st.markdown(user_input)
+        st.markdown(prompt)
 
     # Display "Sales Coach is typing..."
     with st.chat_message("assistant"):
         message_placeholder = st.empty() 
-        message_placeholder.markdown("Sales Coach is typing...")
+        message_placeholder.markdown("Generating Your Script...")
 
     # Get and append AI response (with a delay to simulate typing)
     time.sleep(1)  # Adjust the delay as needed
-    response = ai_sales_coach(user_input)
+    response = ai_sales_coach(prompt)
     message_placeholder.markdown(response)  # Update the placeholder
     st.session_state.messages.append({"role": "assistant", "content": response})
+
+st.session_state.stored_messages = json.dumps(st.session_state.messages)
