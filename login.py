@@ -1,5 +1,4 @@
 import streamlit as st
-
 from streamlit_supabase_auth import login_form, logout_button
 
 
