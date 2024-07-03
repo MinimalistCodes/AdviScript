@@ -10,3 +10,4 @@ streamlit-multipage
 streamlit-folium
 google.generativeai
 jupyter
+streamlit-supabase-auth
