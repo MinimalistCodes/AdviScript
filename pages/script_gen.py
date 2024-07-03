@@ -3,7 +3,6 @@ import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
-from st_paywall import Paywall
 
 # Load environment variables
 load_dotenv()

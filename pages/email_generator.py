@@ -10,7 +10,6 @@ from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
 from PIL import Image
 import runtimes as rt
-from st_paywall import Paywall
 
 # Load environment variables
 load_dotenv()
