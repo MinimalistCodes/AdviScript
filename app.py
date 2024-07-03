@@ -1,18 +1,12 @@
 import streamlit as st
-from streamlit_extras.add_vertical_space import add_vertical_space
- from streamlit_extras.switch_page_button import switch_page
+from multipage import MultiPage
+from pages import chat_with_coach, sales_script_generator, email_generator, summarizer, image_scan, settings
 
- 
- st.set_page_config(
- page_title="AdviScript - AI Sales & Marketing Assistant",
- page_icon="🤖",
-layout="wide",
-initial_sidebar_state="collapsed",
-)
-# UI Layout
+# Create an instance of the app 
+app = MultiPage()
 
+# Title of the main page
 st.title("AdviScript - AI Sales & Marketing Assistant")
-
 
 st.markdown(
     """
@@ -23,32 +17,36 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+# Add all your applications (pages) here
+app.add_page("Chat with Coach", chat_with_coach.app)
+app.add_page("Sales Script Generator", sales_script_generator.app)
+app.add_page("Email Generator", email_generator.app)
+app.add_page("Summarizer", summarizer.app)
+app.add_page("Image Scan", image_scan.app)
+app.add_page("Settings", settings.app)
 
-st.sidebar.title("Menu")
-selected_page = st.sidebar.radio("Go to", ["Chat with Coach", "Sales Script Generator", "Email Generator", "Summarizer", "Image Scan", "Settings"])
+# The main app
+app.run()
+st.set_page_config(
+    page_title="SalesTrek - AI Sales & Marketing Assistant",
+    page_icon="🤖",
+    layout="wide",
+)
 
-if selected_page == "Chat with Coach":
-    switch_page("Chat with Coach")  # Use switch_page for navigation
-elif selected_page == "Sales Script Generator":
-    switch_page("Sales Script Generator") 
-    with st.expander("Instructions"):
-        st.write("Type your prompt in the box below and click Send to generate your script.")
-    # Load content from 1_sales_script_generator.py
-elif selected_page == "Email Generator":
-    st.subheader("Email Generator")
-    with st.expander("Instructions"):
-        st.write("Type your prompt in the box below and click Send to generate your email.")
-    # Load content from 2_email_generator.py
-elif selected_page == "Summarizer":
-    st.subheader("Summarizer")
-    with st.expander("Instructions"):
-        st.write("Paste the text you want to summarize in the box below.")
-    # Load content from 3_summarizer.py
-elif selected_page == "Image Scan":
-    st.subheader("Image Scan")
-    with st.expander("Instructions"):
-        st.write("Upload an image and let the AI analyze it.")
-    # Load content from 4_image_scan.py
-elif selected_page == "Settings":
-    st.subheader("Settings")
-    # Load content from 5_settings.py
+# Create an instance of the app 
+app = MultiPage()
+
+# Title of the main page
+st.title("SalesTrek - AI Sales & Marketing Assistant")
+
+
+# Add all your applications (pages) here
+app.add_page("Chat with Coach", chat_with_coach.app)
+app.add_page("Sales Script Generator", sales_script_generator.app)
+app.add_page("Email Generator", email_generator.app)
+app.add_page("Summarizer", summarizer.app)
+app.add_page("Image Scan", image_scan.app)
+app.add_page("Settings", settings.app)
+
+# The main app
+app.run()
