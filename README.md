@@ -1,12 +1,12 @@
-# Advi Script
+# SalesTrek 
 ![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
 ![Google Gemini](https://img.shields.io/badge/Google%20Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Dotenv](https://img.shields.io/badge/dotenv-4F7942?style=for-the-badge&logo=dotenv&logoColor=white)
 
-Advi Script is an advanced AI-powered chatbot tailored for the sales industry. It leverages cutting-edge technologies like Google Gemini Advanced and Generative Language Client to generate expertly crafted scripts for various sales calls, including openings, closings, and follow-ups. The chatbot facilitates seamless conversations, providing users with tailored scripts based on three descriptive keywords.
-
+SalesTrek is your AI-powered sales and marketing assistant designed to help you succeed in the competitive world of sales. Whether you're an experienced sales professional or new to the field, SalesTrek has the tools and guidance you need to achieve your goals.
+ 
 ## Key Features
 
 - **AI-Powered Script Generation**: Utilizes Google Gemini Advanced and Generative Language Client to create personalized scripts for sales calls.
