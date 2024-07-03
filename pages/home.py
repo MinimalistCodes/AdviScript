@@ -12,12 +12,13 @@ from PIL import Image
 
 # Home Page Content
 def app():
-    st.markdown("<h1 style='text-align: center;'>Welcome to SalesTrek</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>🚀 Welcome to SalesTrek</h1>", unsafe_allow_html=True)
     # You can add your about section content here
     st.write("""
     SalesTrek is your AI-powered sales and marketing assistant designed to help you succeed in the competitive world of sales. Whether you're an experienced sales professional or new to the field, SalesTrek has the tools and guidance you need to achieve your goals.
     """)
     
+    st.markdown("### ✨Features")
     st.write("""
     SalesTrek offers a range of features, including:
     - AI Sales Coach: Get expert advice and guidance on sales strategies, objection handling, and more.
@@ -28,4 +29,9 @@ def app():
     - Settings: Customize your SalesTrek experience with personalized settings.
     """)
     
+    st.markdown("### 🤔 How to Use")
+    st.write("""
+    To get started, simply select one of the features from the sidebar menu. 
+    Each feature is designed to help you improve your sales and marketing skills, generate high-quality content, and optimize your workflow.
+    """)
 app()        

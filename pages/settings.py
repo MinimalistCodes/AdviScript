@@ -1,7 +1,6 @@
 import streamlit as st
 import runtimes as rt
 from streamlit_extras.switch_page_button import switch_page
-from streamlit_extras.add_vertical_space import add_vertical_space
 from PIL import Image
 from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv

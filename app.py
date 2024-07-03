@@ -14,13 +14,8 @@ rt.todaysDate = date
 rt.mins_used = 0
 rt.hours_used = 0
 
-
-
-st.set_page_config(
-    page_title="SalesTrek - Your multi-tool for sales and marketing!",
-    page_icon="📈"
-)
-
+#set the page title
+st.set_page_config(page_title="SalesTrek - Your multi-tool for sales and marketing!", page_icon="🚀", layout="wide", initial_sidebar_state="expanded")
 st.title("Main Page")
 st.write("Welcome to SalesTrek! Your multi-tool for sales and marketing!")
 st.write("This app is powered by Google's Gemini Pro model and LangChain framework.")
