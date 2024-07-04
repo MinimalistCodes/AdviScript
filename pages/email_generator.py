@@ -60,7 +60,7 @@ def ai_sales_coach(user_input):
     """
 
         try:
-            llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+            llm = GoogleGenerativeAI(model="gemini-pro", GOOGLE_API_KEY=api_key)
             rt.iterate_times_ran()
             return llm.invoke(prompt)
         except Exception as e:

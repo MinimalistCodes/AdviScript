@@ -27,7 +27,7 @@ def summarize_text_or_url(input_value):
             docs = [{"text": input_value}]  # Treat as plain text
 
         # Initialize LLM and summarization chain
-        llm = GoogleGenerativeAI(temperature=0, google_api_key=api_key)
+        llm = GoogleGenerativeAI(temperature=0, GOOGLE_API_KEY=api_key)
         text_splitter = RecursiveCharacterTextSplitter(
             separators=["\n\n", "\n", ".", "!", "?", ",", " ", ""], chunk_size=1000, chunk_overlap=200
         )

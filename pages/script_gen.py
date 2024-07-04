@@ -38,7 +38,7 @@ def ai_sales_coach(user_input):
 
     {user_input}
     """
-    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+    llm = GoogleGenerativeAI(model="gemini-pro", GOOGLE_API_KEY=api_key)
     return llm.invoke(prompt)
 
 
