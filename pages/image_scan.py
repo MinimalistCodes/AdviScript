@@ -8,32 +8,42 @@ from PIL import Image
 
 load_dotenv()
 
-#Read uploaded image or url from user
+#Read image from the url from user
 st.title("SalesTrek - Image Scanner")
-st.info("Upload an image and AI will tell you what it sees in the image.")
-image = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
-if image:
-    image = Image.open(image)
-    st.image(image, caption="Uploaded Image", use_column_width=True)
-    image = image.convert("RGB")
-    image_bytes = io.BytesIO()
-    image.save(image_bytes, format="JPEG")
-    image_bytes = image_bytes.getvalue()
-    api_key = os.getenv("GOOGLE_API_KEY")
-    llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
-    message = HumanMessage(
-                content=[
-                    {
-                        "type": "text",
-                        "text": "What's the text in this image?",
-                        "text": "What's in this image?",
-                        "text": "Describe this image.",
-                    },  # You can optionally provide text parts
-                    {"type": "image_url", "url": image_bytes},
-                ]
-            )
-    llm.invoke([message])
-                
+st.info("Please provide the link to the image you would like to scan.")
+image_url = st.text_input("Image URL")
 
-
-    
+     
+     
+        
+with st.container():
+    if image_url := st.text_input("Image URL"):
+        st.session_state.messages.append("role", "user", "content", image_url)
+        
+        with st.chat_message("user"):
+            st.markdown(image_url)
+            
+        # Display image
+        response = requests.get(image_url)
+        image = Image.open(io.BytesIO(response.content))
+        st.image(image, caption="Uploaded Image", use_column_width=True)
+        
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty()
+        message_placeholder.markdown("Scanning image...")
+        
+        # Scan image
+        llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
+        # example
+        message = HumanMessage(
+            content=[
+                {
+                    "type": "text",
+                    "text": "What's in this image?",
+                },  # You can optionally provide text parts
+                {"type": "image_url", "image_url": image_url},
+            ]
+        )
+        st.write(llm.invoke([message]))
+        message_placeholder.markdown(response.content[0]["text"])
+        
