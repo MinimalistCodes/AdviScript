@@ -38,7 +38,7 @@ def ai_sales_coach(user_input):
 
     {user_input}
     """
-    llm = GoogleGenerativeAI(model="gemini-pro", GOOGLE_API_KEY=api_key)
+    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
     return llm.invoke(prompt)
 
 
@@ -47,54 +47,48 @@ st.title("SalesTrek - Script Generator")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
 
-# Custom CSS for Gemini-like styling with full-screen chat and docked input
-st.markdown("""
-<style>
-body {
-    font-family: 'Arial', sans-serif; 
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Arrange elements vertically */
-    height: 100vh; /* Make the container take up full viewport height */
-}
-.chat-message {
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 10px;
-    line-height: 1.5; 
-}
-.user-message {
-    background-color: #F0F0F0; 
-    text-align: right;
-}
-.bot-message {
-    background-color: #FFFFFF;
-    text-align: left;
-}
-#chat-input-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #FFFFFF;
-    padding: 15px;
-}
-#chat-input { /* Style the textarea for input */
-    width: calc(100% - 30px); /* Account for padding */
-    resize: vertical; /* Allow vertical resizing */
-    min-height: 40px; /* Minimum height */
-    max-height: 200px; /* Maximum height */
-}
-#chat-area {  /* Container for chat messages */
-    flex-grow: 1; /* Allow chat area to expand to fill available space */
-    overflow-y: auto;  /* Enable scrolling in the chat area */
-}
-</style>
-""", unsafe_allow_html=True)
+# UI Layout
+st.markdown(
+    """
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    """,
+    unsafe_allow_html=True,
+)
+
+st.title("SalesTrek - Your AI Sales Coach")
+st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
+st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
+
+# MUI CSS (add this to your existing <style> section)
+st.markdown(
+    """
+    <style>
+    .MuiTextField-root {
+        width: calc(100% - 30px); 
+        resize: vertical;
+        min-height: 40px;
+        max-height: 200px; 
+    }
+    #chat-area {  
+        flex-grow: 1; 
+        overflow-y: auto;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Display time and date
+current_time = datetime.datetime.now()
+formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+st.sidebar.markdown(f"**Chat History:** {formatted_time}") 
 
 # Chat History
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+    # Load chat history from local storage
     try:
         stored_messages = st.session_state.get("stored_messages", None)
         if stored_messages:
@@ -103,21 +97,52 @@ if "messages" not in st.session_state:
         st.error("Error loading chat history from local storage.")
 
 
-
-with st.container():  # Use container for styling
+# Main Chat Area
+with st.container():
+    # Display chat messages
     for message in st.session_state.messages:
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
-                
-# User Input
-if prompt := st.chat_input("Your message"):
-    # Append user message to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    
-    # Display user message
-    with st.chat_message("user"):
-        st.markdown(prompt)
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
 
+    # MUI Input Field 
+    st.markdown(
+        """
+        <div id="chat-input-container">
+            <div id="chat-input"></div> 
+        </div>
+        <script>
+        const chatInput = document.getElementById('chat-input');
+
+        // Create and configure the MUI TextField
+        const textField = new window['MaterialUI'].TextField({
+            label: 'Your message',
+            variant: 'outlined',
+            fullWidth: true,
+            multiline: true,
+            rows: 2,
+            InputProps: {
+                style: { fontSize: '16px', padding: '10px' },  // Customize font size and padding
+            },
+            onChange: (event) => {
+                window.Streamlit.setComponentValue("chat_input", event.target.value);
+            }
+        });
+
+        // Render the TextField to the chatInput div
+        window['ReactDOM'].render(textField, chatInput);
+        </script>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Input Handling (modified)
+    if st.session_state.get("chat_input"):
+        user_input = st.session_state["chat_input"]
+        del st.session_state["chat_input"]  # Clear the input
+
+        st.session_state.messages.append({"role": "user", "content": user_input})
+        with st.chat_message("user"):
+            st.markdown(user_input)
     # Display "Sales Coach is typing..."
     with st.chat_message("assistant"):
         message_placeholder = st.empty() 
