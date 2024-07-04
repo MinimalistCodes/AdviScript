@@ -26,5 +26,6 @@ if st.button("Scan Image"):
                     {"type": "image_url", "image_url": image_url},
                 ]
             )
-    st.write(llm.invoke[message])
+    msg = llm.invoke[message]
+    st.write(msg)
     
