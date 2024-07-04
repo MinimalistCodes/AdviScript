@@ -25,7 +25,7 @@ def image_scanner():
                 source="streamlit",
                 timestamp=None,
             )
-            llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
+            llm = ChatGoogleGenerativeAI(model="gemini-1.0-pro-vision")
             response = llm.chat(message)
             st.write(response.content)
         else:
