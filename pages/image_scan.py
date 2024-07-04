@@ -1,38 +1,39 @@
 import streamlit as st
 from langchain_core.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
+from dotenv import load_dotenv
+import io, os
 import requests
-from IPython.display import Image
-import io
 from PIL import Image
 
+load_dotenv()
 
-def image_scanner():
-    st.title("Image Scanner")
-
-    # Check if user is authorized (has paid)
-    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
-    if uploaded_file is not None:
-        bytes_data = uploaded_file.getvalue()
-        image = Image.open(io.BytesIO(bytes_data))
-        st.image(image, caption="Uploaded Image.", use_column_width=True)
-
-        if prompt := st.text_input("Ask the AI about the image:"):
-                # image_url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
-            message = HumanMessage(
-                content=[prompt],
-                role="user",
-                source="streamlit",
-                timestamp=None,
+#Read uploaded image or url from user
+st.title("SalesTrek - Image Scanner")
+st.info("Upload an image and AI will tell you what it sees in the image.")
+image = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
+if image:
+    image = Image.open(image)
+    st.image(image, caption="Uploaded Image", use_column_width=True)
+    image = image.convert("RGB")
+    image_bytes = io.BytesIO()
+    image.save(image_bytes, format="JPEG")
+    image_bytes = image_bytes.getvalue()
+    api_key = os.getenv("GOOGLE_API_KEY")
+    llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
+    message = HumanMessage(
+                content=[
+                    {
+                        "type": "text",
+                        "text": "What's the text in this image?",
+                        "text": "What's in this image?",
+                        "text": "Describe this image.",
+                    },  # You can optionally provide text parts
+                    {"type": "image_url", "url": image_bytes},
+                ]
             )
-            llm = ChatGoogleGenerativeAI(model="gemini-1.0-pro-vision")
-            response = llm.chat(message)
-            st.write(response.content)
-        else:
-            st.write("Please provide a question about the image.")
-    else:
-        st.write("Please upload an image to scan.")
-        
+    llm.invoke([message])
+                
 
-# Run the image scanner
-image_scanner()
+
+    
