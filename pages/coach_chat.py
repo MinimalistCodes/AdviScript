@@ -110,4 +110,3 @@ if prompt := st.chat_input("Your message"):
   # Get and append AI response (with a delay to simulate typing)
 
 
-st.session_state.stored_messages = json.dumps(st.session_state.messages)
