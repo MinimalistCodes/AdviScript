@@ -1,43 +1,28 @@
 import streamlit as st
-from langchain.llms import OpenAI
-from langchain.chains import ConversationChain
-from dotenv import load_dotenv
-import os
+from openai import OpenAI
 
-load_dotenv()
+st.title("ChatGPT-like clone")
 
-# Initialize OpenAI model with session state for persistence
+# Set OpenAI API key from Streamlit secrets
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
+# Set a default model
 if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = OpenAI(temperature=0.7, openai_api_key=os.getenv("OPENAI_API_KEY"))
+    st.session_state["openai_model"] = "gpt-3.5-turbo"
 
-# Initialize conversation chain with session state for persistence
-if "chain" not in st.session_state:
-    st.session_state.chain = ConversationChain(llm=st.session_state["openai_model"])
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
-# App UI
-st.title("SalesTrek - Your AI Sales Coach 💬")
-
-# Display chat messages from history
+# Display chat messages from history on app rerun
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# User input
-if prompt := st.chat_input("What is your sales query?"):
-    # Display user message in chat message container
-    st.chat_message("user").markdown(prompt)
-
-    # Generate response from the conversation chain
-    response = st.session_state.chain.run(prompt)
-    
-    # Display assistant response in chat message container
-    with st.chat_message("assistant"):
-        st.markdown(response)
-
-    # Store the conversation history
+# Accept user input
+if prompt := st.chat_input("What is up?"):
+    # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
-    st.session_state.messages.append({"role": "assistant", "content": response})
-
-# Initialize session state for messages if it doesn't exist
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+    # Display user message in chat message container
+    with st.chat_message("user"):
+        st.markdown(prompt)
