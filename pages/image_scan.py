@@ -1,13 +1,14 @@
 import streamlit as st
 from langchain_core.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
+import requests
+from IPython.display import Image
 import io
 from PIL import Image
 
 
 def image_scanner():
     st.title("Image Scanner")
-    llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
 
     # Check if user is authorized (has paid)
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
@@ -24,6 +25,7 @@ def image_scanner():
                 source="streamlit",
                 timestamp=None,
             )
+            llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
             response = llm.chat(message)
             st.write(response.content)
         else:
