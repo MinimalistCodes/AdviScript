@@ -56,10 +56,6 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.title("SalesTrek - Your AI Sales Coach")
-st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
-st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
-
 # MUI CSS (add this to your existing <style> section)
 st.markdown(
     """
@@ -79,10 +75,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Display time and date
-current_time = datetime.datetime.now()
-formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
-st.sidebar.markdown(f"**Chat History:** {formatted_time}") 
+# Display 
 
 # Chat History
 if "messages" not in st.session_state:
