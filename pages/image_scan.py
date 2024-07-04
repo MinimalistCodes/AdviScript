@@ -27,11 +27,5 @@ if st.button("Scan Image"):
                 ]
             )
     llm.invoke([message])
-    
-with st.container:
-    st.image(image_url, caption="Uploaded Image", use_column_width=True)
-    
-    st.write("Results:")
-    st.write(llm.response)
-    
+    st.write(llm.response.content)
     
