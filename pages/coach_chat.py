@@ -19,7 +19,7 @@ def ai_sales_coach(user_input):
 
   {user_input}
   """
-  llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+  llm = GoogleGenerativeAI(model="gemini-pro", GOOGLE_API_KEY=api_key)
   return llm.invoke(prompt)
 
 
@@ -102,18 +102,10 @@ if prompt := st.chat_input("Your message"):
   # Display "Sales Coach is typing..."
   with st.chat_message("assistant"):
     message_placeholder = st.empty() 
-    with st.status("Thinking...", expanded=True) as status:
-      st.write("Combing over resources...")
-      time.sleep(2)
-      st.write("Script finished")
-      time.sleep(1)
-      st.write("Sending script...")
-      time.sleep(1) # Adjust the delay as needed
-      status.update(label="Crafting complete!", state="complete", expanded=False)
-      message_placeholder.markdown("Sales Coach is typing...")
-      response = ai_sales_coach(prompt)
-      message_placeholder.markdown(response) # Update the placeholder
-      st.session_state.messages.append({"role": "assistant", "content": response})
+    message_placeholder.markdown("Sales Coach is thinking...")
+    response = ai_sales_coach(prompt)
+    message_placeholder.markdown(response) # Update the placeholder
+    st.session_state.messages.append({"role": "assistant", "content": response})
 
   # Get and append AI response (with a delay to simulate typing)
 
