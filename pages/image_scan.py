@@ -11,9 +11,7 @@ load_dotenv()
 #Read image from the url from user
 st.title("SalesTrek - Image Scanner")
 st.info("Please provide the link to the image you would like to scan.")
-image_url = st.text_input("Image URL")
-
-     
+   
      
         
 with st.container():
