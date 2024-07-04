@@ -7,6 +7,7 @@ from PIL import Image
 
 def image_scanner():
     st.title("Image Scanner")
+    llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
 
     # Check if user is authorized (has paid)
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
@@ -16,20 +17,20 @@ def image_scanner():
         st.image(image, caption="Uploaded Image.", use_column_width=True)
 
         if prompt := st.text_input("Ask the AI about the image:"):
-            llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
                 # image_url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
             message = HumanMessage(
-                content=[
-                        {
-                            "type": "text",
-                            "text": prompt,
-                        },
-                        {"type": "image", "image": image},
-                    ]
-                )
-            response = llm.invoke([message])
+                content=[prompt],
+                role="user",
+                source="streamlit",
+                timestamp=None,
+            )
+            response = llm.chat(message)
             st.write(response.content)
-
+        else:
+            st.write("Please provide a question about the image.")
+    else:
+        st.write("Please upload an image to scan.")
+        
 
 # Run the image scanner
 image_scanner()
