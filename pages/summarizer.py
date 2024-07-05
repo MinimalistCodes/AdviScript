@@ -2,7 +2,8 @@ from langchain import PromptTemplate
 from langchain.document_loaders import WebBaseLoader
 from langchain.schema import StrOutputParser
 from langchain.schema.prompt_template import format_document
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAI
+
 import streamlit as st
 import os
     
@@ -11,8 +12,7 @@ import os
 api_key = os.getenv("GOOGLE_API_KEY")
 
 def summarize_text_or_url(input_value):
-    llm = ChatGoogleGenerativeAI(model="gemini-pro",
-                 temperature=0.7, top_p=0.85)
+    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
     if input_value.startswith("http"):
         document = WebBaseLoader().load(input_value)
     else:
@@ -41,3 +41,4 @@ def app():
         else:
             st.warning("Please enter text or a URL to summarize.")
 app()
+

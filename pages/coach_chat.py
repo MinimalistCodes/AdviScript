@@ -117,3 +117,20 @@ if prompt := st.chat_input("Your message"):
     response = ai_sales_coach(prompt)
     message_placeholder.markdown(response)  # Update the placeholder
     st.session_state.messages.append({"role": "assistant", "content": response})
+
+# Save chat history to local storage
+st.session_state["stored_messages"] = json.dumps(st.session_state.messages)
+
+# Hide Streamlit menu and footer
+hide_streamlit_style = """
+            <style>
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+#clear chat
+if st.button("Clear Chat"):
+    st.session_state.messages = []
+    st.session_state["stored_messages"] = json.dumps(st.session_state.messages)
+    st.experimental_rerun()

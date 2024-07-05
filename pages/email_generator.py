@@ -121,14 +121,12 @@ body {
 """, unsafe_allow_html=True)  
 
 # Chat History
-if "messages" not in st.session_state:
-    st.session_state.messages = []
 
-    try:
+try:
         stored_messages = st.session_state.get("stored_messages", None)
         if stored_messages:
             st.session_state.messages = json.loads(stored_messages)
-    except json.JSONDecodeError:
+except json.JSONDecodeError:
         st.error("Error loading chat history from local storage.")
 
 
@@ -164,4 +162,16 @@ if prompt := st.chat_input("Your message"):
 
 col1, col2 = st.columns(2)  # Create two columns for the buttons
 
-
+# Clear Chat History Button
+if col1.button("Clear Chat History"):
+    st.session_state.messages = []
+    st.session_state.stored_messages = json.dumps([])  # Clear chat history in local storage
+    
+# Switch Page Button
+if col2.button("Go to Email Generator"):
+    switch_page("Email Generator")  # Switch to the Email Generator page
+    
+# clear chat history
+if st.button("Clear Chat History"):
+    st.session_state.messages = []
+    st.session_state.stored_messages = json.dumps([])  # Clear chat history in local storage
