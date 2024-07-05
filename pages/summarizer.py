@@ -1,10 +1,11 @@
 import streamlit as st
 from langchain.llms import GoogleGenerativeAI
-from langchain.document_loaders import WebBaseLoader
-from langchain.prompts import PromptTemplate
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_community.document_loaders import WebBaseLoader
 from langchain.chains import StuffDocumentsChain
 from langchain.chains.llm import LLMChain
-
+from langchain.prompts import PromptTemplate
 import os
 from dotenv import load_dotenv
 
