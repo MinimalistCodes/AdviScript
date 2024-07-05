@@ -17,4 +17,3 @@ google.generativeai
 jupyter
 extra_streamlit_components
 streamlit-elements
-vertexai

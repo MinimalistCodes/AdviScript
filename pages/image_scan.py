@@ -34,9 +34,9 @@ if image:
     st.write("Classifying...")
 
     llm = genai.GenerativeModel('gemini-pro-vision')
-    response = llm.generate_content(img)
+    response = llm.generate_content(img.text())
     
-    st.write(to_markdown(response.text))
+    st.write(response)
 else:
     st.info("Please upload an image to begin.")
     
