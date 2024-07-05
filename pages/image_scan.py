@@ -34,7 +34,7 @@ if image:
     st.write("")
     st.write("Classifying...")
 
-    llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
+    llm = genai.GenerativeModel('gemini-pro-vision')
     response = llm.generate_content(img)
     
     st.write(to_markdown(response))
