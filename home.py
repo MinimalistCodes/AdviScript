@@ -9,9 +9,24 @@ from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
 from PIL import Image
 
-
-# Home Page Content
+def navigation():
+    st.sidebar.title("Navigation")
+    home = st.Page(home)
+    script_gen = st.Page(script_gen)
+    email_gen = st.Page(email_gen)
+    summarizer = st.Page(summarizer)
+    settings = st.Page(settings)
+    
+    pgnav = st.navigation({
+        "General": [settings, home,]
+        "Work": [script_gen, email_gen, summarizer,]
+        "User:" [settings,]
+    })
+    return pgnav
+        
 def app():
+
+    
     st.markdown("""
 <style>
 body {
@@ -69,7 +84,6 @@ body {
         | Sales Script Generator | Generate custom sales scripts and email templates tailored to your needs. |
         | Email Generator | Create engaging and effective email templates for your sales campaigns. |
         | Summarizer | Summarize long texts or articles quickly and efficiently. |
-        | Image Scan | Analyze images and extract text for further processing. |
         | Settings | Customize your SalesTrek experience with personalized settings. |
         """)
     st.markdown("---")
@@ -92,3 +106,4 @@ body {
                     """)
                     
 app()
+navigation()

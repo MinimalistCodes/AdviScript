@@ -1,5 +1,5 @@
 import streamlit as st
-from langchain.llms import GoogleGenerativeAI
+from langchain_google_genai import GoogleGenerativeAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.document_loaders import WebBaseLoader
