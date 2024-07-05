@@ -13,36 +13,37 @@ load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 
 def summarize_url(url):
-    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
-
+    llm = GoogleGenerativeAI(model="gemini-pro")  # Replace with your actual model
     loader = WebBaseLoader(url)
     docs = loader.load()
 
     template = """Write a concise summary of the following:
     "{text}"
     CONCISE SUMMARY:"""
-
     prompt = PromptTemplate.from_template(template)
 
     llm_chain = LLMChain(llm=llm, prompt=prompt)
     stuff_chain = StuffDocumentsChain(llm_chain=llm_chain, document_variable_name="text")
-
     response = stuff_chain.run(docs)
     return response["output_text"]
- 
+
+# Streamlit UI
 def app():
     st.title("URL Summarizer")
-    st.info("Paste the URL of the web page you want to summarize:")
+    st.write("Paste the URL of a web page to get a concise summary:")
 
-    # URL Input
-    url_input = st.text_input("Enter URL:")
+    url = st.text_input("Enter URL")
 
-    # Summarize Button
     if st.button("Summarize"):
-        if url_input:
+        if url:
             with st.spinner("Summarizing..."):
-                summary = summarize_url(url_input)
+                summary = summarize_url(url)
                 st.subheader("Summary")
                 st.write(summary)
         else:
-            st.warning("Please enter a URL to summarize.")
+            st.warning("Please enter a valid URL.")
+
+
+# Run the app
+if __name__ == "__main__":
+    app()
