@@ -5,7 +5,8 @@ st-paywall
 mkdocs
 streamlit>=1.30.0
 python-dotenv
-openai
+google-generativeai
+langchain-google-genai
 langchain
 langchain_community
 streamlit-extras

@@ -1,31 +1,49 @@
 import streamlit as st
 from langchain_core.messages import HumanMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
+import google.generativeai as genai
+
 from dotenv import load_dotenv
 import io, os
 import requests
-from PIL import Image
+import PIL.Image
+from IPython.display import display
+from IPython.display import Markdown
+import textwrap
+
+
+def to_markdown(text):
+  text = text.replace('•', '  *')
+  return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
+
+
+
 
 load_dotenv()
 
-#Read image from the url from user
+#Load image fom file and display
+
 st.title("SalesTrek - Image Scanner")
-st.info("Please provide the link to the image you would like to scan.")
+st.info("Please upload the image you would like to scan.")
 
-image_url = st.text_input("Image URL")
+image = st.file_uploader("Upload Image", type=["jpg", "jpeg", "png"])
 
-if st.button("Scan Image"):
+if image:
+    img = PIL.Image.open(image)
+    st.image(img, caption="Uploaded Image", use_column_width=True)
+    st.write("")
+    st.write("Classifying...")
+
     llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
-            # example
     message = HumanMessage(
-                content=[
-                    {
-                        "type": "text",
-                        "text": "What's in this image?",
-                    },  # You can optionally provide text parts
-                    {"type": "image_url", "image_url": image_url},
-                ]
-            )
-    msg = llm.invoke[message]
-    st.write(msg)
+        content=[
+            {
+                "type": "text",
+                "text": "What's in this image?",
+            },
+            {"type": "image", "image": img},
+        ]
+    )
+    msg = llm.invoke(message)
+    st.write(to_markdown(msg))    
     

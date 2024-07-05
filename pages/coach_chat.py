@@ -11,7 +11,8 @@ api_key = os.getenv("GOOGLE_API_KEY")
 
 def ai_sales_coach(user_input):
     prompt = f"""
- Your goal is to help [Your Company Name]'s sales team achieve their highest potential. You can provide guidance on various aspects of sales, including:
+    Your goal is to help [Your Company Name]'s sales team achieve their highest potential. 
+    You can provide guidance on various aspects of sales, including:
 
     *   Generating effective cold call scripts and email templates tailored to our company's products and services.
     *   Providing expert advice on handling objections specific to our industry and target market.
@@ -92,15 +93,6 @@ body {
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-    try:
-        stored_messages = st.session_state.get("stored_messages", None)
-        if stored_messages:
-            st.session_state.messages = json.loads(stored_messages)
-    except json.JSONDecodeError:
-        st.error("Error loading chat history from local storage.")
-
-
-
 with st.container():  # Use container for styling
     for message in st.session_state.messages:
             with st.chat_message(message["role"]):
@@ -125,5 +117,3 @@ if prompt := st.chat_input("Your message"):
     response = ai_sales_coach(prompt)
     message_placeholder.markdown(response)  # Update the placeholder
     st.session_state.messages.append({"role": "assistant", "content": response})
-
-st.session_state.stored_messages = json.dumps(st.session_state.messages)
