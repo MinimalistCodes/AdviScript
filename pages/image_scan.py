@@ -13,8 +13,7 @@ import textwrap
 
 
 def to_markdown(text):
-  text = text.replace('•', '  *')
-  return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
+   return Markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
 
 
@@ -34,7 +33,7 @@ if image:
     st.write("")
     st.write("Classifying...")
 
-    llm = genai.GenerativeModel('gemini-pro-vision')
+    llm = genai.GenerativeModel('gemini-pro-v
     response = llm.generate_content(img)
     
     st.write(to_markdown(response))
