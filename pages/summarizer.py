@@ -57,3 +57,6 @@ def app():
                 st.write(summary)
         else:
             st.warning("Please enter text or a URL to summarize.")
+
+if __name__ == "__main__":
+    app()
