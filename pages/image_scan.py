@@ -35,15 +35,10 @@ if image:
     st.write("Classifying...")
 
     llm = ChatGoogleGenerativeAI(model="gemini-pro-vision")
-    message = HumanMessage(
-        content=[
-            {
-                "type": "text",
-                "text": "What's in this image?",
-            },
-            {"type": "image", "image": img},
-        ]
-    )
-    msg = llm.invoke(message)
-    st.write(to_markdown(msg))    
+    response = llm.generate_content(img)
+    
+    st.write(to_markdown(response))
+else:
+    st.info("Please upload an image to begin.")
+    
     
