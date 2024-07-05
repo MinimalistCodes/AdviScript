@@ -9,20 +9,25 @@ from fpdf import FPDF
 from streamlit_extras.switch_page_button import switch_page
 from PIL import Image
 
+
+st.sidebar.title("Navigation")
 def navigation():
-    st.sidebar.title("Navigation")
-    home = st.Page(home)
-    script_gen = st.Page(script_gen)
-    email_gen = st.Page(email_gen)
-    summarizer = st.Page(summarizer)
-    settings = st.Page(settings)
+    #buttons
+    pages = {
+        "Home": "home",
+        "AI Sales Coach": "coach_chat",
+        "Sales Script Generator": "script_gen",
+        "Email Generator": "email_gen",
+        "Summarizer": "summarizer",
+        "Settings": "settings",
+    }
+    page = st.sidebar.radio("Go to", list(pages.keys()))
+    switch_page(pages[page])
     
-    pgnav = st.navigation({
-        "General": [settings, home,]
-        "Work": [script_gen, email_gen, summarizer,]
-        "User:" [settings,]
-    })
-    return pgnav
+    
+
+
+
         
 def app():
 
