@@ -1,6 +1,5 @@
 import streamlit as st
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain.llms import GoogleGenerativeAI
 from langchain.document_loaders import WebBaseLoader
 from langchain.prompts import PromptTemplate
 from langchain.chains import StuffDocumentsChain
@@ -12,15 +11,12 @@ from dotenv import load_dotenv
 load_dotenv()
 api_key = os.getenv("GOOGLE_API_KEY")
 
-def summarize_text_or_url(input_value, is_url=False):
-    llm = ChatGoogleGenerativeAI(model="gemini-pro")
-    
-    if is_url:
-        loader = WebBaseLoader(url=input_value)
-        docs = loader.load()
-    else:
-        docs = [input_value]
-    
+def summarize_url(url):
+    llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+
+    loader = WebBaseLoader(url)
+    docs = loader.load()
+
     template = """Write a concise summary of the following:
     "{text}"
     CONCISE SUMMARY:"""
@@ -30,33 +26,22 @@ def summarize_text_or_url(input_value, is_url=False):
     llm_chain = LLMChain(llm=llm, prompt=prompt)
     stuff_chain = StuffDocumentsChain(llm_chain=llm_chain, document_variable_name="text")
 
-    response = stuff_chain.invoke(docs)
+    response = stuff_chain.run(docs)
     return response["output_text"]
  
 def app():
-    st.title("Text/URL Summarizer")
-    st.info("Either enter the text you want to summarize or paste in a url")
-    # Input Type Selection
-    input_type = st.radio("Choose input type:", ["Text", "URL"])
+    st.title("URL Summarizer")
+    st.info("Paste the URL of the web page you want to summarize:")
 
-    if input_type == "Text":
-        text_input = st.text_area("Enter text here", height=200)
-        input_value = text_input
-        is_url = False
-    else:
-        url_input = st.text_input("Enter URL:")
-        input_value = url_input
-        is_url = True
+    # URL Input
+    url_input = st.text_input("Enter URL:")
 
     # Summarize Button
     if st.button("Summarize"):
-        if input_value:
+        if url_input:
             with st.spinner("Summarizing..."):
-                summary = summarize_text_or_url(input_value, is_url)
+                summary = summarize_url(url_input)
                 st.subheader("Summary")
                 st.write(summary)
         else:
-            st.warning("Please enter text or a URL to summarize.")
-
-if __name__ == "__main__":
-    app()
+            st.warning("Please enter a URL to summarize.")
