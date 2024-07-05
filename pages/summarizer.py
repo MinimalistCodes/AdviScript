@@ -17,10 +17,13 @@ def summarize_text_or_url(input_value):
         document = WebBaseLoader().load(input_value)
     else:
         document = input_value
-    prompt = PromptTemplate("summarize", document=document)
-    response = llm(prompt)
-    summary = StrOutputParser().parse(response)
-    return summary
+    prompt = PromptTemplate(
+        title="Summarize the following text:",
+        document=document,
+        output_parser=StrOutputParser(),
+        format_document=format_document,
+    )
+    return llm.invoke(prompt)
 
 
 # UI Layout
