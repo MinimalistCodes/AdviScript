@@ -16,8 +16,7 @@ load_dotenv()
 
 api_key = os.getenv("GOOGLE_API_KEY")
 
-    st.session_state.messages = []
-    st.session_state.stored_messages = json.dumps([])
+    
     
 def ai_sales_coach(user_input):
     preset_commands = {
@@ -156,3 +155,5 @@ if prompt := st.chat_input("Your message"):
 
 col1, col2 = st.columns(2)  # Create two columns for the buttons
 
+st.session_state.messages = []
+st.session_state.stored_messages = json.dumps([])
