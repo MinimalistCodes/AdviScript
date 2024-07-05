@@ -33,7 +33,7 @@ if image:
     st.write("")
     st.write("Classifying...")
 
-    llm = genai.GenerativeModel('gemini-pro-v
+    llm = genai.GenerativeModel('gemini-pro-vision')
     response = llm.generate_content(img)
     
     st.write(to_markdown(response))
