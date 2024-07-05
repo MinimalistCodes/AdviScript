@@ -95,12 +95,8 @@ body {
 if "messages" not in st.session_state:
   st.session_state.messages = []
 
-  try:
-    stored_messages = st.session_state.get("stored_messages", None)
-    if stored_messages:
-      st.session_state.messages = json.loads(stored_messages)
-  except json.JSONDecodeError:
-    st.error("Error loading chat history from local storage.")
+st.session_state.messages = []
+st.session_state.stored_messages = json.dumps([])
 
 
 

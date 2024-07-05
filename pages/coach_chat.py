@@ -129,8 +129,5 @@ hide_streamlit_style = """
             """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-#clear chat
-if st.button("Clear Chat"):
-    st.session_state.messages = []
-    st.session_state["stored_messages"] = json.dumps(st.session_state.messages)
-    st.experimental_rerun()
+st.session_state.messages = []
+st.session_state.stored_messages = json.dumps([])
