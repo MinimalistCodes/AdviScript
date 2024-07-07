@@ -85,6 +85,9 @@ st.markdown("Ask any sales-related questions or request assistance with specific
 #load styles.css
 st.markdown('<style>' + open('styles.css').read() + '</style>', unsafe_allow_html=True)
 
+# Chat History
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
 with st.container():  # Use container for styling
     for message in st.session_state.messages:
