@@ -107,13 +107,16 @@ def ai_sales_coach(user_input):
       llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
       return llm.invoke(prompt)
 
+#load styles.css
+with open("styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # UI Layout
-st.title("SalesTrek - Your AI Sales Coach")
+st.markdown("# SalesTrek - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
+st.markdown("---")  # Horizontal line
 
-#load styles.css
-st.markdown('<style>' + open('styles.css').read() + '</style>', unsafe_allow_html=True)
+    
 
 # Chat History
 if "messages" not in st.session_state:
