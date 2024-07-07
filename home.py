@@ -36,9 +36,34 @@ def ai_sales_coach(user_input):
         return "Sales ethics are principles and standards that guide ethical behavior in sales interactions. Ethical sales practices involve honesty, transparency, integrity, and respect for customers' interests. Sales professionals should adhere to ethical standards to build trust with customers, maintain a positive reputation, and foster long-term relationships. If you need guidance on sales ethics, compliance with sales regulations, or ethical decision-making in sales, feel free to ask."
     elif user_input.lower() == "What can you help me with?":
         return "I can assist you with various aspects of sales, including generating cold call scripts, handling objections, closing deals, prospecting, lead generation, sales presentations, customer relationships, sales methodologies, sales training, team building, sales management, sales performance metrics, sales forecasting, negotiation tactics, sales technology, buyer behavior, persuasion techniques, sales ethics, email marketing, and more. Please provide a specific request or question for more detailed assistance."
+    if user_input.lower() == "sales help":
+        return "I can assist you with various aspects of sales, including generating cold call scripts, handling objections, closing deals, prospecting, lead generation, sales presentations, customer relationships, sales methodologies, sales training, team building, sales management, sales performance metrics, sales forecasting, negotiation tactics, sales technology, buyer behavior, persuasion techniques, sales ethics, email marketing, and more. Please provide a specific request or question for more detailed assistance."
+    elif user_input.lower() == "email marketing help":
+        return "I can help you with email marketing strategies, tactics, tools, and best practices. Email marketing is a powerful digital marketing channel that can help you reach customers, promote products, drive traffic, and build relationships. Whether you need assistance with email copywriting, email design, email automation, email deliverability, email analytics, or email compliance, feel free to ask."
+    elif user_input.lower() == "cold calling help":
+        return "I can assist you with cold calling strategies, scripts, objection handling, and best practices. Cold calling is a valuable sales technique for reaching new prospects, qualifying leads, and generating sales opportunities. Whether you need help with crafting cold call scripts, overcoming objections, building rapport with prospects, or following up effectively, feel free to ask." 
+    elif user_input.lower() == "sales training help":
+        return "I can help you with sales training programs, coaching sessions, training materials, and best practices. Sales training is essential for developing the skills, knowledge, and confidence of your sales team. Whether you need assistance with product training, sales techniques, objection handling, negotiation skills, or sales leadership, feel free to ask."
+    elif user_input.lower() == "sales management help":
+        return "I can assist you with sales management strategies, leadership tips, team-building activities, and performance management. Sales management is crucial for driving sales performance, motivating the sales team, and achieving business goals. Whether you need help with setting sales targets, managing pipelines, coaching sales reps, or analyzing sales data, feel free to ask."
+    elif user_input.lower() == "sales performance metrics help":
+        return "I can help you with tracking, analyzing, and interpreting sales performance metrics. Sales performance metrics provide valuable insights into the effectiveness and efficiency of your sales team. Whether you need assistance with measuring conversion rates, win rates, average deal size, sales cycle length, or customer acquisition cost, feel free to ask."
     #List the above options
     elif user_input.lower() == "list options":
-        return "Here are some topics I can help you with:\n1. Sales\n2. Email Marketing\n3. Cold Calling\n4. Sales Training\n5. Sales Management\n6. Sales Performance Metrics\n7. Sales Forecasting\n8. Negotiation Tactics\n9. Sales Technology\n10. Buyer Persona\n11. Sales Ethics\nPlease type any of the above topics to get more information or assistance."
+        return """Here are some topics I can help you with:
+      1. Sales
+      2. Email Marketing
+      3. Cold Calling
+      4. Sales Training
+      5. Sales Management
+      6. Sales Performance Metrics
+      7. Sales Forecasting
+      8. Negotiation Tactics
+      9. Sales Technology
+      10. Buyer Persona
+      11. Sales Ethics
+      
+      Please type any of the above topics to get more information or assistance."""
     else:
       prompt = f"""
       You are an expert sales coach. You can help with various aspects of sales, including:
