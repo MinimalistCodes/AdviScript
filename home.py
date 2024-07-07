@@ -1,45 +1,93 @@
+import time
 import streamlit as st
-from utils import ai_sales_coach, script_gen, email_gen
+from dotenv import load_dotenv
+import os, sys, json
+from utils import ai_sales_coach, email_gen  # Import your functions from gen.py
 
-# Load CSS file
-with open("styles.css") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+# Load environment variables
+load_dotenv()
 
-# Main app function
-def app():
-    st.sidebar.title("SalesTrek AI Coach")
-    st.title("Welcome to SalesTrek AI Coach")
-    
-    # Initialize session state for storing chat history
-    if "history" not in st.session_state:
-        st.session_state.history = []
+api_key = os.getenv("GOOGLE_API_KEY")
 
-    # Display chat history
-    for message in st.session_state.history:
-        st.markdown(f"<div class='chat-message user-message'>{message['user']}</div>", unsafe_allow_html=True)
-        st.markdown(f"<div class='chat-message bot-message'>{message['bot']}</div>", unsafe_allow_html=True)
+# UI Layout
+st.title("SalesTrek - Script Generator")
+st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
+st.markdown("<small>Chat history is saved in your browser's local storage.</small>", unsafe_allow_html=True)
 
-    # Input box for user commands
-    user_input = st.text_input("You:", key="user_input")
+# Custom CSS for Gemini-like styling with full-screen chat and docked input
+st.markdown("""
+<style>
+body {
+  font-family: 'Arial', sans-serif; 
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Arrange elements vertically */
+  height: 100vh; /* Make the container take up full viewport height */
+}
+.chat-message {
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  line-height: 1.5; 
+}
+.user-message {
+  background-color: #F0F0F0; 
+  text-align: right;
+}
+.bot-message {
+  background-color: #FFFFFF;
+  text-align: left;
+}
+#chat-input-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #FFFFFF;
+  padding: 15px;
+}
+#chat-input { /* Style the textarea for input */
+  width: calc(100% - 30px); /* Account for padding */
+  resize: vertical; /* Allow vertical resizing */
+  min-height: 40px; /* Minimum height */
+  max-height: 200px; /* Maximum height */
+}
+#chat-area { /* Container for chat messages */
+  flex-grow: 1; /* Allow chat area to expand to fill available space */
+  overflow-y: auto; /* Enable scrolling in the chat area */
+}
+</style>
+""", unsafe_allow_html=True)
 
-    if user_input:
-        # Determine which function to call based on user input
-        if "/script" in user_input:
-            response = script_gen(user_input.replace("/script", "").strip())
-        elif "/email" in user_input:
-            response = email_gen(user_input.replace("/email", "").strip())
+# Chat History
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+with st.container():  # Use container for styling
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+# User Input
+if prompt := st.text_input("Your message"):
+    # Append user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+
+    # Display "Sales Coach is typing..."
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty()
+        message_placeholder.markdown("Sales Coach is typing...")
+
+        # Simulate typing delay
+        time.sleep(2)
+
+        # Decide which function to call based on user input
+        if "/script" in prompt.lower():
+            response = ai_sales_coach(prompt)
+        elif "/email" in prompt.lower():
+            response = email_gen(prompt)
         else:
-            response = ai_sales_coach(user_input)
+            response = "Please specify whether you need a sales script (/script) or an email template (/email)."
 
-        # Store the user input and bot response in session state
-        st.session_state.history.append({"user": user_input, "bot": response})
-
-        # Clear the input box
-        st.session_state.user_input = ""
-
-        # Refresh the page to display the new messages
-        st.experimental_rerun()
-
-# Run the app
-if __name__ == "__main__":
-    app()
+        # Update the placeholder with the AI response
+        message_placeholder.markdown(response)
+        st.session_state.messages.append({"role": "assistant", "content": response})
