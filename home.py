@@ -115,9 +115,6 @@ with open("styles.css") as f:
 # hide streamlit menu and logo
 
 
-st.balloons()
-
-
 # UI Layout
 st.markdown("# SalesTrek - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
