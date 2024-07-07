@@ -121,8 +121,13 @@ def ai_sales_coach(user_input):
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-
-# hide streamlit menu and logo
+#sidemenu for old chats
+st.sidebar.markdown("# Chat History")
+if "messages" in st.session_state:
+    st.sidebar.write(st.session_state.messages)
+else:
+    st.sidebar.write("No chat history yet.")
+st.sidebar.markdown("---")  # Horizontal line 
 
 
 # UI Layout
