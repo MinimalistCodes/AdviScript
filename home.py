@@ -10,25 +10,8 @@ from streamlit_extras.switch_page_button import switch_page
 from PIL import Image
 
 # Sidebar
-# Navigation Function
-def navigation():
-    # Page buttons
-    pages = {
-        "Home": "home",
-        "AI Sales Coach": "AI Sales Coach",
-        "Sales Script Generator": "Sales Script Generator",
-        "Email Generator": "Email Generator",
-    }
-    page = st.sidebar.radio("Go to", list(pages.keys()))
-    if page == "Home":
-        switch_page("home")
-    elif page == "AI Sales Coach":
-        switch_page("AI Sales Coach")
-    elif page == "Sales Script Generator":
-        switch_page("Sales Script Generator")
-    elif page == "Email Generator":
-        switch_page("Email Generator")
-
+    
+    
 # Main app function
 def app():
     st.markdown("""
@@ -112,4 +95,3 @@ def app():
 
 # Run the app
 app()
-navigation()
