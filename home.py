@@ -1,35 +1,9 @@
 import streamlit as st
-from langchain_google_genai import GoogleGenerativeAI
-from dotenv import load_dotenv
-import os
-from streamlit_tailwind import st_tailwind
+from utils import ai_sales_coach, script_gen, email_gen
 
-# Load environment variables
-load_dotenv()
-api_key = os.getenv("GOOGLE_API_KEY")
-
-# Initialize Google Generative AI
-llm = GoogleGenerativeAI(model="gemini-pro")
-
-# Define functions for different tasks
-def generate_sales_script(prompt):
-    response = llm(prompt)
-    return response["text"]
-
-def generate_email(prompt):
-    response = llm(prompt)
-    return response["text"]
-
-def summarize_text(prompt):
-    response = llm(prompt)
-    return response["text"]
-
-# Include Tailwind CSS
-st.markdown("""
-<head>
-  <link href="https://unpkg.com/tailwindcss@^2.0/dist/tailwind.min.css" rel="stylesheet">
-</head>
-""", unsafe_allow_html=True)
+# Load CSS file
+with open("styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Main app function
 def app():
@@ -49,21 +23,16 @@ def app():
     user_input = st.text_input("You:", key="user_input")
 
     if user_input:
-        # Process the input
-        if "generate script" in user_input.lower():
-            prompt = user_input.replace("generate script", "").strip()
-            result = generate_sales_script(prompt)
-        elif "create email" in user_input.lower():
-            prompt = user_input.replace("create email", "").strip()
-            result = generate_email(prompt)
-        elif "summarize" in user_input.lower():
-            prompt = user_input.replace("summarize", "").strip()
-            result = summarize_text(prompt)
+        # Determine which function to call based on user input
+        if "/script" in user_input:
+            response = script_gen(user_input.replace("/script", "").strip())
+        elif "/email" in user_input:
+            response = email_gen(user_input.replace("/email", "").strip())
         else:
-            result = "Please enter a valid command."
+            response = ai_sales_coach(user_input)
 
         # Store the user input and bot response in session state
-        st.session_state.history.append({"user": user_input, "bot": result})
+        st.session_state.history.append({"user": user_input, "bot": response})
 
         # Clear the input box
         st.session_state.user_input = ""
