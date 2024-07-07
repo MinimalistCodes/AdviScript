@@ -110,5 +110,3 @@ if prompt := st.chat_input("Your message"):
     response = ai_sales_coach(prompt)
     message_placeholder.markdown(response)  # Update the placeholder
     st.session_state.messages.append({"role": "assistant", "content": response})
-
-st.session_state.stored_messages = json.dumps(st.session_state.messages)
