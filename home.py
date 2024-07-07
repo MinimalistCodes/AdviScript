@@ -127,25 +127,7 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
 # UI Layout
-#gradient text header 
-st.markdown(
-    """
-    <style>
-    .gradient-text {
-        background: -webkit-linear-gradient(45deg, #ff00f7, #0353a4);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-size: 36px;
-        font-weight: bold;
-    }
-    </style>
-    """
-)
-st.markdown('<p class="gradient-text">Sales Coach Chatbot</p>', unsafe_allow_html=True)
-
-
-
-
+st.markdown("# SalesTrek - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 st.markdown("---")  # Horizontal line
 
