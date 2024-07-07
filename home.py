@@ -49,21 +49,6 @@ def ai_sales_coach(user_input):
     elif user_input.lower() == "sales performance metrics help":
         return "I can help you with tracking, analyzing, and interpreting sales performance metrics. Sales performance metrics provide valuable insights into the effectiveness and efficiency of your sales team. Whether you need assistance with measuring conversion rates, win rates, average deal size, sales cycle length, or customer acquisition cost, feel free to ask."
     #List the above options
-    elif user_input.lower() == "list options":
-        return """Here are some topics I can help you with:
-      1. Sales
-      2. Email Marketing
-      3. Cold Calling
-      4. Sales Training
-      5. Sales Management
-      6. Sales Performance Metrics
-      7. Sales Forecasting
-      8. Negotiation Tactics
-      9. Sales Technology
-      10. Buyer Persona
-      11. Sales Ethics
-      
-      Please type any of the above topics to get more information or assistance."""
     else:
       prompt = f"""
       You are an expert sales coach. You can help with various aspects of sales, including:
