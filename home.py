@@ -36,6 +36,9 @@ def ai_sales_coach(user_input):
         return "Sales ethics are principles and standards that guide ethical behavior in sales interactions. Ethical sales practices involve honesty, transparency, integrity, and respect for customers' interests. Sales professionals should adhere to ethical standards to build trust with customers, maintain a positive reputation, and foster long-term relationships. If you need guidance on sales ethics, compliance with sales regulations, or ethical decision-making in sales, feel free to ask."
     elif user_input.lower() == "What can you help me with?":
         return "I can assist you with various aspects of sales, including generating cold call scripts, handling objections, closing deals, prospecting, lead generation, sales presentations, customer relationships, sales methodologies, sales training, team building, sales management, sales performance metrics, sales forecasting, negotiation tactics, sales technology, buyer behavior, persuasion techniques, sales ethics, email marketing, and more. Please provide a specific request or question for more detailed assistance."
+    #if reply is anything else
+    elif user_input.lower() == "":
+        return "Please provide a specific request or question for more detailed assistance."
     else:
       prompt = f"""
       You are an expert sales coach. You can help with various aspects of sales, including:
