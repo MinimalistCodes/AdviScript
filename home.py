@@ -124,11 +124,11 @@ with open("styles.css") as f:
 #sidemenu for old chats
 st.sidebar.markdown("# Chat History")
 if "messages" in st.session_state:
-    st.sidebar.write(st.session_state.messages)
-else:
-    st.sidebar.write("No chat history yet.")
-st.sidebar.markdown("---")  # Horizontal line 
-
+  for i, message in enumerate(st.session_state.messages):
+      st.sidebar.markdown(f"**Message {i+1}:** {message['content']}")
+      st.sidebar.markdown("---")
+  
+        
 
 # UI Layout
 st.markdown("# SalesTrek - Your AI Sales Coach")
