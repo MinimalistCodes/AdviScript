@@ -195,4 +195,3 @@ if "selected_chat_index" in st.session_state:
         """,
         unsafe_allow_html=True,
     )
-```
