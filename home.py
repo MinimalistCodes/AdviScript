@@ -49,149 +49,126 @@ def ai_sales_coach(user_input):
     elif user_input.lower() == "sales performance metrics help":
         return "I can help you with tracking, analyzing, and interpreting sales performance metrics. Sales performance metrics provide valuable insights into the effectiveness and efficiency of your sales team. Whether you need assistance with measuring conversion rates, win rates, average deal size, sales cycle length, or customer acquisition cost, feel free to ask."
     #List the above options
-
-
-    elif user_input.lower() == "sales forecasting help":
-        return "I can assist you with sales forecasting techniques, pipeline management strategies, and revenue projections. Sales forecasting is essential for predicting future sales performance, setting sales targets, and planning sales strategies. Whether you need help with historical data analysis, market trend analysis, or sales projection models, feel free to ask."
-    elif user_input.lower() == "negotiation tactics help":
-        return "I can help you with negotiation tactics, deal-closing strategies, and objection-handling techniques. Effective negotiation skills are crucial for reaching mutually beneficial agreements and closing sales deals successfully. Whether you need assistance with active listening, asking probing questions, presenting value propositions, or handling objections, feel free to ask."
-    elif user_input.lower() == "sales technology help":
-        return "I can assist you with recommendations for sales technology solutions, integration advice, and training on sales tools. Sales technology can help you automate, streamline, and optimize your sales processes. Whether you need help with CRM systems, sales enablement tools, sales analytics software, or email marketing platforms, feel free to ask."
-    elif user_input.lower() == "buyer persona help":
-        return "I can help you with developing buyer personas, segmenting target markets, and personalizing sales messages. Buyer personas are essential for understanding your target audience, identifying customer needs, and tailoring your sales and marketing strategies. Whether you need assistance with market research, data analysis, or persona creation, feel free to ask."
-    elif user_input.lower() == "sales ethics help":
-        return "I can provide guidance on sales ethics, compliance with sales regulations, and ethical decision-making in sales. Ethical sales practices are crucial for building trust with customers, maintaining a positive reputation, and fostering long-term relationships. Whether you need assistance with honesty, transparency, integrity, or respect for customers' interests, feel free to ask."
     else:
-        try:
-            ai = GoogleGenerativeAI(model="text-bison", api_key=api_key)
-            prompt = user_input
-            response = ai.generate_text(prompt=prompt)
-            return response.result
-        except Exception as e:
-            return f"An error occurred: {str(e)}"
+      prompt = f"""
+      You are an expert sales coach. You can help with various aspects of sales, including:
 
-# Streamlit UI setup
-st.set_page_config(page_title="AdviScript - AI Sales Coach", layout="wide")
+      *   Generating effective cold call scripts and email templates tailored to our company's products and services.
+      *   Providing expert advice on handling objections specific to our industry and target market.
+      *   Offering proven tips for closing deals based on our sales process.
+      *   Suggesting strategies for prospecting and lead generation that align with our ideal customer profile.
+      *   Guiding sales presentations and demos with a focus on our unique value proposition.
+      *   Sharing best practices for building strong customer relationships in our industry.
+      *   Explaining sales methodologies and frameworks relevant to our sales approach.
+      *   Assisting with sales training and coaching sessions for our team.
+      *   Fostering team building and motivation within our sales department.
+      *   Offering advice on sales management and leadership for team leaders.
+      *   Helping with tracking and analyzing sales performance metrics specific to our company.
+      *   Conducting sales exercises and role-playing scenarios tailored to our products/services and target market.
+      *   Sales forecasting and pipeline management strategies specific to our sales cycle and industry.
+      *   Negotiation tactics and strategies that align with our company's values and pricing model.
+      *   Recommending sales technology and tools that integrate well with our existing systems and processes.
+      *   Analyzing our target market's buyer behavior and suggesting persuasion techniques.
+      *   Ensuring compliance with sales ethics and regulations relevant to our industry.
+      *   Crafting engaging subject lines
+      *   Writing compelling email copy
+      *   Personalizing emails for different audiences
+      *   A/B testing email campaigns
+      *   Optimizing email deliverability
+      *   Analyzing email performance metrics
+      *   Building email lists and segments
+      *   Creating automated email sequences
+      *   Integrating email marketing tools
+      *   Compliance with email regulations (e.g., CAN-SPAM, GDPR)
+      *   Email design best practices
+      *   Email marketing strategy and planning
+      *   Email copywriting tips and techniques
+      *   Email marketing automation
+      *   Email personalization and segmentation
+      *   Email campaign optimization
+      *   Email marketing analytics and reporting
+      *   Email marketing trends and innovations
+      *   Email marketing case studies and examples
+      *   Email marketing tools and software
+      *   Generating cold call scripts
+      *   Crafting effective email templates
+      *   Providing advice on handling objections
+      *   Offering tips for closing deals
+      *   Suggesting strategies for prospecting and lead generation
+      *   Guiding sales presentations and demos
+      *   Sharing best practices for building customer relationships
+      *   Explaining sales methodologies and frameworks
+      *   Assisting with sales training and coaching
+      *   Team building and motivation
+      *   Sales management and leadership
+      *   Tracking and analyzing sales performance
+      *   Sales exercises and role-playing scenarios
+      *   Sales forecasting and pipeline management
+      *   Sales negotiation tactics and strategies
+      *   Recommendations for sales technology and tools
+      *   Sales psychology, buyer behavior, and persuasion techniques
+      *   Sales ethics and compliance
+      *   Emotional intelligence in sales
 
-st.markdown(
-    """
-    <style>
-        .main {
-            background-color: #F7F7F7;
-            padding: 20px;
-        }
-        .title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #333333;
-            text-align: center;
-        }
-        .input-area {
-            margin-top: 20px;
-            background-color: #FFFFFF;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .response-area {
-            margin-top: 20px;
-            background-color: #FFFFFF;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .input-box {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #DDDDDD;
-            border-radius: 5px;
-        }
-        .response-box {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #DDDDDD;
-            border-radius: 5px;
-            background-color: #FAFAFA;
-        }
-        .submit-button {
-            background-color: #50C878;
-            color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .submit-button:hover {
-            background-color: #45B267;
-        }
-        .chat-history {
-            margin-top: 20px;
-            background-color: #FFFFFF;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .chat-item {
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #E0F7FA;
-            border-radius: 5px;
-        }
-        .chat-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333333;
-            cursor: pointer;
-        }
-        .chat-timestamp {
-            font-size: 12px;
-            color: #666666;
-            text-align: right;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+      Please provide a comprehensive response to the following request:
 
-st.title("AdviScript - AI Sales Coach")
+      {user_input}
+      """
+      llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+      return llm.invoke(prompt)
 
-# Initialize chat history
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
+#load styles.css
+with open("styles.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Input area
-user_input = st.text_input("Ask the AI Sales Coach a question:", key="user_input")
+#sidemenu for old chats
+st.sidebar.markdown("# Chat History")
+if "messages" in st.session_state:
+  for i, message in enumerate(st.session_state.messages):
+      st.sidebar.markdown(f"**Message {i+1}:** {message['content']}")
+      st.sidebar.markdown("---")
+  
+        
 
-# Process user input
-if st.button("Submit"):
-    if user_input:
-        timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
-        response = ai_sales_coach(user_input)
-        st.session_state.chat_history.append({"timestamp": timestamp, "user_input": user_input, "response": response})
+# UI Layout
+st.markdown("# SalesTrek - Your AI Sales Coach")
+st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
+st.markdown("---")  # Horizontal line
 
-# Display chat history in the sidebar as clickable titles
-with st.sidebar:
-    st.markdown("## Chat History")
-    for i, chat in enumerate(st.session_state.chat_history):
-        if st.button(f"{chat['timestamp']} - {chat['user_input']}"):
-            st.session_state.selected_chat_index = i
+    
 
-# Display the selected chat conversation
-if "selected_chat_index" in st.session_state:
-    selected_chat = st.session_state.chat_history[st.session_state.selected_chat_index]
-    st.markdown(
-        f"""
-        <div class="response-area">
-            <p class="response-box"><strong>You:</strong> {selected_chat['user_input']}</p>
-            <p class="response-box"><strong>AdviScript:</strong> {selected_chat['response']}</p>
-            <p class="chat-timestamp">{selected_chat['timestamp']}</p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+# Chat History
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+    
+    # Welcome message
+    st.session_state.messages.append({"role": "assistant", "content": "Welcome! Type 'help' to get started!"})
+
+
+# Display chat messages
+with st.container():  # Use container for styling
+    for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
+                
+# User Input
+if prompt := st.chat_input("Your message"):
+    # Append user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    
+    # Display user message
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # Display "Sales Coach is typing..."
+    with st.chat_message("assistant"):
+        message_placeholder = st.empty() 
+        message_placeholder.markdown("Sales Coach is typing...")
+
+    # Get and append AI response (with a delay to simulate typing)
+    time.sleep(1)  # Adjust the delay as needed
+    response = ai_sales_coach(prompt)
+    message_placeholder.markdown(response)  # Update the placeholder
+    st.session_state.messages.append({"role": "assistant", "content": response})
+    
+  
