@@ -4,7 +4,6 @@ from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
 import streamlit.components.v1 as components
-import fpdf
 # Load environment variables
 load_dotenv()
 

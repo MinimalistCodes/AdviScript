@@ -4,8 +4,8 @@ from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
 import streamlit.components.v1 as components
-import fpdf
-# Load environment variables
+
+# Load environment va   riables
 load_dotenv()
 
 api_key = os.getenv("GOOGLE_API_KEY")
@@ -141,7 +141,7 @@ st.markdown("---")  # Horizontal line
 with st.sidebar:
     st.info(":information_source: **Navigation**")
     st.markdown("---")  # Horizontal line
-    
+    #show pages with icons
     st.info("Chat Options")
     #new chat button
     if st.button("New Chat"):
