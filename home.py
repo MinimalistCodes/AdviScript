@@ -1,6 +1,3 @@
-Here is the modified code with the chat history in the sidebar as a clickable title instead of showing JSON code:
-
-```python
 import time
 import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
