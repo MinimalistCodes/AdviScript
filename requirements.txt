@@ -10,4 +10,3 @@ streamlit-folium
 extra_streamlit_components
 streamlit-elements
 streamlit-tailwind
-streamlit-components
