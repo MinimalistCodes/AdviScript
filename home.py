@@ -124,9 +124,12 @@ with open("styles.css") as f:
 #sidemenu for old chats
 st.sidebar.markdown("# Chat History")
 if "messages" in st.session_state:
-  for i, message in enumerate(st.session_state.messages):
-      st.sidebar.markdown(f"**Message {i+1}:** {message['content']}")
-      st.sidebar.markdown("---")
+    st.sidebar.markdown("### Recent Chats")
+    for i, message in enumerate(reversed(st.session_state.messages[-5:])):
+        st.sidebar.markdown(f"**Chat {i+1}:** {message['content']}")
+    if len(st.session_state.messages) > 5:
+        if st.sidebar.button("Clear Chat History"):
+            st.session_state.messages = st.session_state.messages[-5:]
   
         
 
@@ -170,5 +173,9 @@ if prompt := st.chat_input("Your message"):
     response = ai_sales_coach(prompt)
     message_placeholder.markdown(response)  # Update the placeholder
     st.session_state.messages.append({"role": "assistant", "content": response})
+    
+    # Clear user input after sending message
+    st.session_state.messages = st.session_state.messages[-100:]  # Limit chat history to last 100 messages
+    
     
   
