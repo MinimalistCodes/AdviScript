@@ -4,13 +4,13 @@ from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
 import streamlit.components.v1 as components
-
+import fpdf
 # Load environment variables
 load_dotenv()
 
 api_key = os.getenv("GOOGLE_API_KEY")
 
-def email_gen(user_input):
+def ai_sales_coach(user_input):
     if user_input.lower() == "help":
         return "I can assist you with various aspects of sales, including generating cold call scripts, handling objections, closing deals, prospecting, lead generation, sales presentations, customer relationships, sales methodologies, sales training, team building, sales management, sales performance metrics, sales forecasting, negotiation tactics, sales technology, buyer behavior, persuasion techniques, sales ethics, email marketing, and more. Please provide a specific request or question for more detailed assistance."
     elif user_input.lower() == "sales":
@@ -52,8 +52,25 @@ def email_gen(user_input):
     #List the above options
     else:
       prompt = f"""
-      You are an expert at writing sales and marketing emails. You can help with various aspects of the prompt given, including:
+      You are an expert salesperson, manager, and copywriter. You can help with various aspects of the subject given, including:
 
+      *   Generating effective cold call scripts and email templates tailored to our company's products and services.
+      *   Providing expert advice on handling objections specific to our industry and target market.
+      *   Offering proven tips for closing deals based on our sales process.
+      *   Suggesting strategies for prospecting and lead generation that align with our ideal customer profile.
+      *   Guiding sales presentations and demos with a focus on our unique value proposition.
+      *   Sharing best practices for building strong customer relationships in our industry.
+      *   Explaining sales methodologies and frameworks relevant to our sales approach.
+      *   Assisting with sales training and coaching sessions for our team.
+      *   Fostering team building and motivation within our sales department.
+      *   Offering advice on sales management and leadership for team leaders.
+      *   Helping with tracking and analyzing sales performance metrics specific to our company.
+      *   Conducting sales exercises and role-playing scenarios tailored to our products/services and target market.
+      *   Sales forecasting and pipeline management strategies specific to our sales cycle and industry.
+      *   Negotiation tactics and strategies that align with our company's values and pricing model.
+      *   Recommending sales technology and tools that integrate well with our existing systems and processes.
+      *   Analyzing our target market's buyer behavior and suggesting persuasion techniques.
+      *   Ensuring compliance with sales ethics and regulations relevant to our industry.
       *   Crafting engaging subject lines
       *   Writing compelling email copy
       *   Personalizing emails for different audiences
@@ -74,6 +91,25 @@ def email_gen(user_input):
       *   Email marketing trends and innovations
       *   Email marketing case studies and examples
       *   Email marketing tools and software
+      *   Generating cold call scripts
+      *   Crafting effective email templates
+      *   Providing advice on handling objections
+      *   Offering tips for closing deals
+      *   Suggesting strategies for prospecting and lead generation
+      *   Guiding sales presentations and demos
+      *   Sharing best practices for building customer relationships
+      *   Explaining sales methodologies and frameworks
+      *   Assisting with sales training and coaching
+      *   Team building and motivation
+      *   Sales management and leadership
+      *   Tracking and analyzing sales performance
+      *   Sales exercises and role-playing scenarios
+      *   Sales forecasting and pipeline management
+      *   Sales negotiation tactics and strategies
+      *   Recommendations for sales technology and tools
+      *   Sales psychology, buyer behavior, and persuasion techniques
+      *   Sales ethics and compliance
+      *   Emotional intelligence in sales
 
       Please provide a comprehensive response to the following request:
 
@@ -86,31 +122,43 @@ def email_gen(user_input):
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Sidebar for Chat History
-st.sidebar.markdown("# Chat History")
 
-# Add a button for starting a new conversation
-with st.sidebar:
-    st.markdown("---")  # Horizontal
-    if st.button("Start New Conversation"):
-        st.session_state.messages = []  # Clear chat history
-    st.markdown("---")
-    # Add a button for clearing the chat history
-    if st.button("Clear Chat History"):
-        st.session_state.messages = []  # Clear chat history
-    st.markdown("---")  # Horizontal line
-    #Multiple pages
-    st.markdown("# Pages")
-    st.info("Select a page to view")
-        
-        
+#page config
+st.set_page_config(
+    page_title="SalesTrek - Email Marketing Assistant",
+    page_icon=":email:",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
 
-# UI Layout
+# UI Title
 st.markdown("# SalesTrek - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 st.markdown("---")  # Horizontal line
 
+
+#Sidebar
+with st.sidebar:
+    st.info(":information_source: **Navigation**")
+    st.markdown("---")  # Horizontal line
     
+    st.info("Chat Options")
+    #new chat button
+    if st.button("New Chat"):
+        st.session_state.messages = []
+        st.session_state.messages.append({"role": "assistant", "content": "Welcome! Type 'help' to get started!"})
+    #clear chat button
+    if st.button("Clear Chat"):
+        st.session_state.messages = []
+        st.session_state.messages.append({"role": "assistant", "content": ""})
+    #save chat button
+    if st.button("Save Chat"):
+        chat = st.session_state.messages
+        with open("chat_history.json", "w") as f:
+            json.dump(chat, f)
+        st.success("Chat history saved successfully!")
+    st.markdown("---")  # Horizontal line
+
 
 # Chat History
 if "messages" not in st.session_state:
@@ -145,6 +193,9 @@ if prompt := st.chat_input("Your message"):
     response = ai_sales_coach(prompt)
     message_placeholder.markdown(response)  # Update the placeholder
     st.session_state.messages.append({"role": "assistant", "content": response})
+    
     # Clear user input after sending message
+    st.session_state.messages = st.session_state.messages[-100:]  # Limit chat history to last 100 messages
+    
     
   

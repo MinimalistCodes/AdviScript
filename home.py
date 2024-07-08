@@ -125,9 +125,9 @@ with open("styles.css") as f:
 
 #page config
 st.set_page_config(
-    page_title="SalesTrek - Your AI Sales Coach",
+    page_title="SalesTrek - AI Sales Script Generator",
     page_icon=":chart_with_upwards_trend:",
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="expanded",
 )
 
