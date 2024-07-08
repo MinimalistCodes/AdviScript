@@ -3,6 +3,7 @@ import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
+from uuid import uuid4
 
 # Load environment variables
 load_dotenv()
@@ -121,22 +122,43 @@ def ai_sales_coach(user_input):
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Sidebar for old chats
+# Sidebar for Chat History
 st.sidebar.markdown("# Chat History")
+
 if "messages" in st.session_state:
     st.sidebar.markdown("### Recent Chats")
-    
-    # Make recent chats have a button to open older chats
-    for i, message in enumerate(st.session_state.messages):
-        if st.sidebar.button(f"Open Chat {i+1}"):
-            # Display the selected chat in the main area
-            st.session_state.selected_message = i
+
+    # Display each chat title as a button
+    for chat_index in range(len(st.session_state["messages"]) - 1, -1, -1):
+        chat = st.session_state["messages"][chat_index]
+        if chat["role"] == "user":
+            label = f"Chat {chat_index+1}"  
+        else:
+            continue # Skip assistant messages
+
+        # Create a unique ID for the button based on the chat index
+        button_id = f"chat-button-{chat_index}"
+
+        # Use st.button to create the clickable chat title
+        if st.sidebar.button(label, key=button_id):
+            st.session_state["clicked_chat_index"] = chat_index
+
+     # Check if any chat button was clicked
+    if "clicked_chat_index" in st.session_state:
+        # Do something with the clicked chat index
+        clicked_index = st.session_state["clicked_chat_index"]
+
+        # You could display the full chat here or switch to that chat
+
+        # Clear the clicked_chat_index so it doesn't trigger again
+        del st.session_state["clicked_chat_index"]
 
 # Display the selected chat in the main area
 if "selected_message" in st.session_state:
     selected_message = st.session_state.selected_message
     st.markdown(f"### Chat {selected_message+1}")
     st.markdown(st.session_state.messages[selected_message]["content"])
+
 
   
         
