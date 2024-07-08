@@ -121,19 +121,34 @@ def ai_sales_coach(user_input):
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-#sidemenu for old chats
+# Sidebar for Chat History
 st.sidebar.markdown("# Chat History")
+
 if "messages" in st.session_state:
     st.sidebar.markdown("### Recent Chats")
-    #Make recent chats have a button instead of the chat history so the user can open older chats
-    for i, message in enumerate(st.session_state.messages[-5:]):
-        st.sidebar.markdown(f"#### Chat {i+1}")
-        st.sidebar.markdown(message["content"])
-        st.sidebar.markdown("---")
-        if st.sidebar.button("Open Chat"):
-            st.session_state.messages = message["content"]
-else:
-    st.sidebar.markdown("No recent chats")
+
+    # Display each message as a button in the sidebar
+    for i, message in enumerate(st.session_state["messages"][-5:]):  # Show the last 5 chats
+        if message["role"] == "user":
+            label = f"You: {message['content'][:20]}..."  # Truncate long messages
+        else:
+            label = f"AI: {message['content'][:20]}..."
+
+        # Create a unique ID for the button based on the message index
+        button_id = f"message-button-{i}"
+
+        # Use st.button to create the clickable message in the sidebar
+        if st.sidebar.button(label, key=button_id):
+            st.session_state["clicked_message_index"] = i  # Store clicked index
+    
+    # Check if any message button was clicked
+    if "clicked_message_index" in st.session_state:
+        # Do something with the clicked message index
+        clicked_index = st.session_state["clicked_message_index"]
+        # ... (e.g., display the full conversation or retrieve context)
+
+        # Clear the clicked_message_index so it doesn't trigger again
+        del st.session_state["clicked_message_index"]
     
   
         
