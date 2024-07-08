@@ -133,7 +133,17 @@ with open("styles.css") as f:
 
 
 #page config
-
+    p1 = st.Page("home.py")
+    p2 = st.Page("email.py")
+    p3 = st.Page("coach.py")
+    
+    pg = st.navigation({
+        "Home": p1,
+        "Email": p2,
+        "Coach": p3
+    })
+    pg.run()
+    
 
 # UI Title
 st.markdown("# SalesTrek - Your AI Sales Coach")
@@ -151,18 +161,15 @@ with st.sidebar:
     if st.button("New Chat"):
         st.session_state.messages = []
     #clear chat button
+    if st.button("Clear Chat"):
+        st.session_state.messages = []
+    #save chat button
+    if st.button("Save Chat"):
+        chat = st.session_state.messages
+        with open("chat_history.json", "w") as f:
+            json.dump(chat, f)
+        st.success("Chat history saved successfully!")
     st.markdown("---")  # Horizontal line
-    p1 = st.Page("home.py")
-    p2 = st.Page("email.py")
-    p3 = st.Page("coach.py")
-    
-    pg = st.navigation({
-        "Home": p1,
-        "Email": p2,
-        "Coach": p3
-    })
-    pg.run()
-    
     
 # Chat History
 if "messages" not in st.session_state:
