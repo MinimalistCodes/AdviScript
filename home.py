@@ -10,6 +10,15 @@ load_dotenv()
 
 api_key = os.getenv("GOOGLE_API_KEY")
 
+
+st.set_page_config(
+    page_title="SalesTrek - AI Sales Script Generator",
+    page_icon=":chart_with_upwards_trend:",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
+
 def ai_sales_coach(user_input):
     if user_input.lower() == "help":
         return "I can assist you with various aspects of sales, including generating cold call scripts, handling objections, closing deals, prospecting, lead generation, sales presentations, customer relationships, sales methodologies, sales training, team building, sales management, sales performance metrics, sales forecasting, negotiation tactics, sales technology, buyer behavior, persuasion techniques, sales ethics, email marketing, and more. Please provide a specific request or question for more detailed assistance."
@@ -124,12 +133,7 @@ with open("styles.css") as f:
 
 
 #page config
-st.set_page_config(
-    page_title="SalesTrek - AI Sales Script Generator",
-    page_icon=":chart_with_upwards_trend:",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
+
 
 # UI Title
 st.markdown("# SalesTrek - Your AI Sales Coach")
