@@ -3,7 +3,8 @@ import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
-import streamlit.components.v1 as components
+from streamlit_navigation_bar import st_navbar
+
 
 # Load environment va   riables
 load_dotenv()
@@ -131,12 +132,20 @@ def ai_sales_coach(user_input):
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+page = st_navbar(["Home", "Email", "Coach"])
 
-#page config
+if page == "Home":
+    st.switch_page("home.py")
+if page == "Email":
+    st.switch_page("email.py")
+if page == "Coach":
+    st.switch_page("coach.py")
+
+
 
 
 # UI Title
-st.markdown("# SalesTrek - Your AI Sales Coach")
+st.markdown("## SalesTrek - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 st.markdown("---")  # Horizontal line
 
@@ -152,16 +161,7 @@ with st.sidebar:
         st.session_state.messages = []
     #clear chat button
     st.markdown("---")  # Horizontal line
-    p1 = st.Page("home.py")
-    p2 = st.Page("email.py")
-    p3 = st.Page("coach.py")
-    
-    pg = st.navigation({
-        "Home": p1,
-        "Email": p2,
-        "Coach": p3
-    })
-    pg.run()
+
     
     
 # Chat History

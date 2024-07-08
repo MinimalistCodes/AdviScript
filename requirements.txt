@@ -11,3 +11,4 @@ extra_streamlit_components
 streamlit-elements
 streamlit-tailwind
 fpdf
+streamlit-navigation-bar
