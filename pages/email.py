@@ -52,25 +52,8 @@ def ai_sales_coach(user_input):
     #List the above options
     else:
       prompt = f"""
-      You are an expert salesperson, manager, sales coach and script writer, and copywriter. You can help with various aspects of the subject given, including:
+      You are an expert at writing sales and marketing emails. You can help with various aspects of the prompt given, including:
 
-      *   Generating effective cold call scripts and email templates tailored to our company's products and services.
-      *   Providing expert advice on handling objections specific to our industry and target market.
-      *   Offering proven tips for closing deals based on our sales process.
-      *   Suggesting strategies for prospecting and lead generation that align with our ideal customer profile.
-      *   Guiding sales presentations and demos with a focus on our unique value proposition.
-      *   Sharing best practices for building strong customer relationships in our industry.
-      *   Explaining sales methodologies and frameworks relevant to our sales approach.
-      *   Assisting with sales training and coaching sessions for our team.
-      *   Fostering team building and motivation within our sales department.
-      *   Offering advice on sales management and leadership for team leaders.
-      *   Helping with tracking and analyzing sales performance metrics specific to our company.
-      *   Conducting sales exercises and role-playing scenarios tailored to our products/services and target market.
-      *   Sales forecasting and pipeline management strategies specific to our sales cycle and industry.
-      *   Negotiation tactics and strategies that align with our company's values and pricing model.
-      *   Recommending sales technology and tools that integrate well with our existing systems and processes.
-      *   Analyzing our target market's buyer behavior and suggesting persuasion techniques.
-      *   Ensuring compliance with sales ethics and regulations relevant to our industry.
       *   Crafting engaging subject lines
       *   Writing compelling email copy
       *   Personalizing emails for different audiences
@@ -91,25 +74,6 @@ def ai_sales_coach(user_input):
       *   Email marketing trends and innovations
       *   Email marketing case studies and examples
       *   Email marketing tools and software
-      *   Generating cold call scripts
-      *   Crafting effective email templates
-      *   Providing advice on handling objections
-      *   Offering tips for closing deals
-      *   Suggesting strategies for prospecting and lead generation
-      *   Guiding sales presentations and demos
-      *   Sharing best practices for building customer relationships
-      *   Explaining sales methodologies and frameworks
-      *   Assisting with sales training and coaching
-      *   Team building and motivation
-      *   Sales management and leadership
-      *   Tracking and analyzing sales performance
-      *   Sales exercises and role-playing scenarios
-      *   Sales forecasting and pipeline management
-      *   Sales negotiation tactics and strategies
-      *   Recommendations for sales technology and tools
-      *   Sales psychology, buyer behavior, and persuasion techniques
-      *   Sales ethics and compliance
-      *   Emotional intelligence in sales
 
       Please provide a comprehensive response to the following request:
 
@@ -122,9 +86,6 @@ def ai_sales_coach(user_input):
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Sidebar for Chat History
-st.sidebar.markdown("# Chat History")
-
 # Add a button for starting a new conversation
 if st.sidebar.button("New Convo"):
     st.session_state["messages"] = []  # Clear the chat history
@@ -133,33 +94,9 @@ if "messages" in st.session_state:
     st.sidebar.markdown("### Recent Chats")
     
     # Keep track of the conversations we've added buttons for
-    displayed_conversations = set() 
 
-    # Iterate over the messages in reverse to get recent chats first
-    for i, message in enumerate(reversed(st.session_state["messages"])):
 
-        # If this is the start of a new conversation and we haven't already added a button for it
-        if message["role"] == "user" and i not in displayed_conversations:
-            label = f"Chat {len(displayed_conversations) + 1}"  
-            button_id = f"chat-button-{i}" 
 
-            # Add a button for this conversation
-            if st.sidebar.button(label, key=button_id):
-                st.session_state["clicked_chat_index"] = i  
-
-            # Mark this conversation as having been displayed
-            displayed_conversations.add(i)
-
-     # Check if any chat button was clicked
-    if "clicked_chat_index" in st.session_state:
-        # Do something with the clicked chat index
-        clicked_index = st.session_state["clicked_chat_index"]
-
-        # You could display the full chat here or switch to that chat
-
-        # Clear the clicked_chat_index so it doesn't trigger again
-        del st.session_state["clicked_chat_index"]
-    
   
         
 
