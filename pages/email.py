@@ -10,7 +10,7 @@ load_dotenv()
 
 api_key = os.getenv("GOOGLE_API_KEY")
 
-def ai_sales_coach(user_input):
+def email_gen(user_input):
     if user_input.lower() == "help":
         return "I can assist you with various aspects of sales, including generating cold call scripts, handling objections, closing deals, prospecting, lead generation, sales presentations, customer relationships, sales methodologies, sales training, team building, sales management, sales performance metrics, sales forecasting, negotiation tactics, sales technology, buyer behavior, persuasion techniques, sales ethics, email marketing, and more. Please provide a specific request or question for more detailed assistance."
     elif user_input.lower() == "sales":
@@ -86,18 +86,23 @@ def ai_sales_coach(user_input):
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+# Sidebar for Chat History
+st.sidebar.markdown("# Chat History")
+
 # Add a button for starting a new conversation
-if st.sidebar.button("New Convo"):
-    st.session_state["messages"] = []  # Clear the chat history
-
-if "messages" in st.session_state:
-    st.sidebar.markdown("### Recent Chats")
-    
-    # Keep track of the conversations we've added buttons for
-
-
-
-  
+with st.sidebar:
+    st.markdown("---")  # Horizontal
+    if st.button("Start New Conversation"):
+        st.session_state.messages = []  # Clear chat history
+    st.markdown("---")
+    # Add a button for clearing the chat history
+    if st.button("Clear Chat History"):
+        st.session_state.messages = []  # Clear chat history
+    st.markdown("---")  # Horizontal line
+    #Multiple pages
+    st.markdown("# Pages")
+    st.info("Select a page to view")
+        
         
 
 # UI Layout
@@ -140,9 +145,6 @@ if prompt := st.chat_input("Your message"):
     response = ai_sales_coach(prompt)
     message_placeholder.markdown(response)  # Update the placeholder
     st.session_state.messages.append({"role": "assistant", "content": response})
-    
     # Clear user input after sending message
-    st.session_state.messages = st.session_state.messages[-100:]  # Limit chat history to last 100 messages
-    
     
   

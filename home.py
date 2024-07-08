@@ -4,7 +4,7 @@ from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
 import streamlit.components.v1 as components
-
+import fpdf
 # Load environment variables
 load_dotenv()
 
@@ -52,7 +52,7 @@ def ai_sales_coach(user_input):
     #List the above options
     else:
       prompt = f"""
-      You are an expert salesperson, manager, sales coach and script writer, and copywriter. You can help with various aspects of the subject given, including:
+      You are an expert salesperson, manager, and copywriter. You can help with various aspects of the subject given, including:
 
       *   Generating effective cold call scripts and email templates tailored to our company's products and services.
       *   Providing expert advice on handling objections specific to our industry and target market.
@@ -122,53 +122,43 @@ def ai_sales_coach(user_input):
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Sidebar for Chat History
-st.sidebar.markdown("# Chat History")
 
-# Add a button for starting a new conversation
-if st.sidebar.button("New Convo"):
-    st.session_state["messages"] = []  # Clear the chat history
+#page config
+st.set_page_config(
+    page_title="SalesTrek - Your AI Sales Coach",
+    page_icon=":chart_with_upwards_trend:",
+    layout="centered",
+    initial_sidebar_state="expanded",
+)
 
-if "messages" in st.session_state:
-    st.sidebar.markdown("### Recent Chats")
-    
-    # Keep track of the conversations we've added buttons for
-    displayed_conversations = set() 
-
-    # Iterate over the messages in reverse to get recent chats first
-    for i, message in enumerate(reversed(st.session_state["messages"])):
-
-        # If this is the start of a new conversation and we haven't already added a button for it
-        if message["role"] == "user" and i not in displayed_conversations:
-            label = f"Chat {len(displayed_conversations) + 1}"  
-            button_id = f"chat-button-{i}" 
-
-            # Add a button for this conversation
-            if st.sidebar.button(label, key=button_id):
-                st.session_state["clicked_chat_index"] = i  
-
-            # Mark this conversation as having been displayed
-            displayed_conversations.add(i)
-
-     # Check if any chat button was clicked
-    if "clicked_chat_index" in st.session_state:
-        # Do something with the clicked chat index
-        clicked_index = st.session_state["clicked_chat_index"]
-
-        # You could display the full chat here or switch to that chat
-
-        # Clear the clicked_chat_index so it doesn't trigger again
-        del st.session_state["clicked_chat_index"]
-    
-  
-        
-
-# UI Layout
+# UI Title
 st.markdown("# SalesTrek - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 st.markdown("---")  # Horizontal line
 
+
+#Sidebar
+with st.sidebar:
+    st.info(":information_source: **Navigation**")
+    st.markdown("---")  # Horizontal line
     
+    st.info("Chat Options")
+    #new chat button
+    if st.button("New Chat"):
+        st.session_state.messages = []
+        st.session_state.messages.append({"role": "assistant", "content": "Welcome! Type 'help' to get started!"})
+    #clear chat button
+    if st.button("Clear Chat"):
+        st.session_state.messages = []
+        st.session_state.messages.append({"role": "assistant", "content": ""})
+    #save chat button
+    if st.button("Save Chat"):
+        chat = st.session_state.messages
+        with open("chat_history.json", "w") as f:
+            json.dump(chat, f)
+        st.success("Chat history saved successfully!")
+    st.markdown("---")  # Horizontal line
+
 
 # Chat History
 if "messages" not in st.session_state:
