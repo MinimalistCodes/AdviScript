@@ -3,7 +3,7 @@ import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
-from uuid import uuid4
+import streamlit.components.v1 as components
 
 # Load environment variables
 load_dotenv()
@@ -122,26 +122,30 @@ def ai_sales_coach(user_input):
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-# Sidebar for Chat History
-st.sidebar.markdown("# Chat History")
+# Add a button for starting a new conversation
+if st.sidebar.button("New Convo"):
+    st.session_state["messages"] = []  # Clear the chat history
 
 if "messages" in st.session_state:
     st.sidebar.markdown("### Recent Chats")
+    
+    # Keep track of the conversations we've added buttons for
+    displayed_conversations = set() 
 
-    # Display each chat title as a button
-    for chat_index in range(len(st.session_state["messages"]) - 1, -1, -1):
-        chat = st.session_state["messages"][chat_index]
-        if chat["role"] == "user":
-            label = f"Chat {chat_index+1}"  
-        else:
-            continue # Skip assistant messages
+    # Iterate over the messages in reverse to get recent chats first
+    for i, message in enumerate(reversed(st.session_state["messages"])):
 
-        # Create a unique ID for the button based on the chat index
-        button_id = f"chat-button-{chat_index}"
+        # If this is the start of a new conversation and we haven't already added a button for it
+        if message["role"] == "user" and i not in displayed_conversations:
+            label = f"Chat {len(displayed_conversations) + 1}"  
+            button_id = f"chat-button-{i}" 
 
-        # Use st.button to create the clickable chat title
-        if st.sidebar.button(label, key=button_id):
-            st.session_state["clicked_chat_index"] = chat_index
+            # Add a button for this conversation
+            if st.sidebar.button(label, key=button_id):
+                st.session_state["clicked_chat_index"] = i  
+
+            # Mark this conversation as having been displayed
+            displayed_conversations.add(i)
 
      # Check if any chat button was clicked
     if "clicked_chat_index" in st.session_state:
@@ -152,12 +156,6 @@ if "messages" in st.session_state:
 
         # Clear the clicked_chat_index so it doesn't trigger again
         del st.session_state["clicked_chat_index"]
-
-# Display the selected chat in the main area
-if "selected_message" in st.session_state:
-    selected_message = st.session_state.selected_message
-    st.markdown(f"### Chat {selected_message+1}")
-    st.markdown(st.session_state.messages[selected_message]["content"])
 
 
   
