@@ -132,8 +132,8 @@ def ai_sales_coach(user_input):
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-page = st_navbar(["Home", "Email", "Coach"])
 
+page = st_navbar(["Home", "Email", "Coach"])
 if page == "Home":
     st.switch_page("home.py")
 if page == "Email":
@@ -148,20 +148,6 @@ if page == "Coach":
 st.markdown("## SalesTrek - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 st.markdown("---")  # Horizontal line
-
-
-#Sidebar
-with st.sidebar:
-    st.info(":information_source: **Navigation**")
-    st.markdown("---")  # Horizontal line
-    #show pages with icons
-    st.info("Chat Options")
-    #new chat button
-    if st.button("New Chat"):
-        st.session_state.messages = []
-    #clear chat button
-    st.markdown("---")  # Horizontal line
-
     
     
 # Chat History
