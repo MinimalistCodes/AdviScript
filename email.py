@@ -4,7 +4,8 @@ from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
 import streamlit.components.v1 as components
-# Load environment variables
+
+# Load environment va   riables
 load_dotenv()
 
 api_key = os.getenv("GOOGLE_API_KEY")
@@ -124,8 +125,8 @@ with open("styles.css") as f:
 
 #page config
 st.set_page_config(
-    page_title="SalesTrek - Email Marketing Assistant",
-    page_icon=":email:",
+    page_title="SalesTrek - AI Sales Script Generator",
+    page_icon=":chart_with_upwards_trend:",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -140,25 +141,25 @@ st.markdown("---")  # Horizontal line
 with st.sidebar:
     st.info(":information_source: **Navigation**")
     st.markdown("---")  # Horizontal line
-    
+    #show pages with icons
     st.info("Chat Options")
     #new chat button
     if st.button("New Chat"):
         st.session_state.messages = []
-        st.session_state.messages.append({"role": "assistant", "content": "Welcome! Type 'help' to get started!"})
     #clear chat button
-    if st.button("Clear Chat"):
-        st.session_state.messages = []
-        st.session_state.messages.append({"role": "assistant", "content": ""})
-    #save chat button
-    if st.button("Save Chat"):
-        chat = st.session_state.messages
-        with open("chat_history.json", "w") as f:
-            json.dump(chat, f)
-        st.success("Chat history saved successfully!")
     st.markdown("---")  # Horizontal line
-
-
+    p1 = st.Page("home.py")
+    p2 = st.Page("email.py")
+    p3 = st.Page("coach.py")
+    
+    pg = st.navigation({
+        "Home": p1,
+        "Email": p2,
+        "Coach": p3
+    })
+    pg.run()
+    
+    
 # Chat History
 if "messages" not in st.session_state:
     st.session_state.messages = []
