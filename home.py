@@ -125,11 +125,16 @@ with open("styles.css") as f:
 st.sidebar.markdown("# Chat History")
 if "messages" in st.session_state:
     st.sidebar.markdown("### Recent Chats")
-    for i, message in enumerate(reversed(st.session_state.messages[-5:])):
-        st.sidebar.markdown(f"**Chat {i+1}:** {message['content']}")
-    if len(st.session_state.messages) > 5:
-        if st.sidebar.button("Clear Chat History"):
-            st.session_state.messages = st.session_state.messages[-5:]
+    #Make recent chats have a button instead of the chat history so the user can open older chats
+    for i, message in enumerate(st.session_state.messages[-5:]):
+        st.sidebar.markdown(f"#### Chat {i+1}")
+        st.sidebar.markdown(message["content"])
+        st.sidebar.markdown("---")
+        if st.sidebar.button("Open Chat"):
+            st.session_state.messages = message["content"]
+else:
+    st.sidebar.markdown("No recent chats")
+    
   
         
 
