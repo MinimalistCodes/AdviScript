@@ -60,8 +60,8 @@ body {
 }
 
 .card {
-    background-color: #FFFFFF;
-    color: #333333;
+    background-color: #D3D3D3;
+    color: #000000;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 187, 255, 0.1);
     padding: 20px;
@@ -74,6 +74,29 @@ body {
 }
 
 .card h1 {
+    margin-bottom: 10px;
+
+}
+
+.card h2 {
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    color:rgba(0, 187, 255, 0.1);
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.card h4 {
+    margin-bottom: 10px;
+}
+
+.card h5 {
+    margin-bottom: 10px;
+}
+
+.card h6 {
     margin-bottom: 10px;
 }
 
@@ -91,36 +114,36 @@ body {
 }
 
 .card button:hover {
-    background-color: #007bfd;
+    background-color: #336699;
+    color: #f9f9f9;
+}
+
+.card button:active {
+    background-color: #f9f9f9;
+    color: #336699;
+}
+
+.card button:focus {
+    outline: none;
 }
 
 .card button:disabled {
-    background-color: #6C757D;
+    background-color: #f9f9f9;
+    color: #336699;
     cursor: not-allowed;
 }
 
 .card button:disabled:hover {
-    background-color: #6C757D;
+    background-color: #f9f9f9;
+    color: #336699;
 }
 
-.card button:disabled {
-    color: #FFFFFF;
+.card button:disabled:active {
+    background-color: #f9f9f9;
+    color: #336699;
 }
 
-.card button:disabled:hover {
-    color: #FFFFFF;
+.card button:disabled:focus {
+    outline: none;
 }
 
-#card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-#card-container .card {
-    width: 300px;
-}
-
-#card-container .card:not(:last-child) {
-    margin-right: 20px;
-}
