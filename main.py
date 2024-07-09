@@ -95,7 +95,7 @@ st.markdown(
         th, td {
             border: 1px solid black;
             text-align: left;
-            color: #ffffff;
+            color: #336699;
             padding: 8px;
         }
     </style>
