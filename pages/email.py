@@ -3,8 +3,7 @@ import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
-from streamlit_navigation_bar import st_navbar
-
+from fpdf import FPDF
 
 # Load environment va   riables
 load_dotenv()
@@ -19,6 +18,20 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+def save_chat_to_pdf(chat_history):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    
+    for message in chat_history:
+        role = "User" if message["role"] == "user" else "Assistant"
+        content = message["content"]
+        pdf.multi_cell(0, 10, f"{role}: {content}")
+        pdf.ln(10)
+
+    pdf_file = "chat_history.pdf"
+    pdf.output(pdf_file)
+    return pdf_file
 
 def ai_sales_coach(user_input):
     if user_input.lower() == "help":
@@ -133,17 +146,35 @@ with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
-page = st_navbar(["Script Generation", "Email Generation", "AI Sales Coach"])
-if page == "main":
-    st.switch_page("main.py")
-if page == "script":
-    st.switch_page("pages/script.py")
-if page == "Email":
-    st.switch_page("pages/email.py")
-if page == "Coach":
-    st.switch_page("pages/coach.py")
-
-
+with st.sidebar:
+    st.title("SalesTrek AI Sales Coach")
+    # clear chat button
+    if st.button("Clear Chat"):
+        st.session_state.messages = []
+    st.markdown("---")  # Horizontal line
+    #save to pdf button
+    if st.button("Save Chat to PDF"):
+        #use FPDF to save chat to pdf
+        pdf_file = save_chat_to_pdf(st.session_state.messages)
+        st.success(f"Chat history saved to {pdf_file}")
+    st.markdown("---")  # Horizontal line
+    # Chatbot settings
+    st.markdown("### Chatbot Settings")
+    st.markdown("Customize the chatbot settings.")
+    # Chatbot settings form
+    chatbot_settings = st.form("chatbot_settings")
+    with chatbot_settings:
+        # Chatbot settings form fields
+        st.markdown("#### Chatbot Settings")
+        st.info("Have a different API key? Enter it below.(Google Gemerative AI API Key)")
+        # Chatbot settings form fields
+        api_key = st.text_input("API Key", value=api_key)
+        # Save button
+        submit_button = st.form_submit_button("Save")
+    # Save chatbot settings
+    if submit_button:
+        os.environ["GOOGLE_API_KEY"] = api_key
+        st.success("Chatbot settings saved successfully.")
 
 
 # UI Title
