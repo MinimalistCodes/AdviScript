@@ -112,8 +112,6 @@ with open("styles.css") as f:
 
 
 with st.sidebar:
-    st.info("Please select a page above.")
-
     # clear chat button
     if st.button("Clear Chat"):
         st.session_state.messages = []
