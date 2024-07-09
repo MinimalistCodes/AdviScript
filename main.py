@@ -25,37 +25,35 @@ with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 with st.sidebar:
-    # hide pages from the sidebar
-    st.markdown(
-        """
-        <style>
-            #MainMenu {visibility: hidden;}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-    st.markdown("### SalesTrek AI Sales Coach")
-    app_mode = st.selectbox(
-        "Select a page",
-        ["Home", "Script Generation", "Email Generation", "AI Sales Coach"],
-    )
-    
-    
-    if app_mode == "Home":
-        st.write("Welcome to SalesTrek AI Sales Coach")
-        st.write("Select a page from the sidebar to get started.")
-    elif app_mode == "Script Generation":
-        st.write("Script Generation")
-        st.write("Generate sales scripts for your sales calls and presentations.")
-    elif app_mode == "Email Generation":
-        st.write("Email Generation")
-        st.write("Generate email templates for your sales outreach campaigns.")
-    elif app_mode == "AI Sales Coach":
-        st.write("AI Sales Coach")
-        st.write("Ask any sales-related questions or request assistance with specific tasks.")
-    else:
-        st.write("Welcome to SalesTrek AI Sales Coach")
-        st.write("Select a page from the sidebar to get started.")
+    # clear chat button
+    if st.button("Clear Chat"):
+        st.session_state.messages = []
+    st.markdown("---")  # Horizontal line
+    #save to pdf button
+    if st.button("Save Chat to PDF"):
+        st.write("Save Chat to PDF")
+    st.markdown("---")  # Horizontal line
+    # Chatbot settings
+    st.markdown("### Chatbot Settings")
+    st.markdown("Customize the chatbot settings.")
+    # Chatbot settings form
+    chatbot_settings = st.form("chatbot_settings")
+    with chatbot_settings:
+        # Chatbot settings form fields
+        st.markdown("#### Chatbot Settings")
+        # Chatbot settings form fields
+        api_key = st.text_input("API Key", value=api_key)
+        # Save button
+        submit_button = st.form_submit_button("Save")
+    # Save chatbot settings
+    if submit_button:
+        os.environ["GOOGLE_API_KEY"] = api_key
+        st.success("Chatbot settings saved successfully.")
+#----------------------------------
+# Navigation Bar
+#----------------------------------
+st_navbar(page="home")
+#----------------------------------
 
 # UI Title
 st.markdown("## SalesTrek - Your AI Sales Coach")
