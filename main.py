@@ -44,10 +44,46 @@ st.markdown("---")  # Horizontal line
 
 st.markdown("### SalesTrek AI Sales Coach")
 st.markdown("SalesTrek AI Sales Coach is an AI-powered sales assistant that can help you with various sales tasks. You can ask any sales-related questions or request assistance with specific tasks.")
-st.markdown("### SalesTrek AI Sales Coach Capabilities")
-st.markdown("1. Generate sales scripts for your sales calls and presentations.")
-st.markdown("2. Generate email templates for your sales outreach campaigns.")
-st.markdown("3. Ask any sales-related questions or request assistance with specific tasks.")
+#Features in a table
+st.markdown("### Features")
+#table
+st.markdown(
+    """
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        th, td {
+            border: 1px solid black;
+            text-align: left;
+            padding: 8px;
+        }
+    </style>
+    <table>
+        <tr>
+            <th>Feature</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Script Generation</td>
+            <td>Generate sales scripts for your sales calls and presentations.</td>
+        </tr>
+        <tr>
+            <td>Email Generation</td>
+            <td>Generate email templates for your sales outreach campaigns.</td>
+        </tr>
+        <tr>
+            <td>AI Sales Coach</td>
+            <td>Ask any sales-related questions or request assistance with specific tasks.</td>
+        </tr>
+    </table>
+    """,
+    unsafe_allow_html=True
+)
 st.markdown("---")  # Horizontal line 
 #----------------------------------
 # Dashbaord with cards
