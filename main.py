@@ -4,6 +4,7 @@ from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
 from streamlit_navigation_bar import st_navbar
+#switch_page
 
 
 # Load environment va   riables
@@ -28,11 +29,11 @@ page = st_navbar(["Script Generation", "Email Generation", "AI Sales Coach"])
 if page == "main":
     st.switch_page("main.py")
 if page == "script":
-    st.switch_page("script.py")
+    st.switch_page("pages/script.py")
 if page == "Email":
-    st.switch_page("email.py")
+    st.switch_page("pages/email.py")
 if page == "Coach":
-    st.switch_page("coach.py")
+    st.switch_page("pages/coach.py")
 
 
 # UI Title
@@ -60,6 +61,7 @@ st.markdown(
         th, td {
             border: 1px solid black;
             text-align: left;
+            color: #ffffff;
             padding: 8px;
         }
     </style>

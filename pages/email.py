@@ -133,13 +133,15 @@ with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
-page = st_navbar(["Home", "Email", "Coach"])
-if page == "Home":
-    st.switch_page("home.py")
+page = st_navbar(["Script Generation", "Email Generation", "AI Sales Coach"])
+if page == "main":
+    st.switch_page("main.py")
+if page == "script":
+    st.switch_page("pages/script.py")
 if page == "Email":
-    st.switch_page("email.py")
+    st.switch_page("pages/email.py")
 if page == "Coach":
-    st.switch_page("coach.py")
+    st.switch_page("pages/coach.py")
 
 
 
