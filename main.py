@@ -3,7 +3,7 @@ import streamlit as st
 from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys, json
-#switch_page
+from fpdf import FPDF
 
 
 # Load environment va   riables

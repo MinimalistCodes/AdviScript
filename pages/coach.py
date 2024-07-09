@@ -19,17 +19,20 @@ st.set_page_config(
 )
 
 #save to pdf function
-def save_chat_to_pdf(messages):
+def save_chat_to_pdf(chat_history):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
-    for message in messages:
-        if message["role"] == "user":
-            pdf.set_text_color(0, 0, 255)
-        else:
-            pdf.set_text_color(0, 0, 0)
-        pdf.cell(200, 10, txt=message["content"], ln=True)
-    pdf.output("chat.pdf")
+    
+    for message in chat_history:
+        role = "User" if message["role"] == "user" else "Assistant"
+        content = message["content"]
+        pdf.multi_cell(0, 10, f"{role}: {content}")
+        pdf.ln(10)
+
+    pdf_file = "chat_history.pdf"
+    pdf.output(pdf_file)
+    return pdf_file
 
 def ai_sales_coach(user_input):
     if user_input.lower() == "help":
