@@ -19,7 +19,7 @@ st.set_page_config(
 )
 
 #save to pdf function
-def save_to_pdf(messages):
+def save_chat_to_pdf(messages):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
@@ -72,48 +72,10 @@ def ai_sales_coach(user_input):
         return "I can help you with tracking, analyzing, and interpreting sales performance metrics. Sales performance metrics provide valuable insights into the effectiveness and efficiency of your sales team. Whether you need assistance with measuring conversion rates, win rates, average deal size, sales cycle length, or customer acquisition cost, feel free to ask."
     #List the above options
     else:
+        #list all sales coach skills and prompt user to ask a question
       prompt = f"""
-      You are an expert salesperson, manager, and copywriter. You can help with various aspects of the subject given, including:
+      You are an expert sales coach. You can help with various aspects of the subject given, including:
 
-      *   Generating effective cold call scripts and email templates tailored to our company's products and services.
-      *   Providing expert advice on handling objections specific to our industry and target market.
-      *   Offering proven tips for closing deals based on our sales process.
-      *   Suggesting strategies for prospecting and lead generation that align with our ideal customer profile.
-      *   Guiding sales presentations and demos with a focus on our unique value proposition.
-      *   Sharing best practices for building strong customer relationships in our industry.
-      *   Explaining sales methodologies and frameworks relevant to our sales approach.
-      *   Assisting with sales training and coaching sessions for our team.
-      *   Fostering team building and motivation within our sales department.
-      *   Offering advice on sales management and leadership for team leaders.
-      *   Helping with tracking and analyzing sales performance metrics specific to our company.
-      *   Conducting sales exercises and role-playing scenarios tailored to our products/services and target market.
-      *   Sales forecasting and pipeline management strategies specific to our sales cycle and industry.
-      *   Negotiation tactics and strategies that align with our company's values and pricing model.
-      *   Recommending sales technology and tools that integrate well with our existing systems and processes.
-      *   Analyzing our target market's buyer behavior and suggesting persuasion techniques.
-      *   Ensuring compliance with sales ethics and regulations relevant to our industry.
-      *   Crafting engaging subject lines
-      *   Writing compelling email copy
-      *   Personalizing emails for different audiences
-      *   A/B testing email campaigns
-      *   Optimizing email deliverability
-      *   Analyzing email performance metrics
-      *   Building email lists and segments
-      *   Creating automated email sequences
-      *   Integrating email marketing tools
-      *   Compliance with email regulations (e.g., CAN-SPAM, GDPR)
-      *   Email design best practices
-      *   Email marketing strategy and planning
-      *   Email copywriting tips and techniques
-      *   Email marketing automation
-      *   Email personalization and segmentation
-      *   Email campaign optimization
-      *   Email marketing analytics and reporting
-      *   Email marketing trends and innovations
-      *   Email marketing case studies and examples
-      *   Email marketing tools and software
-      *   Generating cold call scripts
-      *   Crafting effective email templates
       *   Providing advice on handling objections
       *   Offering tips for closing deals
       *   Suggesting strategies for prospecting and lead generation
@@ -131,6 +93,7 @@ def ai_sales_coach(user_input):
       *   Sales psychology, buyer behavior, and persuasion techniques
       *   Sales ethics and compliance
       *   Emotional intelligence in sales
+      
 
       Please provide a comprehensive response to the following request:
 
@@ -145,7 +108,7 @@ with open("styles.css") as f:
 
 
 with st.sidebar:
-    st.title("SalesTrek AI Sales Coach")
+    st.info("Please select a page above.")
     # clear chat button
     if st.button("Clear Chat"):
         st.session_state.messages = []

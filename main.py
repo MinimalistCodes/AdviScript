@@ -39,7 +39,7 @@ with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 with st.sidebar:
-    st.title("SalesTrek AI Sales Coach")
+    st.info("Please select a page above.")
     # clear chat button
     if st.button("Clear Chat"):
         st.session_state.messages = []

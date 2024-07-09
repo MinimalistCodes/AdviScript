@@ -76,7 +76,9 @@ def ai_sales_coach(user_input):
     #List the above options
     else:
       prompt = f"""
-      You are an expert salesperson, manager, and copywriter. You can help with various aspects of the subject given, including:
+      You are an expert salesperson, script writer, sales manager, and copywriter. 
+      
+      You can help with various aspects of the subject given, including:
 
       *   Generating effective cold call scripts and email templates tailored to our company's products and services.
       *   Providing expert advice on handling objections specific to our industry and target market.
@@ -95,45 +97,7 @@ def ai_sales_coach(user_input):
       *   Recommending sales technology and tools that integrate well with our existing systems and processes.
       *   Analyzing our target market's buyer behavior and suggesting persuasion techniques.
       *   Ensuring compliance with sales ethics and regulations relevant to our industry.
-      *   Crafting engaging subject lines
-      *   Writing compelling email copy
-      *   Personalizing emails for different audiences
-      *   A/B testing email campaigns
-      *   Optimizing email deliverability
-      *   Analyzing email performance metrics
-      *   Building email lists and segments
-      *   Creating automated email sequences
-      *   Integrating email marketing tools
-      *   Compliance with email regulations (e.g., CAN-SPAM, GDPR)
-      *   Email design best practices
-      *   Email marketing strategy and planning
-      *   Email copywriting tips and techniques
-      *   Email marketing automation
-      *   Email personalization and segmentation
-      *   Email campaign optimization
-      *   Email marketing analytics and reporting
-      *   Email marketing trends and innovations
-      *   Email marketing case studies and examples
-      *   Email marketing tools and software
-      *   Generating cold call scripts
-      *   Crafting effective email templates
-      *   Providing advice on handling objections
-      *   Offering tips for closing deals
-      *   Suggesting strategies for prospecting and lead generation
-      *   Guiding sales presentations and demos
-      *   Sharing best practices for building customer relationships
-      *   Explaining sales methodologies and frameworks
-      *   Assisting with sales training and coaching
-      *   Team building and motivation
-      *   Sales management and leadership
-      *   Tracking and analyzing sales performance
-      *   Sales exercises and role-playing scenarios
-      *   Sales forecasting and pipeline management
-      *   Sales negotiation tactics and strategies
-      *   Recommendations for sales technology and tools
-      *   Sales psychology, buyer behavior, and persuasion techniques
-      *   Sales ethics and compliance
-      *   Emotional intelligence in sales
+
 
       Please provide a comprehensive response to the following request:
 
@@ -148,7 +112,8 @@ with open("styles.css") as f:
 
 
 with st.sidebar:
-    st.title("SalesTrek AI Sales Coach")
+    st.info("Please select a page above.")
+
     # clear chat button
     if st.button("Clear Chat"):
         st.session_state.messages = []
