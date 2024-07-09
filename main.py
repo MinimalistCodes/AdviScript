@@ -62,6 +62,9 @@ with st.sidebar:
         st.info("Enter your Google API Key to enable the AI Sales Coach. (Get your API Key from the Google Cloud Console.)")
         # Chatbot settings form fields
         api_key = st.text_input("API Key", value=api_key)
+        #if blank set to default
+        if not api_key:
+            api_key = os.getenv("GOOGLE_API_KEY")
         # Save button
         submit_button = st.form_submit_button("Save")
     # Save chatbot settings
