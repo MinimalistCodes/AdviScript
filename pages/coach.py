@@ -109,6 +109,7 @@ with open("styles.css") as f:
 
 with st.sidebar:
     st.info("Please select a page above.")
+
     # clear chat button
     if st.button("Clear Chat"):
         st.session_state.messages = []
@@ -127,7 +128,7 @@ with st.sidebar:
     with chatbot_settings:
         # Chatbot settings form fields
         st.markdown("#### Chatbot Settings")
-        st.info("Have a different API key? Enter it below.(Google Gemerative AI API Key)")
+        st.info("Enter your Google API Key to enable the AI Sales Coach. (Get your API Key from the Google Cloud Console.)")
         # Chatbot settings form fields
         api_key = st.text_input("API Key", value=api_key)
         # Save button
