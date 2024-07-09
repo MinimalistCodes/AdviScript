@@ -88,21 +88,50 @@ st.markdown(
 )
 st.markdown("---")  # Horizontal line 
 #----------------------------------
-# Dashbaord with cards
-#----------------------------------
+# Dashbaord with cards gradient cards
+st.markdown("### SalesTrek AI Sales Coach Dashboard")
+st.markdown("Welcome to the SalesTrek AI Sales Coach Dashboard. You can ask any sales-related questions or request assistance with specific tasks.")
+# Cards
 col1, col2, col3 = st.columns(3)
+# Card 1
 with col1:
-    st.markdown("### Sales Script Generation")
-    st.markdown("Generate sales scripts for your sales calls and presentations.")
-    st.markdown("![Sales Script Generation](https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif)")
+    st.markdown(
+        """
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Script Generation</h5>
+                <p class="card-text">Generate sales scripts for your sales calls and presentations.</p>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+# Card 2
 with col2:
-    st.markdown("### Email Generation")
-    st.markdown("Generate email templates for your sales outreach campaigns.")
-    st.markdown("![Email Generation](https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif)")
+    st.markdown(
+        """
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Email Generation</h5>
+                <p class="card-text">Generate email templates for your sales outreach campaigns.</p>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+# Card 3
 with col3:
-    st.markdown("### AI Sales Coach")
-    st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
-    st.markdown("![AI Sales Coach](https://media.giphy.com/media/3oKIPnAiaMCws8nOsE/giphy.gif)")
+    st.markdown(
+        """
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">AI Sales Coach</h5>
+                <p class="card-text">Ask any sales-related questions or request assistance with specific tasks.</p>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 #----------------------------------
 # Footer
 #----------------------------------
