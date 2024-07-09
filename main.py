@@ -90,12 +90,13 @@ st.markdown(
             border-collapse: collapse;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #336699;
+            color: #ffffff;
         }
         th, td {
             border: 1px solid black;
             text-align: left;
-            color: #336699;
+            color: #ffffff;
             padding: 8px;
         }
     </style>
@@ -122,50 +123,23 @@ st.markdown(
 )
 st.markdown("---")  # Horizontal line 
 #----------------------------------
-# Dashbaord with cards gradient cards
+# Dashbaord with cards gradient background color and icons
 st.markdown("### SalesTrek AI Sales Coach Dashboard")
-st.markdown("Welcome to the SalesTrek AI Sales Coach Dashboard. You can ask any sales-related questions or request assistance with specific tasks.")
-# Cards
+#cards
 col1, col2, col3 = st.columns(3)
-# Card 1
+#card 1
 with col1:
-    st.markdown(
-        """
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Script Generation</h5>
-                <p class="card-text">Generate sales scripts for your sales calls and presentations.</p>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-# Card 2
+    st.markdown('<div class="card"><div class="card-body"><i class="fas fa-file-alt"></i><h3>Script Generation</h3><p>Generate sales scripts for your sales calls and presentations.</p></div></div>', unsafe_allow_html=True) 
+#card 2
 with col2:
-    st.markdown(
-        """
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Email Generation</h5>
-                <p class="card-text">Generate email templates for your sales outreach campaigns.</p>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-# Card 3
+    st.markdown('<div class="card"><div class="card-body"><i class="fas fa-envelope"></i><h3>Email Generation</h3><p>Generate email templates for your sales outreach campaigns.</p></div></div>', unsafe_allow_html=True)
+#card 3
 with col3:
-    st.markdown(
-        """
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">AI Sales Coach</h5>
-                <p class="card-text">Ask any sales-related questions or request assistance with specific tasks.</p>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    st.markdown('<div class="card"><div class="card-body"><i class="fas fa-user-tie"></i><h3>AI Sales Coach</h3><p>Ask any sales-related questions or request assistance with specific tasks.</p></div></div>', unsafe_allow_html=True)
+
+st.markdown("---")  # Horizontal line
+
+
 #----------------------------------
 # Footer
 #----------------------------------
