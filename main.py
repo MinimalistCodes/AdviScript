@@ -25,11 +25,21 @@ with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 with st.sidebar:
-    st.title("Navigation")
+    # hide pages from the sidebar
+    st.markdown(
+        """
+        <style>
+            #MainMenu {visibility: hidden;}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+    st.markdown("### SalesTrek AI Sales Coach")
     app_mode = st.selectbox(
-        "Choose the app mode",
+        "Select a page",
         ["Home", "Script Generation", "Email Generation", "AI Sales Coach"],
     )
+    
     
     if app_mode == "Home":
         st.write("Welcome to SalesTrek AI Sales Coach")
