@@ -24,17 +24,28 @@ st.set_page_config(
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-
-page = st_navbar(["Script Generation", "Email Generation", "AI Sales Coach"])
-if page == "main":
-    st.switch_page("main.py")
-if page == "script":
-    st.switch_page("pages/script.py")
-if page == "Email":
-    st.switch_page("pages/email.py")
-if page == "Coach":
-    st.switch_page("pages/coach.py")
-
+with st.sidebar:
+    st.title("Navigation")
+    app_mode = st.selectbox(
+        "Choose the app mode",
+        ["Home", "Script Generation", "Email Generation", "AI Sales Coach"],
+    )
+    
+    if app_mode == "Home":
+        st.write("Welcome to SalesTrek AI Sales Coach")
+        st.write("Select a page from the sidebar to get started.")
+    elif app_mode == "Script Generation":
+        st.write("Script Generation")
+        st.write("Generate sales scripts for your sales calls and presentations.")
+    elif app_mode == "Email Generation":
+        st.write("Email Generation")
+        st.write("Generate email templates for your sales outreach campaigns.")
+    elif app_mode == "AI Sales Coach":
+        st.write("AI Sales Coach")
+        st.write("Ask any sales-related questions or request assistance with specific tasks.")
+    else:
+        st.write("Welcome to SalesTrek AI Sales Coach")
+        st.write("Select a page from the sidebar to get started.")
 
 # UI Title
 st.markdown("## SalesTrek - Your AI Sales Coach")
