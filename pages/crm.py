@@ -82,7 +82,10 @@ crm = {}
 st.title("Customer Relationship Management")
 st.markdown("Manage your customer relationships.")
 
-# CRM form
+# Initialize the CRM dictionary
+if 'crm' not in st.session_state:
+    st.session_state.crm = {}
+
 crm_form = st.form("crm_form")
 with crm_form:
     st.markdown("### Add Customer")
@@ -90,19 +93,25 @@ with crm_form:
     customer_email = st.text_input("Email")
     customer_phone = st.text_input("Phone")
     customer_company = st.text_input("Company")
-    st.selectbox("Status", ["Lead", "Customer"])
-    st.slider("Priority", 1, 5)
+    customer_status = st.selectbox("Status", ["Lead", "Customer"])
+    customer_priority = st.slider("Priority", 1, 5)
     submit_button = st.form_submit_button("Add")
-    
+
 # Save customer
 if submit_button:
-    crm[customer_email] = {"name": customer_name, "phone": customer_phone}
+    st.session_state.crm[customer_email] = {
+        "name": customer_name,
+        "phone": customer_phone,
+        "company": customer_company,
+        "status": customer_status,
+        "priority": customer_priority,
+    }
     st.success(f"Customer {customer_name} added successfully.")
-    
+
 # Display customers
-if crm:
+if st.session_state.crm:
     st.markdown("### Customers")
-    for email, customer in crm.items():
+    for email, customer in st.session_state.crm.items():
         st.markdown(f"**{customer['name']}**")
         st.markdown(f"Email: {email}")
         st.markdown(f"Phone: {customer['phone']}")
@@ -112,7 +121,6 @@ if crm:
         st.markdown("---")
 else:
     st.info("No customers found.")
-    
         
 #----------------------------------
 
