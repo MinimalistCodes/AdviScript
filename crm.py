@@ -13,7 +13,7 @@ api_key = os.getenv("GOOGLE_API_KEY")
 
 
 st.set_page_config(
-    page_title="SalesTrek - AI Sales Script Generator",
+    page_title="SalesTrek - Customer Management System",
     page_icon=":chart_with_upwards_trend:",
     layout="wide",
     initial_sidebar_state="expanded",
@@ -72,33 +72,63 @@ with st.sidebar:
         st.success("Chatbot settings saved successfully.")
 
 # UI Title
-st.markdown("## SalesTrek - Your AI Sales Coach")
-st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
+st.markdown("## SalesTrek - Quick Customer Management.")
 st.markdown("---")  # Horizontal line
 #----------------------------------
-# Dashbaord with cards gradient background color and icons
-st.markdown("# SalesTrek Features")
-#cards
-col1, col2, col3 = st.columns(3)
-#card 1
-with col1:
-    st.markdown('<div class="card"><div class="card-body"><i class="fas fa-file-alt"></i><h3>Script Generation</h3><p>Generate sales scripts for your sales calls and presentations.</p></div></div>', unsafe_allow_html=True) 
-#card 2
-with col2:
-    st.markdown('<div class="card"><div class="card-body"><i class="fas fa-envelope"></i><h3>Email Generation</h3><p>Generate email templates for your sales outreach campaigns.</p></div></div>', unsafe_allow_html=True)
-#card 3
-with col3:
-    st.markdown('<div class="card"><div class="card-body"><i class="fas fa-user-tie"></i><h3>AI Sales Coach</h3><p>Ask any sales-related questions or request assistance with specific tasks.</p></div></div>', unsafe_allow_html=True)
+#Simple CRM
+crm = {}
+#----------------------------------
+# Chatbot
+def chatbot(message):
+    generative_ai = GoogleGenerativeAI(api_key)
+    response = generative_ai.generate_text(message)
+    return response
 
-st.markdown("---")  # Horizontal line
+# Chatbot UI
+with st.form("chat_form"):
+    user_input = st.text_input("You:", key="user_input")
+    st.session_state.messages = st.session_state.get("messages", [])
+    if st.form_submit_button("Send"):
+        if user_input:
+            st.session_state.messages.append({"role": "user", "content": user_input})
+            assistant_response = chatbot(user_input)
+            st.session_state.messages.append({"role": "assistant", "content": assistant_response})
+        else:
+            st.warning("Please enter a message.")
+    st.markdown("---")  # Horizontal line
+    for message in st.session_state.messages:
+        role = message["role"]
+        content = message["content"]
+        st.markdown(f"**{role.capitalize()}**: {content}")
+        
+#----------------------------------
+# CRM
+# CRM UI
+st.sidebar.markdown("### CRM")
+st.sidebar.markdown("Manage your customer relationships.")
+# CRM form
+crm_form = st.sidebar.form("crm_form")
+with crm_form:
+    st.sidebar.markdown("#### Add Customer")
+    customer_name = st.sidebar.text_input("Name")
+    customer_email = st.sidebar.text_input("Email")
+    customer_phone = st.sidebar.text_input("Phone")
+    submit_button = st.sidebar.form_submit_button("Add")
+# Save customer
+if submit_button:
+    crm[customer_email] = {"name": customer_name, "phone": customer_phone}
+    st.sidebar.success(f"Customer {customer_name} added successfully.")
+# Display customers
+if crm:
+    st.sidebar.markdown("#### Customers")
+    for email, customer in crm.items():
+        st.sidebar.markdown(f"**{customer['name']}**")
+        st.sidebar.markdown(f"Email: {email}")
+        st.sidebar.markdown(f"Phone: {customer['phone']}")
+        st.sidebar.markdown("---")
+else:
+    st.sidebar.info("No customers added yet.")
+#----------------------------------
+#----------------------------------
 
-
-#----------------------------------
-# Footer
-#----------------------------------
-st.markdown("---")  # Horizontal line
-st.markdown("Made with :heart: by [SalesTrek](https://versiflow.cloud)")
-st.markdown("© 2024 SalesTrek. All rights reserved.")
-st.markdown("---")  # Horizontal line
-#----------------------------------
   
