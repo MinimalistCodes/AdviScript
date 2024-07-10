@@ -1,23 +1,21 @@
 import streamlit as st
+import pandas as pd
 
-# Initialize CRM dictionary
+# Initialize CRM DataFrame
 if "crm" not in st.session_state:
-    st.session_state.crm = {}
+    st.session_state.crm = pd.DataFrame(columns=["Name", "Email", "Phone", "Company", "Status", "Priority"])
 
 # Function to add or update customer
-def add_or_update_customer(email, name, phone, company, status, priority):
-    st.session_state.crm[email] = {
-        "name": name,
-        "phone": phone,
-        "company": company,
-        "status": status,
-        "priority": priority
-    }
+def add_or_update_customer(name, email, phone, company, status, priority):
+    if email in st.session_state.crm["Email"].values:
+        st.session_state.crm.loc[st.session_state.crm["Email"] == email, ["Name", "Phone", "Company", "Status", "Priority"]] = [name, phone, company, status, priority]
+    else:
+        new_customer = pd.DataFrame([[name, email, phone, company, status, priority]], columns=["Name", "Email", "Phone", "Company", "Status", "Priority"])
+        st.session_state.crm = pd.concat([st.session_state.crm, new_customer], ignore_index=True)
 
 # Function to delete customer
 def delete_customer(email):
-    if email in st.session_state.crm:
-        del st.session_state.crm[email]
+    st.session_state.crm = st.session_state.crm[st.session_state.crm["Email"] != email]
 
 # CRM Form
 crm_form = st.form("crm_form")
@@ -33,7 +31,7 @@ with crm_form:
 
 # Save customer
 if submit_button:
-    add_or_update_customer(customer_email, customer_name, customer_phone, customer_company, customer_status, customer_priority)
+    add_or_update_customer(customer_name, customer_email, customer_phone, customer_company, customer_status, customer_priority)
     st.success(f"Customer {customer_name} added/updated successfully.")
 
 # Search and Filter
@@ -42,19 +40,24 @@ search_term = st.text_input("Search by Name or Email")
 filter_status = st.selectbox("Filter by Status", ["All", "Lead", "Customer"])
 
 # Display customers
-if st.session_state.crm:
+if not st.session_state.crm.empty:
+    filtered_crm = st.session_state.crm
+    if search_term:
+        filtered_crm = filtered_crm[(filtered_crm["Name"].str.contains(search_term, case=False)) | (filtered_crm["Email"].str.contains(search_term, case=False))]
+    if filter_status != "All":
+        filtered_crm = filtered_crm[filtered_crm["Status"] == filter_status]
+
     st.markdown("### Customers")
-    for email, customer in st.session_state.crm.items():
-        if (search_term.lower() in customer["name"].lower() or search_term.lower() in email.lower()) and (filter_status == "All" or filter_status == customer["status"]):
-            st.markdown(f"**{customer['name']}**")
-            st.markdown(f"Email: {email}")
-            st.markdown(f"Phone: {customer['phone']}")
-            st.markdown(f"Company: {customer['company']}")
-            st.markdown(f"Status: {customer['status']}")
-            st.markdown(f"Priority: {customer['priority']}")
-            if st.button(f"Delete {customer['name']}", key=email):
-                delete_customer(email)
-                st.experimental_rerun()
-            st.markdown("---")
+    for index, customer in filtered_crm.iterrows():
+        st.markdown(f"**{customer['Name']}**")
+        st.markdown(f"Email: {customer['Email']}")
+        st.markdown(f"Phone: {customer['Phone']}")
+        st.markdown(f"Company: {customer['Company']}")
+        st.markdown(f"Status: {customer['Status']}")
+        st.markdown(f"Priority: {customer['Priority']}")
+        if st.button(f"Delete {customer['Name']}", key=customer['Email']):
+            delete_customer(customer['Email'])
+            st.experimental_rerun()
+        st.markdown("---")
 else:
     st.info("No customers found.")
