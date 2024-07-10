@@ -28,6 +28,12 @@ with crm_form:
     customer_status = st.selectbox("Status", ["Lead", "Customer"])
     customer_priority = st.slider("Priority", 1, 5)
     submit_button = st.form_submit_button("Add or Update")
+    delete_button = st.form_submit_button("Delete")
+    
+# Delete customer
+if delete_button:
+    delete_customer(customer_name)
+    st.success(f"Customer {customer_name} deleted successfully.")
 
 # Save customer
 if submit_button:
