@@ -193,5 +193,62 @@ body {
     color: #f9f9f9;
 }
 
+#table
+{
+    width: 100%;
+    border-collapse: collapse;
+}
 
+#table th
+{
+    background-color: #336699;
+    color: #f9f9f9;
+    padding: 10px;
+}
+
+#table td
+{
+    border: 1px solid #D3D3D3;
+    padding: 10px;
+}
+
+#table tr:nth-child(even)
+{
+    background-color: #f9f9f9;
+}
+
+#table tr:nth-child(odd)
+{
+    background-color: #FFFFFF;
+}
+
+#table tr:hover
+{
+    background-color: #D3D3D3;
+}
+
+#table tr:hover td
+{
+    color: #000000;
+}
+
+#table tr:hover td a
+{
+    color: #336699;
+}
+
+#table tr:hover td a:hover
+{
+    color: #f9f9f9;
+}
+
+#table tr:hover td a:active
+{
+    color: #336699;
+}
+
+#table tr:hover td a:focus
+{
+    outline: none;
+}
 

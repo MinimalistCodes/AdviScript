@@ -39,26 +39,18 @@ st.markdown("### Search and Filter Customers")
 search_term = st.text_input("Search by Name or Email")
 filter_status = st.selectbox("Filter by Status", ["All", "Lead", "Customer"])
 
-# Display all customers with delete button next to each
+# Display all customers 
 st.markdown("### Customer List")
 if filter_status == "All":
-    filtered_customers = st.session_state.crm
+    filtered_customers = st.session_state.crm[(st.session_state.crm["Name"].str.contains(search_term, case=False)) | (st.session_state.crm["Email"].str.contains(search_term, case=False))]
 else:
-    filtered_customers = st.session_state.crm[st.session_state.crm["Status"] == filter_status]
+    filtered_customers = st.session_state.crm[(st.session_state.crm["Name"].str.contains(search_term, case=False)) | (st.session_state.crm["Email"].str.contains(search_term, case=False)) & (st.session_state.crm["Status"] == filter_status)]
 
-if search_term:
-    filtered_customers = filtered_customers[filtered_customers.apply(lambda row: search_term.lower() in row["Name"].lower() or search_term.lower() in row["Email"].lower(), axis=1)]
+st.table(filtered_customers)
 
-for index, customer in filtered_customers.iterrows():
-    st.write(f"**Name:** {customer['Name']}, **Email:** {customer['Email']}, **Phone:** {customer['Phone']}, **Company:** {customer['Company']}, **Status:** {customer['Status']}, **Priority:** {customer['Priority']}")
-    delete_button = st.button(f"Delete {customer['Name']}")
-    if delete_button:
-        delete_customer(customer["Email"])
-        st.success(f"Customer {customer['Name']} deleted successfully.")
-        
-# Save CRM to CSV
-if st.button("Save CRM to CSV"):
-    st.session_state.crm.to_csv("crm.csv", index=False)
-    st.success("CRM saved to crm.csv")
-    
-    
+# Footer
+st.markdown("---")
+st.markdown("Made with :heart: by [SalesTrek](https://versiflow.cloud)")
+st.markdown("© 2024 SalesTrek. All rights reserved.")
+st.markdown("---")  # Horizontal line
+#----------------------------------
