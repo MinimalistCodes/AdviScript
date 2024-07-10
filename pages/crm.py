@@ -1,63 +1,56 @@
 import streamlit as st
 import pandas as pd
 
-# Initialize CRM DataFrame
-if "crm" not in st.session_state:
-    st.session_state.crm = pd.DataFrame(columns=["Name", "Email", "Phone", "Company", "Status", "Priority"])
+# Initialize or load CRM DataFrame
+@st.cache(allow_output_mutation=True)
+def load_data():
+    return pd.DataFrame(columns=["Name", "Email", "Phone", "Company", "Status", "Priority"])
+
+crm = load_data()
 
 # Function to add or update customer
 def add_or_update_customer(name, email, phone, company, status, priority):
-    if email in st.session_state.crm["Email"].values:
-        st.session_state.crm.loc[st.session_state.crm["Email"] == email, ["Name", "Phone", "Company", "Status", "Priority"]] = [name, phone, company, status, priority]
+    global crm
+    if email in crm["Email"].values:
+        crm.loc[crm["Email"] == email, ["Name", "Phone", "Company", "Status", "Priority"]] = [name, phone, company, status, priority]
     else:
         new_customer = pd.DataFrame([[name, email, phone, company, status, priority]], columns=["Name", "Email", "Phone", "Company", "Status", "Priority"])
-        st.session_state.crm = pd.concat([st.session_state.crm, new_customer], ignore_index=True)
+        crm = pd.concat([crm, new_customer], ignore_index=True)
+    st.experimental_rerun()
 
 # Function to delete customer
 def delete_customer(email):
-    st.session_state.crm = st.session_state.crm[st.session_state.crm["Email"] != email]
+    global crm
+    crm = crm[crm["Email"] != email]
+    st.experimental_rerun()
 
-# CRM Form
-crm_form = st.form("crm_form")
-with crm_form:
-    st.markdown("### Add or Update Customer")
-    customer_name = st.text_input("Name")
-    customer_email = st.text_input("Email")
-    customer_phone = st.text_input("Phone")
-    customer_company = st.text_input("Company")
-    customer_status = st.selectbox("Status", ["Lead", "Customer"])
-    customer_priority = st.slider("Priority", 1, 5)
-    submit_button = st.form_submit_button("Add or Update")
+# Main Streamlit app
+def main():
+    st.title("Mini CRM")
+    
+    # CRM Form
+    st.sidebar.header("Add or Update Customer")
+    customer_name = st.sidebar.text_input("Name")
+    customer_email = st.sidebar.text_input("Email")
+    customer_phone = st.sidebar.text_input("Phone")
+    customer_company = st.sidebar.text_input("Company")
+    customer_status = st.sidebar.selectbox("Status", ["Lead", "Customer"])
+    customer_priority = st.sidebar.slider("Priority", 1, 5, 3)
+    submit_button = st.sidebar.button("Add or Update")
 
-# Save customer
-if submit_button:
-    add_or_update_customer(customer_name, customer_email, customer_phone, customer_company, customer_status, customer_priority)
-    st.success(f"Customer {customer_name} added/updated successfully.")
+    if submit_button:
+        add_or_update_customer(customer_name, customer_email, customer_phone, customer_company, customer_status, customer_priority)
+        st.sidebar.success(f"Customer {customer_name} added/updated successfully.")
+    
+    # Display customers
+    st.header("Customers")
+    if not crm.empty:
+        st.dataframe(crm)
+        for index, customer in crm.iterrows():
+            if st.button(f"Delete {customer['Name']}"):
+                delete_customer(customer['Email'])
+    else:
+        st.info("No customers found.")
 
-# Search and Filter
-st.markdown("### Search and Filter Customers")
-search_term = st.text_input("Search by Name or Email")
-filter_status = st.selectbox("Filter by Status", ["All", "Lead", "Customer"])
-
-# Display customers
-if not st.session_state.crm.empty:
-    filtered_crm = st.session_state.crm
-    if search_term:
-        filtered_crm = filtered_crm[(filtered_crm["Name"].str.contains(search_term, case=False)) | (filtered_crm["Email"].str.contains(search_term, case=False))]
-    if filter_status != "All":
-        filtered_crm = filtered_crm[filtered_crm["Status"] == filter_status]
-
-    st.markdown("### Customers")
-    for index, customer in filtered_crm.iterrows():
-        st.markdown(f"**{customer['Name']}**")
-        st.markdown(f"Email: {customer['Email']}")
-        st.markdown(f"Phone: {customer['Phone']}")
-        st.markdown(f"Company: {customer['Company']}")
-        st.markdown(f"Status: {customer['Status']}")
-        st.markdown(f"Priority: {customer['Priority']}")
-        if st.button(f"Delete {customer['Name']}", key=customer['Email']):
-            delete_customer(customer['Email'])
-            st.experimental_rerun()
-        st.markdown("---")
-else:
-    st.info("No customers found.")
+if __name__ == "__main__":
+    main()
