@@ -39,28 +39,26 @@ st.markdown("### Search and Filter Customers")
 search_term = st.text_input("Search by Name or Email")
 filter_status = st.selectbox("Filter by Status", ["All", "Lead", "Customer"])
 
-# Display all customers
+# Display all customers with delete button next to each
 st.markdown("### Customer List")
 if filter_status == "All":
-    filtered_customers = st.session_state.crm[(st.session_state.crm["Name"].str.contains(search_term, case=False)) | (st.session_state.crm["Email"].str.contains(search_term, case=False))]
+    filtered_customers = st.session_state.crm
 else:
-    filtered_customers = st.session_state.crm[(st.session_state.crm["Name"].str.contains(search_term, case=False)) | (st.session_state.crm["Email"].str.contains(search_term, case=False)) & (st.session_state.crm["Status"] == filter_status)]
+    filtered_customers = st.session_state.crm[st.session_state.crm["Status"] == filter_status]
 
-st.table(filtered_customers)
+if search_term:
+    filtered_customers = filtered_customers[filtered_customers.apply(lambda row: search_term.lower() in row["Name"].lower() or search_term.lower() in row["Email"].lower(), axis=1)]
 
-# Delete customer
-st.markdown("### Delete Customer")
-customer_email_delete = st.text_input("Email")
-delete_button = st.button("Delete Customer")
-
-if delete_button:
-    delete_customer(customer_email_delete)
-    st.success(f"Customer with email {customer_email_delete} deleted successfully.")
-#----------------------------------
-
-# Footer
-st.markdown("---")
-st.markdown("Made with :heart: by [SalesTrek](https://versiflow.cloud)")
-st.markdown("© 2024 SalesTrek. All rights reserved.")
-st.markdown("---")  # Horizontal line
-#----------------------------------
+for index, customer in filtered_customers.iterrows():
+    st.write(f"**Name:** {customer['Name']}, **Email:** {customer['Email']}, **Phone:** {customer['Phone']}, **Company:** {customer['Company']}, **Status:** {customer['Status']}, **Priority:** {customer['Priority']}")
+    delete_button = st.button(f"Delete {customer['Name']}")
+    if delete_button:
+        delete_customer(customer["Email"])
+        st.success(f"Customer {customer['Name']} deleted successfully.")
+        
+# Save CRM to CSV
+if st.button("Save CRM to CSV"):
+    st.session_state.crm.to_csv("crm.csv", index=False)
+    st.success("CRM saved to crm.csv")
+    
+    
