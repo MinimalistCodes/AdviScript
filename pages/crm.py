@@ -11,6 +11,10 @@ load_dotenv()
 
 api_key = os.getenv("GOOGLE_API_KEY")
 
+def ai_sales_coach(user_input):
+      llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
+      return llm.invoke(user_input)
+
 
 st.set_page_config(
     page_title="SalesTrek - Customer Management System",
@@ -78,30 +82,6 @@ st.markdown("---")  # Horizontal line
 #Simple CRM
 crm = {}
 #----------------------------------
-# Chatbot
-def chatbot(message):
-    generative_ai = GoogleGenerativeAI(api_key)
-    response = generative_ai.generate_text(message)
-    return response
-
-# Chatbot UI
-with st.form("chat_form"):
-    user_input = st.text_input("You:", key="user_input")
-    st.session_state.messages = st.session_state.get("messages", [])
-    if st.form_submit_button("Send"):
-        if user_input:
-            st.session_state.messages.append({"role": "user", "content": user_input})
-            assistant_response = chatbot(user_input)
-            st.session_state.messages.append({"role": "assistant", "content": assistant_response})
-        else:
-            st.warning("Please enter a message.")
-    st.markdown("---")  # Horizontal line
-    for message in st.session_state.messages:
-        role = message["role"]
-        content = message["content"]
-        st.markdown(f"**{role.capitalize()}**: {content}")
-        
-#----------------------------------
 # CRM
 # CRM UI
 st.sidebar.markdown("### CRM")
@@ -129,6 +109,6 @@ if crm:
 else:
     st.sidebar.info("No customers added yet.")
 #----------------------------------
-#----------------------------------
+
 
   

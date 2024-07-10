@@ -38,38 +38,31 @@ def save_chat_to_pdf(chat_history):
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-with st.sidebar:
-    # clear chat button
-    if st.button("Clear Chat"):
-        st.session_state.messages = []
-    st.markdown("---")  # Horizontal line
-    #save to pdf button
-    if st.button("Save Chat to PDF"):
-        #use FPDF to save chat to pdf
-        pdf_file = save_chat_to_pdf(st.session_state.messages)
-        st.success(f"Chat history saved to {pdf_file}")
-    st.markdown("---")  # Horizontal line
-    # Chatbot settings
-    st.markdown("### Chatbot Settings")
-    st.markdown("Customize the chatbot settings.")
-    # Chatbot settings form
-    chatbot_settings = st.form("chatbot_settings")
-    with chatbot_settings:
-        # Chatbot settings form fields
-        st.markdown("#### Chatbot Settings")
-        st.info("Enter your Google API Key to enable the AI Sales Coach. (Get your API Key from the Google Cloud Console.)")
-        # Chatbot settings form fields
-        #make the text input show ***
-        api_key = st.text_input("API Key", value=api_key)
-        #if blank set to default
-        if not api_key:
-            api_key = os.getenv("GOOGLE_API_KEY")
-        # Save button
-        submit_button = st.form_submit_button("Save")
-    # Save chatbot settings
-    if submit_button:
-        os.environ["GOOGLE_API_KEY"] = api_key
-        st.success("Chatbot settings saved successfully.")
+st.sidebar.markdown("### CRM")
+st.sidebar.markdown("Manage your customer relationships.")
+# CRM form
+crm_form = st.sidebar.form("crm_form")
+with crm_form:
+    st.sidebar.markdown("#### Add Customer")
+    customer_name = st.sidebar.text_input("Name")
+    customer_email = st.sidebar.text_input("Email")
+    customer_phone = st.sidebar.text_input("Phone")
+    submit_button = st.sidebar.form_submit_button("Add")
+# Save customer
+if submit_button:
+    crm[customer_email] = {"name": customer_name, "phone": customer_phone}
+    st.sidebar.success(f"Customer {customer_name} added successfully.")
+# Display customers
+if crm:
+    st.sidebar.markdown("#### Customers")
+    for email, customer in crm.items():
+        st.sidebar.markdown(f"**{customer['name']}**")
+        st.sidebar.markdown(f"Email: {email}")
+        st.sidebar.markdown(f"Phone: {customer['phone']}")
+        st.sidebar.markdown("---")
+else:
+    st.sidebar.info("No customers added yet.")
+#----------------------------------
 
 # UI Title
 st.markdown("## SalesTrek - Your AI Sales Coach")
@@ -79,7 +72,7 @@ st.markdown("---")  # Horizontal line
 # Dashbaord with cards gradient background color and icons
 st.markdown("# SalesTrek Features")
 #cards
-col1, col2, col3, col4 = st.columns4)
+col1, col2, col3, col4 = st.columns(4)
 #card 1
 with col1:
     st.markdown('<div class="card"><div class="card-body"><i class="fas fa-file-alt"></i><h3>Script Generation</h3><p>Generate sales scripts for your sales calls and presentations.</p></div></div>', unsafe_allow_html=True) 
