@@ -82,91 +82,64 @@ crm = {}
 st.title("Customer Relationship Management")
 st.markdown("Manage your customer relationships.")
 
-# Initialize the CRM dictionary
-if 'crm' not in st.session_state:
+# Initialize CRM dictionary
+if "crm" not in st.session_state:
     st.session_state.crm = {}
 
-def add_customer():
-    crm_form = st.form("crm_form")
-    with crm_form:
-        st.markdown("### Add Customer")
-        customer_name = st.text_input("Name")
-        customer_email = st.text_input("Email")
-        customer_phone = st.text_input("Phone")
-        customer_company = st.text_input("Company")
-        customer_status = st.selectbox("Status", ["Lead", "Customer"])
-        customer_priority = st.slider("Priority", 1, 5)
-        submit_button = st.form_submit_button("Add")
-
-    # Save customer
-    if submit_button:
-        st.session_state.crm[customer_email] = {
-            "name": customer_name,
-            "phone": customer_phone,
-            "company": customer_company,
-            "status": customer_status,
-            "priority": customer_priority,
-        }
-        st.success(f"Customer {customer_name} added successfully.")
-
-def edit_customer(email):
-    customer = st.session_state.crm[email]
-    crm_form = st.form(f"edit_form_{email}")
-    with crm_form:
-        st.markdown(f"### Edit Customer: {customer['name']}")
-        customer_name = st.text_input("Name", value=customer['name'])
-        customer_phone = st.text_input("Phone", value=customer['phone'])
-        customer_company = st.text_input("Company", value=customer['company'])
-        customer_status = st.selectbox("Status", ["Lead", "Customer"], index=["Lead", "Customer"].index(customer['status']))
-        customer_priority = st.slider("Priority", 1, 5, value=customer['priority'])
-        submit_button = st.form_submit_button("Update")
-
-    # Update customer
-    if submit_button:
-        st.session_state.crm[email] = {
-            "name": customer_name,
-            "phone": customer_phone,
-            "company": customer_company,
-            "status": customer_status,
-            "priority": customer_priority,
-        }
-        st.success(f"Customer {customer_name} updated successfully.")
-
-def display_customers():
-    filter_status = st.selectbox("Filter by Status", ["All", "Lead", "Customer"])
-    search_query = st.text_input("Search by Name or Email")
-
-    filtered_customers = {
-        email: customer for email, customer in st.session_state.crm.items()
-        if (filter_status == "All" or customer['status'] == filter_status) and
-           (search_query.lower() in customer['name'].lower() or search_query.lower() in email.lower())
+# Function to add or update customer
+def add_or_update_customer(email, name, phone, company, status, priority):
+    st.session_state.crm[email] = {
+        "name": name,
+        "phone": phone,
+        "company": company,
+        "status": status,
+        "priority": priority
     }
 
-    if filtered_customers:
-        st.markdown("### Customers")
-        for email, customer in filtered_customers.items():
+# Function to delete customer
+def delete_customer(email):
+    if email in st.session_state.crm:
+        del st.session_state.crm[email]
+
+# CRM Form
+crm_form = st.form("crm_form")
+with crm_form:
+    st.markdown("### Add or Update Customer")
+    customer_name = st.text_input("Name")
+    customer_email = st.text_input("Email")
+    customer_phone = st.text_input("Phone")
+    customer_company = st.text_input("Company")
+    customer_status = st.selectbox("Status", ["Lead", "Customer"])
+    customer_priority = st.slider("Priority", 1, 5)
+    submit_button = st.form_submit_button("Add or Update")
+
+# Save customer
+if submit_button:
+    add_or_update_customer(customer_email, customer_name, customer_phone, customer_company, customer_status, customer_priority)
+    st.success(f"Customer {customer_name} added/updated successfully.")
+
+# Search and Filter
+st.markdown("### Search and Filter Customers")
+search_term = st.text_input("Search by Name or Email")
+filter_status = st.selectbox("Filter by Status", ["All", "Lead", "Customer"])
+
+# Display customers
+if st.session_state.crm:
+    st.markdown("### Customers")
+    for email, customer in st.session_state.crm.items():
+        if (search_term.lower() in customer["name"].lower() or search_term.lower() in email.lower()) and (filter_status == "All" or filter_status == customer["status"]):
             st.markdown(f"**{customer['name']}**")
             st.markdown(f"Email: {email}")
             st.markdown(f"Phone: {customer['phone']}")
             st.markdown(f"Company: {customer['company']}")
             st.markdown(f"Status: {customer['status']}")
             st.markdown(f"Priority: {customer['priority']}")
-            edit_button = st.button("Edit", key=f"edit_{email}")
-            delete_button = st.button("Delete", key=f"delete_{email}")
-            if edit_button:
-                edit_customer(email)
+            if st.button(f"Delete {customer['name']}", key=email):
+                delete_customer(email)
+                st.experimental_rerun()
             st.markdown("---")
-    else:
-        st.info("No customers found.")
-
-# Display the form to add a new customer
-add_customer()
-
-# Display customers with options to edit and delete
-display_customers()
-        
-#----------------------------------
-
+else:
+    st.info("No customers found.")
 
 
   
