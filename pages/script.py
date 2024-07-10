@@ -149,10 +149,6 @@ st.markdown("## SalesTrek - Your AI Sales Coach")
 st.markdown("Ask any sales-related questions or request assistance with specific tasks.")
 st.markdown("---")  # Horizontal line
     
-    
-    
-st.session_state.messages.append({"role": "assistant", "content": "Welcome! Type 'help' to get started!"})
-
 
 # Display chat messages
 with st.container():  # Use container for styling
