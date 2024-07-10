@@ -86,41 +86,90 @@ st.markdown("Manage your customer relationships.")
 if 'crm' not in st.session_state:
     st.session_state.crm = {}
 
-crm_form = st.form("crm_form")
-with crm_form:
-    st.markdown("### Add Customer")
-    customer_name = st.text_input("Name")
-    customer_email = st.text_input("Email")
-    customer_phone = st.text_input("Phone")
-    customer_company = st.text_input("Company")
-    customer_status = st.selectbox("Status", ["Lead", "Customer"])
-    customer_priority = st.slider("Priority", 1, 5)
-    submit_button = st.form_submit_button("Add")
+def add_customer():
+    crm_form = st.form("crm_form")
+    with crm_form:
+        st.markdown("### Add Customer")
+        customer_name = st.text_input("Name")
+        customer_email = st.text_input("Email")
+        customer_phone = st.text_input("Phone")
+        customer_company = st.text_input("Company")
+        customer_status = st.selectbox("Status", ["Lead", "Customer"])
+        customer_priority = st.slider("Priority", 1, 5)
+        submit_button = st.form_submit_button("Add")
 
-# Save customer
-if submit_button:
-    st.session_state.crm[customer_email] = {
-        "name": customer_name,
-        "phone": customer_phone,
-        "company": customer_company,
-        "status": customer_status,
-        "priority": customer_priority,
+    # Save customer
+    if submit_button:
+        st.session_state.crm[customer_email] = {
+            "name": customer_name,
+            "phone": customer_phone,
+            "company": customer_company,
+            "status": customer_status,
+            "priority": customer_priority,
+        }
+        st.success(f"Customer {customer_name} added successfully.")
+
+def edit_customer(email):
+    customer = st.session_state.crm[email]
+    crm_form = st.form(f"edit_form_{email}")
+    with crm_form:
+        st.markdown(f"### Edit Customer: {customer['name']}")
+        customer_name = st.text_input("Name", value=customer['name'])
+        customer_phone = st.text_input("Phone", value=customer['phone'])
+        customer_company = st.text_input("Company", value=customer['company'])
+        customer_status = st.selectbox("Status", ["Lead", "Customer"], index=["Lead", "Customer"].index(customer['status']))
+        customer_priority = st.slider("Priority", 1, 5, value=customer['priority'])
+        submit_button = st.form_submit_button("Update")
+
+    # Update customer
+    if submit_button:
+        st.session_state.crm[email] = {
+            "name": customer_name,
+            "phone": customer_phone,
+            "company": customer_company,
+            "status": customer_status,
+            "priority": customer_priority,
+        }
+        st.success(f"Customer {customer_name} updated successfully.")
+
+def delete_customer(email):
+    del st.session_state.crm[email]
+    st.success("Customer deleted successfully.")
+
+def display_customers():
+    filter_status = st.selectbox("Filter by Status", ["All", "Lead", "Customer"])
+    search_query = st.text_input("Search by Name or Email")
+
+    filtered_customers = {
+        email: customer for email, customer in st.session_state.crm.items()
+        if (filter_status == "All" or customer['status'] == filter_status) and
+           (search_query.lower() in customer['name'].lower() or search_query.lower() in email.lower())
     }
-    st.success(f"Customer {customer_name} added successfully.")
 
-# Display customers
-if st.session_state.crm:
-    st.markdown("### Customers")
-    for email, customer in st.session_state.crm.items():
-        st.markdown(f"**{customer['name']}**")
-        st.markdown(f"Email: {email}")
-        st.markdown(f"Phone: {customer['phone']}")
-        st.markdown(f"Company: {customer['company']}")
-        st.markdown(f"Status: {customer['status']}")
-        st.markdown(f"Priority: {customer['priority']}")
-        st.markdown("---")
-else:
-    st.info("No customers found.")
+    if filtered_customers:
+        st.markdown("### Customers")
+        for email, customer in filtered_customers.items():
+            st.markdown(f"**{customer['name']}**")
+            st.markdown(f"Email: {email}")
+            st.markdown(f"Phone: {customer['phone']}")
+            st.markdown(f"Company: {customer['company']}")
+            st.markdown(f"Status: {customer['status']}")
+            st.markdown(f"Priority: {customer['priority']}")
+            edit_button = st.button("Edit", key=f"edit_{email}")
+            delete_button = st.button("Delete", key=f"delete_{email}")
+            if edit_button:
+                edit_customer(email)
+            if delete_button:
+                delete_customer(email)
+            st.markdown("---")
+    else:
+        st.info("No customers found.")
+
+# Display the form to add a new customer
+add_customer()
+
+# Display customers with options to edit and delete
+display_customers()
         
 #----------------------------------
 
