@@ -23,7 +23,20 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+def save_chat_to_pdf(chat_history):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    
+    for message in chat_history:
+        role = "User" if message["role"] == "user" else "Assistant"
+        content = message["content"]
+        pdf.multi_cell(0, 10, f"{role}: {content}")
+        pdf.ln(10)
 
+    pdf_file = "chat_history.pdf"
+    pdf.output(pdf_file)
+    
 #load styles.css
 with open("styles.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -76,6 +89,9 @@ with crm_form:
     customer_name = st.text_input("Name")
     customer_email = st.text_input("Email")
     customer_phone = st.text_input("Phone")
+    customer_company = st.text_input("Company")
+    st.selectbox("Status", ["Lead", "Customer"])
+    st.slider("Priority", 1, 5)
     submit_button = st.form_submit_button("Add")
     
 # Save customer
@@ -90,6 +106,13 @@ if crm:
         st.markdown(f"**{customer['name']}**")
         st.markdown(f"Email: {email}")
         st.markdown(f"Phone: {customer['phone']}")
+        st.markdown(f"Company: {customer['company']}")
+        st.markdown(f"Status: {customer['status']}")
+        st.markdown(f"Priority: {customer['priority']}")
+        st.markdown("---")
+else:
+    st.info("No customers found.")
+    
         
 #----------------------------------
 
