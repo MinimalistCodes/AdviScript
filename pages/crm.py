@@ -59,7 +59,7 @@ with st.sidebar:
         st.markdown("#### Chatbot Settings")
         st.info("Enter your Google API Key to enable the AI Sales Coach. (Get your API Key from the Google Cloud Console.)")
         # Chatbot settings form fields
-        #make the text input show ***
+        
         api_key = st.text_input("API Key", value=api_key)
         #if blank set to default
         if not api_key:

@@ -79,7 +79,7 @@ st.markdown("---")  # Horizontal line
 # Dashbaord with cards gradient background color and icons
 st.markdown("# SalesTrek Features")
 #cards
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4 = st.columns4)
 #card 1
 with col1:
     st.markdown('<div class="card"><div class="card-body"><i class="fas fa-file-alt"></i><h3>Script Generation</h3><p>Generate sales scripts for your sales calls and presentations.</p></div></div>', unsafe_allow_html=True) 
@@ -89,7 +89,9 @@ with col2:
 #card 3
 with col3:
     st.markdown('<div class="card"><div class="card-body"><i class="fas fa-user-tie"></i><h3>AI Sales Coach</h3><p>Ask any sales-related questions or request assistance with specific tasks.</p></div></div>', unsafe_allow_html=True)
-
+#Card 4: CRM
+with col4:
+    st.markdown('<div class="card"><div class="card-body"><i class="fas fa-user-friends"></i><h3>CRM</h3><p>Manage your customer relationships and sales pipeline.</p></div></div>', unsafe_allow_html=True)
 st.markdown("---")  # Horizontal line
 
 
