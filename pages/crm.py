@@ -132,10 +132,6 @@ def edit_customer(email):
         }
         st.success(f"Customer {customer_name} updated successfully.")
 
-def delete_customer(email):
-    del st.session_state.crm[email]
-    st.success("Customer deleted successfully.")
-
 def display_customers():
     filter_status = st.selectbox("Filter by Status", ["All", "Lead", "Customer"])
     search_query = st.text_input("Search by Name or Email")
@@ -159,8 +155,6 @@ def display_customers():
             delete_button = st.button("Delete", key=f"delete_{email}")
             if edit_button:
                 edit_customer(email)
-            if delete_button:
-                delete_customer(email)
             st.markdown("---")
     else:
         st.info("No customers found.")
