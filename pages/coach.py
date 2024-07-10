@@ -149,10 +149,9 @@ st.markdown("Ask any sales-related questions or request assistance with specific
 st.markdown("---")  # Horizontal line
     
     
-# Chat History
+# Don't show Chat History
 if "messages" not in st.session_state:
-    st.session_state.messages = []
-    
+    st.session_state.messages = []  # Initialize chat history
     # Welcome message
     st.session_state.messages.append({"role": "assistant", "content": "Welcome! Type 'help' to get started!"})
 

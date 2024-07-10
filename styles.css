@@ -147,3 +147,51 @@ body {
     outline: none;
 }
 
+#form {
+    display: flex;
+    flex-direction: column;
+}
+
+#form input {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #D3D3D3;
+}
+
+#form button {
+    background-color: #336699;
+    color: #f9f9f9;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#form button:hover {
+    background-color: #f9f9f9;
+    color: #336699;
+}
+
+#form button:active {
+    background-color: #336699;
+    color: #f9f9f9;
+}
+
+#form button:focus {
+    outline: none;
+}
+
+#form button:disabled {
+    background-color: #336699;
+    color: #f9f9f9;
+    cursor: not-allowed;
+}
+
+#form button:disabled:hover {
+    background-color: #336699;
+    color: #f9f9f9;
+}
+
+
+
