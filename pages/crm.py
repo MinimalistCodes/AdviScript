@@ -40,9 +40,27 @@ search_term = st.text_input("Search by Name or Email")
 filter_status = st.selectbox("Filter by Status", ["All", "Lead", "Customer"])
 
 # Display all customers
-st.markdown("### All Customers")
+st.markdown("### Customer List")
 if filter_status == "All":
     filtered_customers = st.session_state.crm[(st.session_state.crm["Name"].str.contains(search_term, case=False)) | (st.session_state.crm["Email"].str.contains(search_term, case=False))]
 else:
-    filtered_customers = st.session_state.crm[(st.session_state.crm["Status"] == filter_status) & ((st.session_state.crm["Name"].str.contains(search_term, case=False)) | (st.session_state.crm["Email"].str.contains(search_term, case=False))]
+    filtered_customers = st.session_state.crm[(st.session_state.crm["Name"].str.contains(search_term, case=False)) | (st.session_state.crm["Email"].str.contains(search_term, case=False)) & (st.session_state.crm["Status"] == filter_status)]
+
 st.table(filtered_customers)
+
+# Delete customer
+st.markdown("### Delete Customer")
+customer_email_delete = st.text_input("Email")
+delete_button = st.button("Delete Customer")
+
+if delete_button:
+    delete_customer(customer_email_delete)
+    st.success(f"Customer with email {customer_email_delete} deleted successfully.")
+#----------------------------------
+
+# Footer
+st.markdown("---")
+st.markdown("Made with :heart: by [SalesTrek](https://versiflow.cloud)")
+st.markdown("© 2024 SalesTrek. All rights reserved.")
+st.markdown("---")  # Horizontal line
+#----------------------------------
