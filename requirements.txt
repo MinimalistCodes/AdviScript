@@ -12,5 +12,4 @@ streamlit-elements
 streamlit-tailwind
 fpdf
 streamlit-navigation-bar
-pandas
-pyrebase
+fb_streamlit_auth

@@ -38,13 +38,13 @@ if submit_button:
 # Filter customers
 st.markdown("### Filter Customers")
 status = st.selectbox("Status", ["All", "Lead", "Customer"])
-priority = st.slider("Priority", 1, 5)
 
-# Filter customers based on status and priority
+# Filter customers based on status
 filtered_customers = st.session_state.crm
 if status != "All":
     filtered_customers = filtered_customers[filtered_customers["Status"] == status]
-filtered_customers = filtered_customers[filtered_customers["Priority"] >= priority]
+    
+
 
 # Display customers table
 st.markdown("### Customers")
