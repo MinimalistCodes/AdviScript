@@ -29,30 +29,34 @@ with crm_form:
     customer_priority = st.slider("Priority", 1, 5)
     submit_button = st.form_submit_button("Add or Update")
     delete_button = st.form_submit_button("Delete")
-    
-# Delete customer
-if delete_button:
-    delete_customer(customer_name)
-    st.success(f"Customer {customer_name} deleted successfully.")
 
 # Save customer
 if submit_button:
     add_or_update_customer(customer_name, customer_email, customer_phone, customer_company, customer_status, customer_priority)
     st.success(f"Customer {customer_name} added/updated successfully.")
 
-# Search and Filter
-st.markdown("### Search and Filter Customers")
-search_term = st.text_input("Search by Name or Email")
-filter_status = st.selectbox("Filter by Status", ["All", "Lead", "Customer"])
+# Filter customers
+st.markdown("### Filter Customers")
+status = st.selectbox("Status", ["All", "Lead", "Customer"])
+priority = st.slider("Priority", 1, 5)
 
-# Display all customers 
-st.markdown("### Customer List")
-if filter_status == "All":
-    filtered_customers = st.session_state.crm[(st.session_state.crm["Name"].str.contains(search_term, case=False)) | (st.session_state.crm["Email"].str.contains(search_term, case=False))]
-else:
-    filtered_customers = st.session_state.crm[(st.session_state.crm["Name"].str.contains(search_term, case=False)) | (st.session_state.crm["Email"].str.contains(search_term, case=False)) & (st.session_state.crm["Status"] == filter_status)]
+# Filter customers based on status and priority
+filtered_customers = st.session_state.crm
+if status != "All":
+    filtered_customers = filtered_customers[filtered_customers["Status"] == status]
+filtered_customers = filtered_customers[filtered_customers["Priority"] >= priority]
 
+# Display customers table
+st.markdown("### Customers")
 st.table(filtered_customers)
+
+
+
+#Delete Customer
+if delete_button:
+    delete_customer(customer_email)
+    st.success(f"Customer {customer_name} deleted successfully.")
+    
 
 # Footer
 st.markdown("---")
