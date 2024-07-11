@@ -118,6 +118,8 @@ st.markdown("---")  # Horizontal line
 # Don't show Chat History
 if "messages" not in st.session_state:
     st.session_state.messages = []  # Initialize chat history
+    #clear chat history
+    st.session_state.messages = []
     # Welcome message
     st.session_state.messages.append({"role": "assistant", "content": "Welcome! Type 'help' to get started!"})
 

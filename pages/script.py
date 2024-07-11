@@ -122,6 +122,7 @@ st.markdown("---")  # Horizontal line
 if "messages" not in st.session_state:
     st.session_state.messages = ""  # Initialize chat history
     # Welcome message
+    st.session_state.messages = []
     st.session_state.messages.append({"role": "assistant", "content": "Welcome! Type 'help' to get started!"})
     
 
