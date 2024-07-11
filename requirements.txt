@@ -13,3 +13,4 @@ streamlit-tailwind
 fpdf
 streamlit-navigation-bar
 pandas
+pyrebase
